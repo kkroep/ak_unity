@@ -26,7 +26,7 @@ public class PlayerMotor : MonoBehaviour
         if(other.tag == "Turn")
         {
             speed *= -1;
-            controller.transform.Rotate(new Vector3(0,180,0));
+            //controller.transform.Rotate(new Vector3(0,180,0));
         }
     }
 
