@@ -10,8 +10,8 @@ public class PlayerMotor : MonoBehaviour
 
 
     //jumping parameters
-    private float jumpforce = 16;
-    private float gravity = 20;
+    public float jumpforce;
+    public float gravity;
     private float verticalVelocity;
 
 
@@ -21,9 +21,20 @@ public class PlayerMotor : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Turn")
+        {
+            speed *= -1;
+            controller.transform.Rotate(new Vector3(0,180,0));
+        }
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+
         moveVector = Vector3.zero;
 
         //x
