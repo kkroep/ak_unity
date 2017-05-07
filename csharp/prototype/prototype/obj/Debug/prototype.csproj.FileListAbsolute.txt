@@ -1,0 +1,6 @@
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\bin\Debug\prototype.exe.config
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\bin\Debug\prototype.exe
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\bin\Debug\prototype.pdb
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\obj\Debug\prototype.csprojResolveAssemblyReference.cache
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\obj\Debug\prototype.exe
+C:\Users\kkroe\Documents\git\ak_unity\csharp\prototype\prototype\obj\Debug\prototype.pdb
