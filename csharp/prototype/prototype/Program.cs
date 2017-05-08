@@ -8,8 +8,9 @@ namespace prototype
 {
     class Program
     {
-        static int[] nextStep(int[,] map, int[] start, int[] end)
+        static List<int[]> route(int[,] map, int[] start, int[] end)
         {
+            List<int[]> ans = new List<int[]>();
             int[,] direction = new int[map.GetLength(0), map.GetLength(1)];
             float[,] value = new float[map.GetLength(0), map.GetLength(1)];
             value[start[0], start[1]] = 1; //make sure that one can start at the start location
@@ -17,7 +18,6 @@ namespace prototype
             // initialize queue for Dijsktra points
             List<float[]> queue = new List<float[]>();
             queue.Add(new float[3] { start[0], start[1], 1 });
-
             /*
              * catch some misuses
              * either start is equal to end, or end is out of bounds
@@ -26,13 +26,15 @@ namespace prototype
             if (start[0] == end[0] && start[1] == end[1])
             {
                 Console.WriteLine("start equals end");
-                return start;
+                ans.Add(start);
+                return ans;
             }
 
             if (end[0] < 0 || end[0] >= map.GetLength(0) || end[1] < 0 || end[1] >= map.GetLength(1))
             {
                 Console.WriteLine("endpoint out of bounds");
-                return start;
+                ans.Add(start);
+                return ans;
             }
 
 
@@ -44,21 +46,13 @@ namespace prototype
                 queue.RemoveAt(0);
                 if (queue[0][0] == end[0] && queue[0][1] == end[1])
                 {
-                    foreach (var item in queue)
-                    {
-                        Console.WriteLine("q= (" + item[0] + "," + item[1] + "," + item[2] + ")");
-                    }
-                    return FindNextStep(direction, start, end);
+
+                    return findRoute(direction, start, end);
                 }
                 j++;
             }
-
-            foreach (var item in queue)
-            {
-                Console.WriteLine("q= (" + item[0] + "," + item[1] + "," + item[2] + ")");
-            }
-
-            return start;
+            ans.Add(start);
+            return ans;
         }
 
         /*
@@ -85,8 +79,7 @@ namespace prototype
                                                     { 1, 0 },
                                                     { 0, -1 },
                                                     { -1, 0 },
-                                                    { -1, 1 }
-                };
+                                                    { -1, 1 }};
             }
 
             int x, y;
@@ -118,16 +111,18 @@ namespace prototype
                 if (entry[2] < queue[i][2])
                     break;
 
-                Console.WriteLine("new iter: (" + queue[0][0] + "," + queue[0][1] + ")");
+                //Console.WriteLine("new iter: (" + queue[0][0] + "," + queue[0][1] + ")");
                 i++;
             }
             queue.Insert(i, entry);
-            Console.WriteLine("new iter: (" + queue[0][0] + "," + queue[0][1] + ")");
+            //Console.WriteLine("new iter: (" + queue[0][0] + "," + queue[0][1] + ")");
             return;
         }
 
-        static int[] FindNextStep(int[,] direction, int[] start, int[] end)
+        static List<int[]> findRoute(int[,] direction, int[] start, int[] end)
         {
+            List <int[]> ans = new List<int[]>();
+            ans.Add(new int[2] { end[0], end[1] });
             int[,] neighbors_even = new int[6, 2] { { 0, 1 },
                                                     { 1, 0 },
                                                     { 1, -1 },
@@ -159,23 +154,27 @@ namespace prototype
                 if (next_pos[0] == start[0] && next_pos[1] == start[1])
                     break;
 
+
+                ans.Insert(0, new int[2] { next_pos[0], next_pos[1] });
                 pos[0] = next_pos[0];
                 pos[1] = next_pos[1];
 
             }
             // we now know that the current position is the step we are looking for 
-            return pos;
+            return ans;
         }
 
 
         static void Main(string[] args)
         {
             int[,] map = new int[10, 12];
-            int[] start = new int[2] { 4, 4 };
-            int[] end = new int[2] { 1, 0 };
-            int[] ans = nextStep(map, start, end);
+            int[] start = new int[2] { 0, 4 };
+            int[] end = new int[2] { 6, 1 };
+            List<int[]> ans =  route(map, start, end);
 
-            Console.WriteLine("next step: (" + ans[0] + "," + ans[1] + ")");
+            foreach (int[] item in ans) {
+                Console.WriteLine("(" + item[0] + "," + item[1] + ")");
+            }
         }
     }
 }
