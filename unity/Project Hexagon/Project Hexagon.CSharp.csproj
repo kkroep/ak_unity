@@ -80,7 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\HexagonScript.cs" />
     <Compile Include="Assets\Scripts\BoardContent.cs" />
-    <Compile Include="Assets\Scripts\GenerateLevel.cs" />
+    <Compile Include="Assets\Scripts\BoardController.cs" />
     <Compile Include="Assets\Scripts\HexMath.cs" />
     <Compile Include="Assets\Scripts\TileDetector.cs" />
     <Compile Include="Assets\Scripts\UnitController.cs" />

@@ -2,17 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateLevel : MonoBehaviour
+/// <summary>
+/// This class contains the global board controller:
+/// 
+/// 1. Generating the board at Start()
+/// 2. The unit and board Matrixes, containing the current turns positions of all the elements
+/// 3. Contain the clock
+/// 
+/// ----TODO:
+/// 
+/// 1. 
+/// 
+/// ----Milestone: Multiple units can move around without stepping on the same hexagon
+/// </summary>
+
+public class BoardController : MonoBehaviour
 {
     // Board, Hexagons
     public GameObject HexagonTile;
     HexMath hexMath;
-    GameObject[,] tileMatrix;
+    GameObject[,] tileMatrix; //Contains the tiles and their locations
 
     public int[] boardsize = new int[2];
 
     // Unit Matrix
-    GameObject[,] unitMatrix;
+    GameObject[,] unitMatrix; //Contains the units
     public GameObject Unit;
 
 
@@ -45,7 +59,9 @@ public class GenerateLevel : MonoBehaviour
         Hoplite.GetComponent<UnitController>().set(0,0);
         unitMatrix[0, 0] = Hoplite;
 
+        // Start the timer
 
+        StartCoroutine(TurnTimer()); // Start the turntimer!!!
     }
 	
 
@@ -55,9 +71,29 @@ public class GenerateLevel : MonoBehaviour
 		
 	}
 
+    IEnumerator TurnTimer()
+    {
+        while(true)
+        {
+            Debug.Log("Before Waiting 10 seconds");
+            yield return new WaitForSeconds(10); // Calls for the function WaitForSeconds. Yeild break breaks this.
+            Debug.Log("After Waiting 10 Seconds");
+            
+            // ----TODO: We need to get an list which orders all the movements of the units, and write an algorithm which sorts out all the rules, sets attack declarations etc.
+
+        }
+    }
+
+
+
     public GameObject getTile(Vector2 mouseOver)
     {
         return tileMatrix[(int)mouseOver.x, (int)mouseOver.y];
+    }
+
+    public GameObject getTile(int x, int y)
+    {
+        return tileMatrix[x, y];
     }
 
     public void setUnit(int x, int y, GameObject new_Unit)
@@ -69,6 +105,12 @@ public class GenerateLevel : MonoBehaviour
     {
         return unitMatrix[(int)mouseOver.x, (int)mouseOver.y];
     }
+
+    public GameObject getUnit(int x, int y)
+    {
+        return unitMatrix[x, y];
+    }
+
     public void deleteUnit(int x, int y)
     {
         Debug.Log(unitMatrix[x, y]);

@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class contains everything related to moving on a global setting:
+/// 
+/// 1. Getting mouse input
+/// 2. Detecting unit selection and deselection
+/// 3. Send the move command to the corresponding unit
+/// 
+/// ----TODO: 
+/// 
+/// 1. Check if player wants to deseslect first
+/// </summary>
+
 public class TileDetector : MonoBehaviour
 {
     public Material materialSelected;
@@ -40,37 +52,32 @@ public class TileDetector : MonoBehaviour
     private void UpdateMouseOver()
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) // Gets the position of the mouse in X and Y coordinates
         {
             mouseOver.x = hit.transform.GetComponent<HexagonScript>().getX();
             mouseOver.y = hit.transform.GetComponent<HexagonScript>().getY();
 
             //Debug.Log(mouseOver);
 
-            GameObject hoverOverTile = gameObject.GetComponent<GenerateLevel>().getTile(mouseOver);
-            GameObject hoverOverUnit = gameObject.GetComponent<GenerateLevel>().getUnit(mouseOver);
+            GameObject hoverOverTile = gameObject.GetComponent<BoardController>().getTile(mouseOver); // Gets the tile ID it is hovering over
+            GameObject hoverOverUnit = gameObject.GetComponent<BoardController>().getUnit(mouseOver); // Gets the unit that is on the tile (otherwise returns null)
 
-            if (hoverOverTile)
+            if (hoverOverTile) // If there is tile
             {
-                if (hoverOverUnit)
+                if (hoverOverUnit) // When selecting a unit
                 {
                     unitHasBeenSelected = true;
                     unitSelected = hoverOverUnit;
-                    hoverOverTile.GetComponent<MeshRenderer>().material = materialSelected;
+                    unitSelected.GetComponent<UnitController>().IsSelected();
                 }
-                else if(unitHasBeenSelected == true)
+
+                else if(unitHasBeenSelected == true) // When moving and deselecting a unit
                 {
                     unitHasBeenSelected = false;
-                    int old_x = unitSelected.GetComponent<UnitController>().getX();
-                    int old_y = unitSelected.GetComponent<UnitController>().getY();
-                    
-                    GameObject old_tile = gameObject.GetComponent<GenerateLevel>().getTile(new Vector2(old_x, old_y));
-                    old_tile.GetComponent<MeshRenderer>().material = materialNotSelected;
-                    gameObject.GetComponent<GenerateLevel>().deleteUnit(old_x,old_y);
-                    gameObject.GetComponent<GenerateLevel>().setUnit((int)mouseOver.x, (int)mouseOver.y, unitSelected);
+                    // ----TODO: Check if player wants to deseslect first
 
-
-                    unitSelected.transform.position = hit.transform.position + new Vector3(0, unitSelected.transform.position.y, 0);
+                    // Tell the unit where to go, filter out here already if it is not possible
+                    unitSelected.GetComponent<UnitController>().MoveUnit((int)mouseOver.x, (int)mouseOver.y);
                 }
             }
         }
