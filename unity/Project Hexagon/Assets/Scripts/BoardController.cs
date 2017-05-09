@@ -59,6 +59,11 @@ public class BoardController : MonoBehaviour
         Hoplite.GetComponent<UnitController>().set(0,0);
         unitMatrix[0, 0] = Hoplite;
 
+        GameObject Hoplite2 = Instantiate(Unit);
+        Hoplite2.GetComponent<UnitController>().set(4, 4);
+        Hoplite2.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(4), Hoplite2.transform.position.y, GetComponent<HexMath>().matrix2HexY(4,4));
+        unitMatrix[4, 4] = Hoplite2;
+
         // Start the timer
 
         StartCoroutine(TurnTimer()); // Start the turntimer!!!

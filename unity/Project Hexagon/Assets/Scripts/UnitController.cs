@@ -10,7 +10,7 @@ using UnityEngine;
 /// 
 /// ----TODO:
 /// 
-/// 1. Implement the Dijkstra algorithm, and make the unit save all the steps in a vector.
+/// 1. Implement the Dijkstra algorithm, and make the unit save all the steps in a vector. -- DONE
 /// 2. Put the walking in a seperate function, that needs to be called by the Board Controller when the unit needs to walk.
 /// </summary>
 
@@ -18,7 +18,7 @@ public class UnitController : MonoBehaviour
 {
     // Unit information
     private int x, y; // Current coordinates of a certain unit
-
+    List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
 
     // External set information
     public Material materialSelected;
@@ -27,10 +27,12 @@ public class UnitController : MonoBehaviour
     // Global variables
     private GameObject gameController;
     private GameObject currentTile;
+    private int[,] boardSize;
 
     void Start ()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
+        boardSize = new int[ gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1] ]; //TODO: Think about this huge matrix
     }
 
     public void IsSelected()
@@ -40,21 +42,60 @@ public class UnitController : MonoBehaviour
         currentTile.GetComponent<MeshRenderer>().material = materialSelected;
     }
 
-    public void MoveUnit(int x_new, int y_new)
+    public void CalculatePath(int x_new, int y_new)
     {
-        int old_x = x;
-        int old_y = y;
+        int[] oldCoordinates = new int[2] { x, y };
+        int[] newCoordinates = new int[2] { x_new, y_new };
 
         // Removing the selection visual feedback
-        currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(old_x, old_y)); // Get the tile
-        currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
+        removeSelectionFeedback();
+
+        // Check if there has been a previous movement path, if yes, clear the feedback of it
+        foreach (int[] location in moveQueue)
+        {
+            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
+            currentTile.GetComponent<MeshRenderer>().material = materialNotSelected;
+        }
+
+        // Check if player wants to cancel the move order by pressing the unit again
+        if (x_new == x && y_new == y)
+        {
+            moveQueue.Clear(); // Clear the queue list
+            return;
+        }
+
+        // Calculating the new movement path
+        moveQueue = gameController.GetComponent<Dijkstra>().route(boardSize, oldCoordinates, newCoordinates);
+
+        // Visual feedback for selected path
+        foreach (int[] location in moveQueue)
+        {
+            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
+            currentTile.GetComponent<MeshRenderer>().material = materialSelected;
+        }
+    }
+
+    // This function will move the unit by 1 step, each time it is called from the BoardController
+    public void MoveUnit()
+    {
+        int[] oldCoordinates = { x, y };
+        int[] newCoordinates = moveQueue[0];
+
+        // Removing part of the path feedback
+        removeSelectionFeedback();
 
         // Move the unit to the new tile
-        gameController.GetComponent<BoardController>().deleteUnit(old_x, old_y); // Removes the unit from the matrix (not the gameobject itself!!)
-        gameController.GetComponent<BoardController>().setUnit(x_new, y_new, gameObject); // Sets THIS unit to new position in the matrix
-        x = x_new; // Set new unit coordinates
-        y = y_new;
-        transform.position = gameController.GetComponent<BoardController>().getTile(x_new, y_new).transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
+        gameController.GetComponent<BoardController>().deleteUnit(oldCoordinates[0], oldCoordinates[1]); // Removes the unit from the matrix (not the gameobject itself!!)
+        gameController.GetComponent<BoardController>().setUnit(newCoordinates[0], newCoordinates[1], gameObject); // Sets THIS unit to new position in the matrix
+        x = newCoordinates[0]; // Set new unit coordinates
+        y = newCoordinates[1];
+        transform.position = gameController.GetComponent<BoardController>().getTile(newCoordinates[0], newCoordinates[1]).transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
+    }
+
+    public void removeSelectionFeedback()
+    {
+        currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile using it's current x and y positions
+        currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
     }
 
     public void set(int new_x, int new_y)

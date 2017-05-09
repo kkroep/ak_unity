@@ -11,7 +11,7 @@ using UnityEngine;
 /// 
 /// ----TODO: 
 /// 
-/// 1. Check if player wants to deseslect first
+/// 1. Check if player wants to deseslect first -- DONE
 /// </summary>
 
 public class TileDetector : MonoBehaviour
@@ -46,6 +46,13 @@ public class TileDetector : MonoBehaviour
         }
         else
             mouseHasBeenDown = false;
+
+        // Deselects the unit
+        if (Input.GetMouseButton(1) && unitHasBeenSelected == true)
+        {
+            unitHasBeenSelected = false;
+            unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+        }
     }
 
 
@@ -64,7 +71,7 @@ public class TileDetector : MonoBehaviour
 
             if (hoverOverTile) // If there is tile
             {
-                if (hoverOverUnit) // When selecting a unit
+                if (hoverOverUnit && unitHasBeenSelected == false) // When selecting a unit, and makes sure that if a unit has been selected it does not run again
                 {
                     unitHasBeenSelected = true;
                     unitSelected = hoverOverUnit;
@@ -77,7 +84,7 @@ public class TileDetector : MonoBehaviour
                     // ----TODO: Check if player wants to deseslect first
 
                     // Tell the unit where to go, filter out here already if it is not possible
-                    unitSelected.GetComponent<UnitController>().MoveUnit((int)mouseOver.x, (int)mouseOver.y);
+                    unitSelected.GetComponent<UnitController>().CalculatePath((int)mouseOver.x, (int)mouseOver.y);
                 }
             }
         }

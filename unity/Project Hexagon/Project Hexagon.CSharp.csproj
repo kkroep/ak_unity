@@ -78,10 +78,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\HexagonScript.cs" />
     <Compile Include="Assets\Scripts\BoardContent.cs" />
     <Compile Include="Assets\Scripts\BoardController.cs" />
+    <Compile Include="Assets\Scripts\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\HexMath.cs" />
+    <Compile Include="Assets\Scripts\HexagonScript.cs" />
     <Compile Include="Assets\Scripts\TileDetector.cs" />
     <Compile Include="Assets\Scripts\UnitController.cs" />
   </ItemGroup>
