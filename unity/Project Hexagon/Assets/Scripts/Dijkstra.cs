@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Dijkstra : MonoBehaviour {
 
@@ -48,7 +49,7 @@ public class Dijkstra : MonoBehaviour {
         int j = 0;
         while (queue.Count > 0 && j < 400)
         {
-            dijkstra_iteration(direction, value, queue, 1, int[] end);
+            dijkstra_iteration(direction, value, queue, 1, end);
             queue.RemoveAt(0);
             if (queue[0][0] == end[0] && queue[0][1] == end[1])
             {
@@ -101,7 +102,7 @@ public class Dijkstra : MonoBehaviour {
                 {
                     value[x, y] = queue[0][2]; // update the duration of the shortest route to this poitn
                     direction[x, y] = i; // update the fastest way back to the start
-                    insertQueue(new float[3] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + Math.Abs(x-end[0])/2+Math.Abs(y-end[1])/2}, queue); // add this entry in the queue to expand in a later stage
+                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + Math.Abs(x-end[0])*0.01f+Math.Abs(y-end[1])*0.01f}, queue); // add this entry in the queue to expand in a later stage
                 }
             }
         }
