@@ -75,18 +75,32 @@ public class UnitController : MonoBehaviour
     // This function will move the unit by 1 step, each time it is called from the BoardController
     public void MoveUnit()
     {
-        int[] oldCoordinates = { x, y };
-        int[] newCoordinates = moveQueue[0];
+        if ((moveQueue.Count > 0))
+        {
+            int[] oldCoordinates = { x, y };
+            int[] newCoordinates = moveQueue[0];
 
-        // Removing part of the path feedback
-        removeSelectionFeedback();
+            // Check if spot is empty, else wait, if there is a unit, check who has priority
+            GameObject checkUnit = gameController.GetComponent<BoardController>().getUnit(newCoordinates[0], newCoordinates[1]); // Save the potential unit
 
-        // Move the unit to the new tile
-        gameController.GetComponent<BoardController>().deleteUnit(oldCoordinates[0], oldCoordinates[1]); // Removes the unit from the matrix (not the gameobject itself!!)
-        gameController.GetComponent<BoardController>().setUnit(newCoordinates[0], newCoordinates[1], gameObject); // Sets THIS unit to new position in the matrix
-        x = newCoordinates[0]; // Set new unit coordinates
-        y = newCoordinates[1];
-        transform.position = gameController.GetComponent<BoardController>().getTile(newCoordinates[0], newCoordinates[1]).transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
+            if (checkUnit != null)
+            {
+                return;
+            }
+
+            moveQueue.RemoveAt(0);
+
+            // Get the new tile remove feedback
+            GameObject newTile = gameController.GetComponent<BoardController>().getTile(newCoordinates[0], newCoordinates[1]); // Get the new tile
+            newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
+
+            // Move the unit to the new tile
+            gameController.GetComponent<BoardController>().deleteUnit(oldCoordinates[0], oldCoordinates[1]); // Removes the unit from the matrix (not the gameobject itself!!)
+            gameController.GetComponent<BoardController>().setUnit(newCoordinates[0], newCoordinates[1], gameObject); // Sets THIS unit to new position in the matrix
+            x = newCoordinates[0]; // Set new unit coordinates
+            y = newCoordinates[1];
+            transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
+        }
     }
 
     private void createSelectionRing()

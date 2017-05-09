@@ -5,10 +5,14 @@ using System;
 
 public class Dijkstra : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Global variables
+    GameObject gameController;
+
+    // Use this for initialization
+    void Start ()
+    {
+        gameController = GameObject.FindGameObjectWithTag("GameController");
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -69,7 +73,7 @@ public class Dijkstra : MonoBehaviour {
      * queue: stores the list of tiles that need to be expanded, sorted
      * penalty: contains the penalty of traveling over the current tile
      */
-    static void dijkstra_iteration(int[,] direction, float[,] value, List<float[]> queue, float penalty, int[] end)
+    void dijkstra_iteration(int[,] direction, float[,] value, List<float[]> queue, float penalty, int[] end)
     {
         //Way to find the neighbors in a hexagon formation. This is different for odd or even hexagons
         int[,] neighbors = new int[6, 2] {      { 0, 1 },
@@ -103,14 +107,14 @@ public class Dijkstra : MonoBehaviour {
                     value[x, y] = queue[0][2]; // update the duration of the shortest route to this poitn
                     direction[x, y] = i; // update the fastest way back to the start
                     //add a small insentive to go directly towards the end goal
-                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + Math.Abs(x-end[0])*0.01f+Math.Abs(y-end[1])*0.1f}, queue); // add this entry in the queue to expand in a later stage
+                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + 0.01f*gameController.GetComponent<HexMath>().hexDistance(x, y, end[0], end[1]) }, queue); // add this entry in the queue to expand in a later stage
                 }
             }
         }
         return;
     }
 
-    static void insertQueue(float[] entry, List<float[]> queue)
+    void insertQueue(float[] entry, List<float[]> queue)
     {
         int i = 0;
         //Console.WriteLine(queue[0][2]);
