@@ -20,6 +20,8 @@ public class HexMath : MonoBehaviour
     }
 
     public float hexDistance(float x1, float y1, float x2, float y2) {
-        return Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+        float x_diff = matrix2HexX(x1 - x2);
+        float y_diff = matrix2HexY(x1, y1) - matrix2HexY(x2, y2);
+        return Math.Sqrt(x_diff*x_diff+y_diff*y_diff);
     }
 }
