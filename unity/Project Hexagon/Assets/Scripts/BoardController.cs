@@ -29,6 +29,7 @@ public class BoardController : MonoBehaviour
     // Unit Matrix
     List<GameObject> unitList = new List<GameObject>();
     GameObject[,] unitMatrix; //Contains the units
+    GameObject[,] nextStepMatrix; // Contains the position of the units in the next step
     public GameObject Unit;
 
 
@@ -37,6 +38,7 @@ public class BoardController : MonoBehaviour
     {
         tileMatrix = new GameObject[boardsize[0], boardsize[1]];
         unitMatrix = new GameObject[boardsize[0], boardsize[1]];
+        nextStepMatrix = new GameObject[boardsize[0], boardsize[1]];
         hexMath = gameObject.GetComponent<HexMath>(); // Takes the HexMath script from the Game Controll
 
         for (int i = 0; i < boardsize[0]; i++) // Generate the X hegagons
@@ -87,10 +89,53 @@ public class BoardController : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             // Call the movement of each object in the list
-            foreach (GameObject iUnit in unitList)
+            foreach (GameObject selectedUnit in unitList)
             {
-                Debug.Log("hoi");
-                iUnit.GetComponent<UnitController>().MoveUnit();
+                if (selectedUnit == null)
+                {
+                    return;
+                }
+                int[] claimCoordinates = selectedUnit.GetComponent<UnitController>().nextPosition();
+
+                // Check if spot is empty, else wait, if there is a unit, check who has priority
+                GameObject checkUnit = GetComponent<BoardController>().getUnit(claimCoordinates[0], claimCoordinates[1]); // Save the potential unit
+
+                // Fix Conflict here, there is a unit on the spot it wants to claim!
+                if (checkUnit != null)
+                {
+                    // Check if the unit on that position is done moving, if not, wait one step, if yes, recalculate, and claim the new position
+                    if(checkUnit.GetComponent<UnitController>().isDoneMoving())
+                    {
+                        selectedUnit.GetComponent<UnitController>().recalculatePath();
+                        claimCoordinates = selectedUnit.GetComponent<UnitController>().nextPosition();
+                        nextStepMatrix[claimCoordinates[0], claimCoordinates[1]] = selectedUnit;
+                    }
+
+                    // Put it's current coordinates in the matrix, telling it to stay
+                    else
+                    {
+                        int[] stayHere = selectedUnit.GetComponent<UnitController>().nextPosition();
+                        nextStepMatrix[stayHere[0], stayHere[1]] = selectedUnit;
+                    }
+                }
+                else
+                {
+                    // Let the unit claim the coordinates
+                    nextStepMatrix[claimCoordinates[0], claimCoordinates[1]] = selectedUnit;
+                }
+            }
+
+            for (int i = 0; i < nextStepMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < nextStepMatrix.GetLength(1); j++)
+                {
+                    GameObject selectedUnit = nextStepMatrix[i, j];
+
+                    if (selectedUnit != null)
+                    {
+                        selectedUnit.GetComponent<UnitController>().moveUnit(new int[] { i, j } );
+                    }
+                }
             }
         }
     }
