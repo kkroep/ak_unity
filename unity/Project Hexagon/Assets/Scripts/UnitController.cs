@@ -23,6 +23,7 @@ public class UnitController : MonoBehaviour
     // External set information
     public Material materialSelected;
     public Material materialNotSelected;
+    public GameObject selectedRing;
     
     // Global variables
     private GameObject gameController;
@@ -33,13 +34,9 @@ public class UnitController : MonoBehaviour
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
         boardSize = new int[ gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1] ]; //TODO: Think about this huge matrix
-    }
 
-    public void IsSelected()
-    {
-        // Feedback to user that he selected this unit
-        currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile
-        currentTile.GetComponent<MeshRenderer>().material = materialSelected;
+        //Create the ring that determines the feedback, hide it when not selected
+        createSelectionRing();
     }
 
     public void CalculatePath(int x_new, int y_new)
@@ -92,10 +89,27 @@ public class UnitController : MonoBehaviour
         transform.position = gameController.GetComponent<BoardController>().getTile(newCoordinates[0], newCoordinates[1]).transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
     }
 
+    private void createSelectionRing()
+    {
+        selectedRing = Instantiate(selectedRing);
+        selectedRing.transform.SetParent(gameObject.transform);
+        selectedRing.transform.localPosition = new Vector3(0, selectedRing.transform.localPosition.y, 0);
+        selectedRing.GetComponent<MeshRenderer>().enabled = false;
+    }
+
+    public void IsSelected()
+    {
+        // Feedback to user that he selected this unit
+        selectedRing.GetComponent<MeshRenderer>().enabled = true;
+    }
+
     public void removeSelectionFeedback()
     {
-        currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile using it's current x and y positions
-        currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
+        selectedRing.GetComponent<MeshRenderer>().enabled = false;
+
+        // Changes Tile color
+        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile using it's current x and y positions
+        //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
     }
 
     public void set(int new_x, int new_y)
