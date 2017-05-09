@@ -103,7 +103,7 @@ public class Dijkstra : MonoBehaviour {
                     value[x, y] = queue[0][2]; // update the duration of the shortest route to this poitn
                     direction[x, y] = i; // update the fastest way back to the start
                     //add a small insentive to go directly towards the end goal
-                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + Math.Abs(x-end[0])*0.01f+Math.Abs(y-end[1])*0.01f}, queue); // add this entry in the queue to expand in a later stage
+                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + Math.Abs(x-end[0])*0.01f+Math.Abs(y-end[1])*0.1f}, queue); // add this entry in the queue to expand in a later stage
                 }
             }
         }

@@ -20,6 +20,7 @@ public class BoardController : MonoBehaviour
 {
     // Board, Hexagons
     public GameObject HexagonTile;
+    public GameObject pathingRing;
     HexMath hexMath;
     GameObject[,] tileMatrix; //Contains the tiles and their locations
 
@@ -50,6 +51,12 @@ public class BoardController : MonoBehaviour
                 hexagon.transform.localPosition = new Vector3(x,0,y);
                 hexagon.GetComponent<HexagonScript>().set(i, j);
 
+                // Create pathing ring on it instantly
+                GameObject pathing = Instantiate(pathingRing);
+                pathing.transform.SetParent(hexagon.transform);
+                pathing.transform.localPosition = new Vector3(0, 0, 0.05f);
+                pathing.GetComponent<MeshRenderer>().enabled = false;
+
                 tileMatrix[i, j] = hexagon;
             }
         }
@@ -73,7 +80,7 @@ public class BoardController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		
+
 	}
 
     IEnumerator TurnTimer()
@@ -89,7 +96,13 @@ public class BoardController : MonoBehaviour
         }
     }
 
-
+    private void createPathingRing()
+    {
+        pathingRing = Instantiate(pathingRing);
+        pathingRing.transform.SetParent(gameObject.transform);
+        pathingRing.transform.localPosition = new Vector3(0, pathingRing.transform.localPosition.y, 0);
+        pathingRing.GetComponent<MeshRenderer>().enabled = false;
+    }
 
     public GameObject getTile(Vector2 mouseOver)
     {

@@ -51,7 +51,7 @@ public class UnitController : MonoBehaviour
         foreach (int[] location in moveQueue)
         {
             currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.GetComponent<MeshRenderer>().material = materialNotSelected;
+            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false; // Disable the ring
         }
 
         // Check if player wants to cancel the move order by pressing the unit again
@@ -68,7 +68,7 @@ public class UnitController : MonoBehaviour
         foreach (int[] location in moveQueue)
         {
             currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.GetComponent<MeshRenderer>().material = materialSelected;
+            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = true; // Enable the ring
         }
     }
 
