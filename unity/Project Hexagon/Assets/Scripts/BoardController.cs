@@ -28,6 +28,7 @@ public class BoardController : MonoBehaviour
 
     // Unit Matrix
     List<GameObject> unitList = new List<GameObject>();
+    List<GameObject> nextUnitList = new List<GameObject>();
     GameObject[,] unitMatrix; //Contains the units
     GameObject[,] nextStepMatrix; // Contains the position of the units in the next step
     public GameObject Unit;
@@ -69,6 +70,8 @@ public class BoardController : MonoBehaviour
         Hoplite.GetComponent<UnitController>().set(0,0);
         unitMatrix[0, 0] = Hoplite;
         unitList.Add(Hoplite);
+        Hoplite.GetComponent<UnitController>().setPlayerID(1);
+        Hoplite.GetComponent<UnitController>().setTeamID(1);
 
         GameObject Hoplite2 = Instantiate(Unit);
         Hoplite2.GetComponent<UnitController>().set(4, 4);
@@ -88,8 +91,24 @@ public class BoardController : MonoBehaviour
         // each time spacebar is pressed, make units move
         if (Input.GetKeyDown("space"))
         {
+            nextUnitList = unitList;
+
+            // Call the attack order of each object in the list
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().nextAttack();
+            }
+
+            // Check who dieded
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().nextDieded();
+            }
+
+            unitList = nextUnitList;
+
             // Call the movement of each object in the list
-            foreach (GameObject selectedUnit in unitList)
+            foreach (GameObject selectedUnit in unitList.ToArray())
             {
                 selectedUnit.GetComponent<UnitController>().nextStep();
                 //break;
@@ -98,7 +117,7 @@ public class BoardController : MonoBehaviour
             unitMatrix = nextStepMatrix;
             nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
 
-            foreach (GameObject selectedUnit in unitList)
+            foreach (GameObject selectedUnit in unitList.ToArray())
             {
                 selectedUnit.GetComponent<UnitController>().executeNextStep();
                 //break;
@@ -110,9 +129,9 @@ public class BoardController : MonoBehaviour
     {
         while(true)
         {
-            Debug.Log("Before Waiting 10 seconds");
+            //Debug.Log("Before Waiting 10 seconds");
             yield return new WaitForSeconds(10); // Calls for the function WaitForSeconds. Yeild break breaks this.
-            Debug.Log("After Waiting 10 Seconds");
+            //Debug.Log("After Waiting 10 Seconds");
             
             // ----TODO: We need to get an list which orders all the movements of the units, and write an algorithm which sorts out all the rules, sets attack declarations etc.
 
@@ -167,5 +186,10 @@ public class BoardController : MonoBehaviour
         Debug.Log(unitMatrix[x, y]);
         unitMatrix[x, y] = null;
         Debug.Log(unitMatrix[x, y]);
+    }
+
+    public void removeFromUnitList(GameObject deadUnit)
+    {
+        nextUnitList.Remove(deadUnit);
     }
 }

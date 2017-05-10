@@ -17,11 +17,18 @@ using UnityEngine;
 public class UnitController : MonoBehaviour
 {
     // Unit information
+    private int playerID;
+    private int teamID;
+
     private int x, y; // Current coordinates of a certain unit
     private int next_x, next_y;
     private int priority;
+    private int health;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
 
+    // Goals
+    private GameObject attackTarget;
+    private int[] goalCoordinates;
 
     // External set information
     public Material materialSelected;
@@ -32,21 +39,39 @@ public class UnitController : MonoBehaviour
     private GameObject gameController;
     private GameObject currentTile;
     private int[,] boardSize;
+    int[,] neighbors_even;
+    int[,] neighbors_odd;
 
     void Start()
     {
+        neighbors_even = new int[6, 2] { { 0, 1 },
+                                                    { 1, 0 },
+                                                    { 1, -1 },
+                                                    { 0, -1 },
+                                                    { -1, -1 },
+                                                    { -1, 0 }};
+        neighbors_odd = new int[6, 2] {  { 0, 1 },
+                                                    { 1, 1 },
+                                                    { 1, 0 },
+                                                    { 0, -1 },
+                                                    { -1, 0 },
+                                                    { -1, 1 } };
+
+
         gameController = GameObject.FindGameObjectWithTag("GameController");
         boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]]; //TODO: Think about this huge matrix
 
         //Create the ring that determines the feedback, hide it when not selected
         createSelectionRing();
+
+        health = 100;
     }
 
     // Calculates the path using the Dijkstra algorithm
-    public void CalculatePath(int x_new, int y_new)
+    public void CalculatePath()
     {
         int[] oldCoordinates = new int[2] { x, y };
-        int[] newCoordinates = new int[2] { x_new, y_new };
+        int[] newCoordinates = new int[2] { goalCoordinates[0], goalCoordinates[1] };
 
         // Removing the selection visual feedback
         removeSelectionFeedback();
@@ -59,7 +84,7 @@ public class UnitController : MonoBehaviour
         }
 
         // Check if player wants to cancel the move order by pressing the unit again
-        if (x_new == x && y_new == y)
+        if (goalCoordinates[0] == x && goalCoordinates[1] == y)
         {
             moveQueue.Clear(); // Clear the queue list
             return;
@@ -76,9 +101,74 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public void setTileGoal(int x_new, int y_new)
+    {
+        goalCoordinates = new int[] { x_new, y_new };
+        attackTarget = null;
+        CalculatePath();
+    }
+
+    public void setUnitGoal(GameObject new_Target)
+    {
+        attackTarget = new_Target;
+        goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition(); // set new goal
+        CalculatePath(); // calculate path towards attack goal
+    }
+
+    public void nextAttack()
+    {
+        // if has target
+        if (attackTarget == null)
+            return;
+        else
+        {
+            // If target is dead -> cancel current moveorder, and clear the target and return
+            if (attackTarget.GetComponent<UnitController>().getHealth() <= 0)
+            {
+                moveQueue.Clear();
+                goalCoordinates = new int[] { x, y };
+                attackTarget = null;
+                return;
+            }
+            // update goal
+            goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition();
+
+            // Check if can het target, if yes, attack
+            int[,] neighbors;
+            if (x % 2 == 0)
+                neighbors = neighbors_even;
+            else
+                neighbors = neighbors_odd;
+
+            int diffx = goalCoordinates[0] - x;
+            int diffy = goalCoordinates[1] - y;
+
+            for (int i = 0; i < 6; i++)
+            {
+                if (neighbors[i, 0] == diffx && neighbors[i, 1] == diffy)
+                {
+                    // ATTACK
+                    attackTarget.GetComponent<UnitController>().reduceHealth(25);
+
+                }
+            }
+
+        }
+    }
+
+    public void nextDieded()
+    {
+        // First check if unit DIEDED
+        if (health == 0)
+        {
+            killYourself(); // it dieded
+        }
+    }
 
     public void nextStep()
     {
+        // TODO: if path endpoint != goal, recalculate path
+
         // If unit does not want to move, execute this shit
         if (moveQueue.Count == 0)
         {
@@ -186,6 +276,26 @@ public class UnitController : MonoBehaviour
         //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
     }
 
+    public int getPlayerID()
+    {
+        return playerID;
+    }
+
+    public void setPlayerID(int newID)
+    {
+        playerID = newID;
+    }
+
+    public int getTeamID()
+    {
+        return teamID;
+    }
+
+    public void setTeamID(int newID)
+    {
+        teamID = newID;
+    }
+
     public void set(int new_x, int new_y)
     {
         x = new_x;
@@ -211,5 +321,28 @@ public class UnitController : MonoBehaviour
     public int getY()
     {
         return y;
+    }
+
+    public int getHealth()
+    {
+        return health;
+    }
+
+    public void reduceHealth(int damageTaken)
+    {
+        health = health - damageTaken;
+        Debug.Log(health);
+        if (health <= 0)
+        {
+            health = 0;
+        }
+    }
+
+    public void killYourself()
+    {
+        gameController.GetComponent<BoardController>().removeFromUnitList(gameObject);
+        gameController.GetComponent<BoardController>().setUnit(x, y, null);
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+
     }
 }

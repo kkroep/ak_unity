@@ -16,6 +16,9 @@ using UnityEngine;
 
 public class TileDetector : MonoBehaviour
 {
+    private int myPlayerID;
+    private int myTeamID;
+
     public Material materialSelected;
     public Material materialNotSelected;
 
@@ -29,7 +32,8 @@ public class TileDetector : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("Location Script Started");
+        myPlayerID = 0;
+        myTeamID = 0;
     }
 
     // Update is called once per frame
@@ -50,8 +54,24 @@ public class TileDetector : MonoBehaviour
         // Deselects the unit
         if (Input.GetMouseButton(1) && unitHasBeenSelected == true)
         {
-            unitHasBeenSelected = false;
             unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+            unitHasBeenSelected = false;
+            unitSelected = new GameObject();
+        }
+
+        if (Input.GetKeyDown("s"))
+        {
+            // Switch player ID
+            if (myPlayerID == 0)
+            {
+                myPlayerID = 1;
+                myTeamID = 1;
+            }
+            else
+            {
+                myPlayerID = 0;
+                myTeamID = 0;
+            }
         }
     }
 
@@ -71,20 +91,52 @@ public class TileDetector : MonoBehaviour
 
             if (hoverOverTile) // If there is tile
             {
-                if (hoverOverUnit && unitHasBeenSelected == false) // When selecting a unit, and makes sure that if a unit has been selected it does not run again
+                if (hoverOverUnit && hoverOverUnit != unitSelected) // When selecting a unit, and makes sure that if a unit has been selected it does not run again
                 {
-                    unitHasBeenSelected = true;
-                    unitSelected = hoverOverUnit;
-                    unitSelected.GetComponent<UnitController>().IsSelected();
+                    int unitPlayerID = hoverOverUnit.GetComponent<UnitController>().getPlayerID();
+                    int unitTeamID = hoverOverUnit.GetComponent<UnitController>().getTeamID();
+
+                    // If your unit
+                    if (unitPlayerID == myPlayerID)
+                    {
+                        if (unitHasBeenSelected == true)
+                        {
+                            unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+                        }
+                        unitHasBeenSelected = true;
+                        unitSelected = hoverOverUnit; // change the unit selected
+                        unitSelected.GetComponent<UnitController>().IsSelected();
+                    }
+
+                    // If your teammates unit
+                    if (unitPlayerID != myPlayerID && unitTeamID == myTeamID)
+                    {
+                        
+                    }
+
+                    // if enemy's unit
+                    if (unitPlayerID != myPlayerID && unitTeamID != myTeamID)
+                    {
+                        if (unitHasBeenSelected == true)
+                        {
+                            unitSelected.GetComponent<UnitController>().setUnitGoal(hoverOverUnit); // send the target to attack!
+                            unitHasBeenSelected = false;
+                            unitSelected = null; // Empty the current object
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
 
+                // If empty space is selected
                 else if(unitHasBeenSelected == true) // When moving and deselecting a unit
                 {
-                    unitHasBeenSelected = false;
-                    // ----TODO: Check if player wants to deseslect first
-
                     // Tell the unit where to go, filter out here already if it is not possible
-                    unitSelected.GetComponent<UnitController>().CalculatePath((int)mouseOver.x, (int)mouseOver.y);
+                    unitSelected.GetComponent<UnitController>().setTileGoal((int)mouseOver.x, (int)mouseOver.y);
+                    unitHasBeenSelected = false;
+                    unitSelected = null; // Empty the current object
                 }
             }
         }
