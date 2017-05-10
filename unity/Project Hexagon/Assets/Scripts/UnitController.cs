@@ -18,32 +18,31 @@ public class UnitController : MonoBehaviour
 {
     // Unit information
     private int x, y; // Current coordinates of a certain unit
+    private int next_x, next_y;
+    private int priority;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
-    bool doneMoving = false;
-    int AP = 2; // Action points a unit has
-    int currentAP;
+
 
     // External set information
     public Material materialSelected;
     public Material materialNotSelected;
     public GameObject selectedRing;
-    
+
     // Global variables
     private GameObject gameController;
     private GameObject currentTile;
     private int[,] boardSize;
 
-    void Start ()
+    void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
-        boardSize = new int[ gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1] ]; //TODO: Think about this huge matrix
-
-        currentAP = AP;
+        boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]]; //TODO: Think about this huge matrix
 
         //Create the ring that determines the feedback, hide it when not selected
         createSelectionRing();
     }
 
+    // Calculates the path using the Dijkstra algorithm
     public void CalculatePath(int x_new, int y_new)
     {
         int[] oldCoordinates = new int[2] { x, y };
@@ -77,53 +76,81 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    // This function will move the unit by 1 step, each time it is called from the BoardController
-    public int[] nextPosition()
+
+    public void nextStep()
     {
-        int[] oldCoordinates = { x, y };
-
-        if ((moveQueue.Count > 0))
+        // If unit does not want to move, execute this shit
+        if (moveQueue.Count == 0)
         {
-            int[] newCoordinates = moveQueue[0];
-            return newCoordinates;
+            priority = 100;
+            next_x = x;
+            next_y = y;
         }
-
         else
         {
-            return oldCoordinates;
+            priority = 0;
+            next_x = moveQueue[0][0]; // Try to claim this position
+            next_y = moveQueue[0][1];
+        }
+
+        // Get the potential unit from the unitMatrix
+        GameObject potentialUnit = gameController.GetComponent<BoardController>().getNextStepLocation(next_x, next_y);
+
+        // If spot is empty, claim it, and write it to the nextStepMatrix! Then write in it's memory it's potential next step
+        if (potentialUnit == null)
+        {
+            gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
+
+            if (moveQueue.Count != 0)
+            {
+                moveQueue.RemoveAt(0); // Remove executed entry from the queue
+            }
+        }
+
+        // Resolve conflict
+        else
+        {
+            if (potentialUnit.GetComponent<UnitController>().getPriority() >= priority)
+            {
+                // If other unit it's priority is higher or was earlier than you, wait!
+                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, x, y);
+                next_x = x;
+                next_y = y;
+            }
+            // If other unit's priority is lower, tell him to step back and claim the position
+            else
+            {
+                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
+                potentialUnit.GetComponent<UnitController>().stepBack();
+            }
         }
     }
 
-
-    // This code changes the position of the unit, and adjusts the user feedback. It does NOT replace itself on the big matrix, this is fixed by the BoardController.
-    public void moveUnit(int[] newCoordinates)
+    public void executeNextStep()
     {
-        // If position is the same, stay
-        if (newCoordinates[0] == x && newCoordinates[1] == y)
+        // If unit does not want to move, execute this shit
+        if (next_x == x && next_y == y)
         {
-            return;
+
         }
-
-        moveQueue.RemoveAt(0);
-
-        // Get the new tile remove feedback (thus position)
-        GameObject newTile = gameController.GetComponent<BoardController>().getTile(newCoordinates[0], newCoordinates[1]); // Get the new tile
-        newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
-
-        // Move the unit to the new tile
-        gameController.GetComponent<BoardController>().setUnit(newCoordinates[0], newCoordinates[1], gameObject); // Sets THIS unit to new position in the matrix
-        x = newCoordinates[0]; // Set new unit coordinates
-        y = newCoordinates[1];
-        transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
-
-        currentAP--; // Remove 1 AP for walking
-        if (currentAP == 0)
+        else
         {
-            doneMoving = true;
+            // Get the new tile remove feedback (thus position)
+            GameObject newTile = gameController.GetComponent<BoardController>().getTile(next_x, next_y); // Get the new tile
+            newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
+
+            // Move the unit to the new tile
+            gameController.GetComponent<BoardController>().setUnit(next_x, next_y, gameObject); // Sets THIS unit to new position in the matrix
+            x = next_x; // Set new unit coordinates
+            y = next_y;
+            transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
         }
-        // NO LONGER USED CODE //
-        //***********************
-        // gameController.GetComponent<BoardController>().deleteUnit(oldCoordinates[0], oldCoordinates[1]); // Removes the unit from the matrix (not the gameobject itself!!)
+    }
+
+    public void stepBack()
+    {
+        moveQueue.Insert(0, new int[] { next_x, next_y });
+        nextStep();
     }
 
     public void recalculatePath()
@@ -133,8 +160,7 @@ public class UnitController : MonoBehaviour
 
     public void newTurn()
     {
-        currentAP = AP;
-        doneMoving = false;
+
     }
 
     private void createSelectionRing()
@@ -166,9 +192,9 @@ public class UnitController : MonoBehaviour
         y = new_y;
     }
 
-    public bool isDoneMoving()
+    public int getPriority()
     {
-        return doneMoving;
+        return priority;
     }
 
     public int[] getCurrentPosition()

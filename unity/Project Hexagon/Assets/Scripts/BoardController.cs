@@ -91,51 +91,17 @@ public class BoardController : MonoBehaviour
             // Call the movement of each object in the list
             foreach (GameObject selectedUnit in unitList)
             {
-                if (selectedUnit == null)
-                {
-                    return;
-                }
-                int[] claimCoordinates = selectedUnit.GetComponent<UnitController>().nextPosition();
-
-                // Check if spot is empty, else wait, if there is a unit, check who has priority
-                GameObject checkUnit = GetComponent<BoardController>().getUnit(claimCoordinates[0], claimCoordinates[1]); // Save the potential unit
-
-                // Fix Conflict here, there is a unit on the spot it wants to claim!
-                if (checkUnit != null)
-                {
-                    // Check if the unit on that position is done moving, if not, wait one step, if yes, recalculate, and claim the new position
-                    if(checkUnit.GetComponent<UnitController>().isDoneMoving())
-                    {
-                        selectedUnit.GetComponent<UnitController>().recalculatePath();
-                        claimCoordinates = selectedUnit.GetComponent<UnitController>().nextPosition();
-                        nextStepMatrix[claimCoordinates[0], claimCoordinates[1]] = selectedUnit;
-                    }
-
-                    // Put it's current coordinates in the matrix, telling it to stay
-                    else
-                    {
-                        int[] stayHere = selectedUnit.GetComponent<UnitController>().nextPosition();
-                        nextStepMatrix[stayHere[0], stayHere[1]] = selectedUnit;
-                    }
-                }
-                else
-                {
-                    // Let the unit claim the coordinates
-                    nextStepMatrix[claimCoordinates[0], claimCoordinates[1]] = selectedUnit;
-                }
+                selectedUnit.GetComponent<UnitController>().nextStep();
+                //break;
             }
 
-            for (int i = 0; i < nextStepMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < nextStepMatrix.GetLength(1); j++)
-                {
-                    GameObject selectedUnit = nextStepMatrix[i, j];
+            unitMatrix = nextStepMatrix;
+            nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
 
-                    if (selectedUnit != null)
-                    {
-                        selectedUnit.GetComponent<UnitController>().moveUnit(new int[] { i, j } );
-                    }
-                }
+            foreach (GameObject selectedUnit in unitList)
+            {
+                selectedUnit.GetComponent<UnitController>().executeNextStep();
+                //break;
             }
         }
     }
@@ -159,6 +125,16 @@ public class BoardController : MonoBehaviour
         pathingRing.transform.SetParent(gameObject.transform);
         pathingRing.transform.localPosition = new Vector3(0, pathingRing.transform.localPosition.y, 0);
         pathingRing.GetComponent<MeshRenderer>().enabled = false;
+    }
+
+    public GameObject getNextStepLocation(int x, int y)
+    {
+        return nextStepMatrix[x, y];
+    }
+
+    public void setNextStepLocation(GameObject claimingUnit, int x, int y)
+    {
+        nextStepMatrix[x, y] = claimingUnit;
     }
 
     public GameObject getTile(Vector2 mouseOver)
