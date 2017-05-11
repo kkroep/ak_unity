@@ -40,9 +40,9 @@ public class BoardController : MonoBehaviour
         tileMatrix = new GameObject[boardsize[0], boardsize[1]];
         unitMatrix = new GameObject[boardsize[0], boardsize[1]];
         nextStepMatrix = new GameObject[boardsize[0], boardsize[1]];
-        hexMath = gameObject.GetComponent<HexMath>(); // Takes the HexMath script from the Game Controll
+        hexMath = gameObject.GetComponent<HexMath>(); // Takes the HexMath script from the Game Control
 
-        for (int i = 0; i < boardsize[0]; i++) // Generate the X hegagons
+        for (int i = 0; i < boardsize[0]; i++) // Generate the X hexagons
         {
             float x = hexMath.matrix2HexX(i);
 
@@ -96,7 +96,7 @@ public class BoardController : MonoBehaviour
             // Call the attack order of each object in the list
             foreach (GameObject selectedUnit in unitList.ToArray())
             {
-                selectedUnit.GetComponent<UnitController>().nextAttack();
+                selectedUnit.GetComponent<UnitController>().executeNextAttack();
             }
 
             // Check who dieded
@@ -107,20 +107,25 @@ public class BoardController : MonoBehaviour
 
             unitList = nextUnitList;
 
-            // Call the movement of each object in the list
+            // Calculate the next step the unit is going to make, and try to claim a position in the new matrix. Conflicts are all resolved here!
             foreach (GameObject selectedUnit in unitList.ToArray())
             {
                 selectedUnit.GetComponent<UnitController>().nextStep();
-                //break;
             }
 
             unitMatrix = nextStepMatrix;
             nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
 
+            // Call the movement of each object in the list
             foreach (GameObject selectedUnit in unitList.ToArray())
             {
                 selectedUnit.GetComponent<UnitController>().executeNextStep();
-                //break;
+            }
+
+            // Update the new unit positions if needed
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().nextAttack();
             }
         }
     }

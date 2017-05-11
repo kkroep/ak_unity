@@ -104,7 +104,7 @@ public class Dijkstra : MonoBehaviour {
                 // check whether a new best route to the current position is found
                 if (value[x, y] == 0 || value[x, y] > queue[0][2])
                 {
-                    value[x, y] = queue[0][2]; // update the duration of the shortest route to this poitn
+                    value[x, y] = queue[0][2]; // update the duration of the shortest route to this point
                     direction[x, y] = i; // update the fastest way back to the start
                     //add a small insentive to go directly towards the end goal
                     insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + 0.01f*gameController.GetComponent<HexMath>().hexDistance(x, y, end[0], end[1]) }, queue); // add this entry in the queue to expand in a later stage

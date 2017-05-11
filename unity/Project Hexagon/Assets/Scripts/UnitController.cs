@@ -64,7 +64,7 @@ public class UnitController : MonoBehaviour
 
 
         gameController = GameObject.FindGameObjectWithTag("GameController");
-        boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]]; //TODO: Think about this huge matrix
+        boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]];
 
         //Create the ring that determines the feedback, hide it when not selected
         createSelectionRing();
@@ -145,6 +145,16 @@ public class UnitController : MonoBehaviour
                 CalculatePath();
             }
 
+        }
+    }
+
+    public void executeNextAttack()
+    {
+        // if has target
+        if (attackTarget == null)
+            return;
+        else
+        {
             // Check if can het target, if yes, attack
             int[,] neighbors;
             if (x % 2 == 0)
@@ -164,9 +174,9 @@ public class UnitController : MonoBehaviour
 
                 }
             }
-
         }
     }
+
 
     public void nextDieded()
     {
@@ -218,6 +228,7 @@ public class UnitController : MonoBehaviour
                 next_x = x;
                 next_y = y;
             }
+
             // If other unit's priority is lower, tell him to step back and claim the position
             else
             {
