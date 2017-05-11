@@ -91,7 +91,7 @@ public class TileDetector : MonoBehaviour
 
             if (hoverOverTile) // If there is tile
             {
-                if (hoverOverUnit && hoverOverUnit != unitSelected) // When selecting a unit, and makes sure that if a unit has been selected it does not run again
+                if (hoverOverUnit && hoverOverUnit != unitSelected) // When selecting a unit, and makes sure that if a unit has been selected
                 {
                     int unitPlayerID = hoverOverUnit.GetComponent<UnitController>().getPlayerID();
                     int unitTeamID = hoverOverUnit.GetComponent<UnitController>().getTeamID();
@@ -106,6 +106,7 @@ public class TileDetector : MonoBehaviour
                         unitHasBeenSelected = true;
                         unitSelected = hoverOverUnit; // change the unit selected
                         unitSelected.GetComponent<UnitController>().IsSelected();
+
                     }
 
                     // If your teammates unit

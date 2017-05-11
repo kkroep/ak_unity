@@ -24,7 +24,12 @@ public class UnitController : MonoBehaviour
     private int next_x, next_y;
     private int priority;
     private int health;
+    private int attack;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
+
+    // Flags
+    private int turnsDoneNothing;
+    private bool defenseModeEnabled;
 
     // Goals
     private GameObject attackTarget;
@@ -65,6 +70,7 @@ public class UnitController : MonoBehaviour
         createSelectionRing();
 
         health = 100;
+        attack = 25;
     }
 
     // Calculates the path using the Dijkstra algorithm
@@ -77,11 +83,7 @@ public class UnitController : MonoBehaviour
         removeSelectionFeedback();
 
         // Check if there has been a previous movement path, if yes, clear the feedback of it
-        foreach (int[] location in moveQueue)
-        {
-            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false; // Disable the ring
-        }
+        hidePathFeedback();
 
         // Check if player wants to cancel the move order by pressing the unit again
         if (goalCoordinates[0] == x && goalCoordinates[1] == y)
@@ -94,11 +96,7 @@ public class UnitController : MonoBehaviour
         moveQueue = gameController.GetComponent<Dijkstra>().route(boardSize, oldCoordinates, newCoordinates);
 
         // Visual feedback for selected path
-        foreach (int[] location in moveQueue)
-        {
-            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = true; // Enable the ring
-        }
+        showPathFeedback();
     }
 
     public void setTileGoal(int x_new, int y_new)
@@ -133,6 +131,20 @@ public class UnitController : MonoBehaviour
             // update goal
             goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition();
 
+            // if path endpoint != goal, recalculate path to the enemy target
+            if (moveQueue.Count != 0)
+            {
+                // reason for the else is that if movequeue is empty, it will give an exception error in the statement under
+                if (moveQueue[moveQueue.Count - 1] != goalCoordinates)
+                {
+                    CalculatePath();
+                }
+            }
+            else
+            {
+                CalculatePath();
+            }
+
             // Check if can het target, if yes, attack
             int[,] neighbors;
             if (x % 2 == 0)
@@ -148,7 +160,7 @@ public class UnitController : MonoBehaviour
                 if (neighbors[i, 0] == diffx && neighbors[i, 1] == diffy)
                 {
                     // ATTACK
-                    attackTarget.GetComponent<UnitController>().reduceHealth(25);
+                    attackTarget.GetComponent<UnitController>().reduceHealth(attack);
 
                 }
             }
@@ -167,7 +179,6 @@ public class UnitController : MonoBehaviour
 
     public void nextStep()
     {
-        // TODO: if path endpoint != goal, recalculate path
 
         // If unit does not want to move, execute this shit
         if (moveQueue.Count == 0)
@@ -221,10 +232,16 @@ public class UnitController : MonoBehaviour
         // If unit does not want to move, execute this shit
         if (next_x == x && next_y == y)
         {
-
+            turnsDoneNothing++;
+            // Defense mode here
+            enableDefenseMode();
         }
         else
         {
+            // Reset turnsDoneNothing, and disable defense mode. We keep defense mode disabled, also if the unit has to wait one turn to step!
+            turnsDoneNothing = 0;
+            disableDefenseMode();
+
             // Get the new tile remove feedback (thus position)
             GameObject newTile = gameController.GetComponent<BoardController>().getTile(next_x, next_y); // Get the new tile
             newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
@@ -237,20 +254,43 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    private void enableDefenseMode()
+    {
+        if (turnsDoneNothing == 2)
+        {
+
+        }
+    }
+
+
+    private void disableDefenseMode()
+    {
+
+    }
+
     public void stepBack()
     {
         moveQueue.Insert(0, new int[] { next_x, next_y });
         nextStep();
     }
 
-    public void recalculatePath()
-    {
 
+    public void showPathFeedback()
+    {
+        foreach (int[] location in moveQueue)
+        {
+            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
+            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = true; // Enable the ring
+        }
     }
 
-    public void newTurn()
+    public void hidePathFeedback()
     {
-
+        foreach (int[] location in moveQueue)
+        {
+            currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
+            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false; // Disable the ring
+        }
     }
 
     private void createSelectionRing()
@@ -343,6 +383,12 @@ public class UnitController : MonoBehaviour
         gameController.GetComponent<BoardController>().removeFromUnitList(gameObject);
         gameController.GetComponent<BoardController>().setUnit(x, y, null);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+
+        hidePathFeedback();
+        moveQueue = null;
+
+        goalCoordinates = null;
+        attackTarget = null;
 
     }
 }
