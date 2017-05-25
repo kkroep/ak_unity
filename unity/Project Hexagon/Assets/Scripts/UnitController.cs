@@ -44,23 +44,16 @@ public class UnitController : MonoBehaviour
     private GameObject gameController;
     private GameObject currentTile;
     private int[,] boardSize;
-    int[,] neighbors_even;
-    int[,] neighbors_odd;
+    int[,] neighbors;
 
     void Start()
     {
-        neighbors_even = new int[6, 2] { { 0, 1 },
+        neighbors = new int[6, 2] {                 { 0, 1 },
                                                     { 1, 0 },
                                                     { 1, -1 },
                                                     { 0, -1 },
-                                                    { -1, -1 },
-                                                    { -1, 0 }};
-        neighbors_odd = new int[6, 2] {  { 0, 1 },
-                                                    { 1, 1 },
-                                                    { 1, 0 },
-                                                    { 0, -1 },
                                                     { -1, 0 },
-                                                    { -1, 1 } };
+                                                    { -1, 1 }};
 
 
         gameController = GameObject.FindGameObjectWithTag("GameController");
@@ -156,11 +149,6 @@ public class UnitController : MonoBehaviour
         else
         {
             // Check if can het target, if yes, attack
-            int[,] neighbors;
-            if (x % 2 == 0)
-                neighbors = neighbors_even;
-            else
-                neighbors = neighbors_odd;
 
             int diffx = goalCoordinates[0] - x;
             int diffy = goalCoordinates[1] - y;

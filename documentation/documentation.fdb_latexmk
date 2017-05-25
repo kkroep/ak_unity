@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1493931396 "documentation.tex" "documentation.pdf" "documentation" 1493931397
+["pdflatex"] 1495724877 "documentation.tex" "documentation.pdf" "documentation" 1495724879
   "/etc/texmf/web2c/texmf.cnf" 1471413988 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -24,6 +24,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1248133631 31809 8670ca339bf94e56da1fc21c80635e2a ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
   "/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty" 1335995445 7612 c47308d923ec19888707b0f1792b326a ""
@@ -227,11 +228,11 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1392645748 31083 1dfd8bf685ce0009c40532fedf8a7c53 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1493374847 127797 1e05301d64c94d4188a421b75b195c25 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1471414011 722335 950d8ee7e8b35a43479ca2fda66ea411 ""
-  "documentation.aux" 1493931397 520 22cb198e1238114af27bcafed57aa5f1 ""
+  "documentation.aux" 1495724879 520 22cb198e1238114af27bcafed57aa5f1 ""
   "documentation.tex" 1493931314 811 4aced36ab3d985186665a2a3e409f78d ""
   "tkz/hex2matrix.tex" 1493931395 1038 3deefd3d3ed8811d9441c7a0e38f26af ""
-  "tkz/matrix2hex.tex" 1493931226 2985 85cd4e247d3119a46f3cc21686144ae6 ""
+  "tkz/matrix2hex.tex" 1495724877 3051 98b81dd91fa1063f3e9a01e61010d4bd ""
   (generated)
   "documentation.aux"
-  "documentation.log"
   "documentation.pdf"
+  "documentation.log"

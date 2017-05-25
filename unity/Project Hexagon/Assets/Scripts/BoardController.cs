@@ -20,27 +20,56 @@ public class BoardController : MonoBehaviour
 {
     // Board, Hexagons
     public GameObject HexagonTile;
+    public GameObject mountainPrefab;
     public GameObject pathingRing;
-    HexMath hexMath;
-    GameObject[,] tileMatrix; //Contains the tiles and their locations
+    private HexMath hexMath;
+    private GameObject[,] tileMatrix; //Contains the tiles and their locations
 
     public int[] boardsize = new int[2];
 
     // Unit Matrix
-    List<GameObject> unitList = new List<GameObject>();
-    List<GameObject> nextUnitList = new List<GameObject>();
-    GameObject[,] unitMatrix; //Contains the units
-    GameObject[,] nextStepMatrix; // Contains the position of the units in the next step
+    private List<GameObject> unitList = new List<GameObject>();
+    private List<GameObject> nextUnitList = new List<GameObject>();
+    private GameObject[,] unitMatrix; //Contains the units
+    private GameObject[,] nextStepMatrix; // Contains the position of the units in the next step
     public GameObject Unit;
 
-
+    //reading map
+    public TextAsset mapTextFile;
+    private int[,] tileProperties;
 
     void Start ()
     {
+        // sequence to parse textfile
+        string txtFileAsOneLine = mapTextFile.text;
+        string[] oneLine;
+        List<string> txtFileAsLines = new List<string>();
+        txtFileAsLines.AddRange(txtFileAsOneLine.Split("\n"[0]));
+        oneLine = txtFileAsLines[0].Split(" "[0]);
+        Debug.Log(oneLine[0]);
+
+        boardsize[0] = int.Parse(oneLine[0]);
+        boardsize[1] = int.Parse(oneLine[1]);
+        Debug.Log(boardsize[0]+","+boardsize[1]);
+
+        tileProperties = new int[boardsize[0], boardsize[1]];
+        for (int j = 0; j < boardsize[1]; j++)
+        {
+            oneLine = txtFileAsLines[1 + j].Split(" "[0]);
+            for (int i = 0; i < boardsize[0]; i++)
+            {
+                tileProperties[i, j] = int.Parse(oneLine[i]);
+            }
+        }
+         
+
+
         tileMatrix = new GameObject[boardsize[0], boardsize[1]];
         unitMatrix = new GameObject[boardsize[0], boardsize[1]];
         nextStepMatrix = new GameObject[boardsize[0], boardsize[1]];
         hexMath = gameObject.GetComponent<HexMath>(); // Takes the HexMath script from the Game Control
+    
+
 
         for (int i = 0; i < boardsize[0]; i++) // Generate the X hexagons
         {
@@ -55,6 +84,17 @@ public class BoardController : MonoBehaviour
                 hexagon.transform.localPosition = new Vector3(x,0,y);
                 hexagon.GetComponent<HexagonScript>().set(i, j);
 
+                if (tileProperties[i,j]==0)
+                {
+                    hexagon.GetComponent<MeshRenderer>().enabled = false;
+                }
+                if (tileProperties[i, j] == 2) {
+                    //mountain!
+                    GameObject mountain = Instantiate(mountainPrefab);
+                    mountain.transform.SetParent(transform); // Puts the tile under TileManager and gives the same transform
+                    mountain.transform.localPosition = new Vector3(x,0,y);
+                }
+
                 // Create pathing ring on it instantly
                 GameObject pathing = Instantiate(pathingRing);
                 pathing.transform.SetParent(hexagon.transform);
@@ -65,10 +105,14 @@ public class BoardController : MonoBehaviour
             }
         }
 
+        int[] unitLoc = new int[2] {0,0};
         // Spawn the first units
+
+        unitLoc = new int[2] { 3, 8 };
         GameObject Hoplite = Instantiate(Unit);
-        Hoplite.GetComponent<UnitController>().set(0,0);
-        unitMatrix[0, 0] = Hoplite;
+        Hoplite.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        unitMatrix[unitLoc[0], unitLoc[1]] = Hoplite;
+        Hoplite.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(unitLoc[0]), Hoplite.transform.position.y, GetComponent<HexMath>().matrix2HexY(unitLoc[0],unitLoc[1]));
         unitList.Add(Hoplite);
         Hoplite.GetComponent<UnitController>().setPlayerID(1);
         Hoplite.GetComponent<UnitController>().setTeamID(1);
