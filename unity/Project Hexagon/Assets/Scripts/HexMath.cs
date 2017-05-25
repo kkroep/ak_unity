@@ -13,10 +13,7 @@ public class HexMath : MonoBehaviour
 
     public float matrix2HexY(float x, float y)
     {
-        if (x % 2 == 0)
-            return y * (float)Math.Sqrt(3);
-        else
-            return (y + 0.5f) * (float)Math.Sqrt(3);
+        return (y+0.5f*x) * (float)Math.Sqrt(3);
     }
 
     public float hexDistance(int x1, int y1, int x2, int y2) {

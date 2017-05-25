@@ -75,25 +75,16 @@ public class Dijkstra : MonoBehaviour {
      */
     void dijkstra_iteration(int[,] direction, float[,] value, List<float[]> queue, float penalty, int[] end)
     {
+        int x, y;
         //Way to find the neighbors in a hexagon formation. This is different for odd or even hexagons
         int[,] neighbors = new int[6, 2] {      { 0, 1 },
                                                     { 1, 0 },
                                                     { 1, -1 },
                                                     { 0, -1 },
-                                                    { -1, -1 },
-                                                    { -1, 0 }};
-
-        if (queue[0][0] % 2 != 0) // if uneven, the route to neighbors changes
-        {
-            neighbors = new int[6, 2]{           { 0, 1 },
-                                                    { 1, 1 },
-                                                    { 1, 0 },
-                                                    { 0, -1 },
                                                     { -1, 0 },
                                                     { -1, 1 }};
-        }
 
-        int x, y;
+
         for (int i = 0; i < 6; i++)
         {
             x = (int)queue[0][0] + neighbors[i, 0];
@@ -135,33 +126,18 @@ public class Dijkstra : MonoBehaviour {
     {
         List<int[]> ans = new List<int[]>();
         ans.Add(new int[2] { end[0], end[1] });
-        int[,] neighbors_even = new int[6, 2] { { 0, 1 },
+        int[,] neighbors = new int[6, 2] {          { 0, 1 },
                                                     { 1, 0 },
                                                     { 1, -1 },
                                                     { 0, -1 },
-                                                    { -1, -1 },
-                                                    { -1, 0 }};
-        int[,] neighbors_odd = new int[6, 2] {  { 0, 1 },
-                                                    { 1, 1 },
-                                                    { 1, 0 },
-                                                    { 0, -1 },
                                                     { -1, 0 },
-                                                    { -1, 1 } };
+                                                    { -1, 1 }};
         int[] pos = new int[2] { end[0], end[1] };
         int[] next_pos = new int[2];
         while (true)
         {
-            //trace back steps back to start 1 by 1. even and odd have different neighbor routes
-            if (pos[0] % 2 == 1)
-            {
-                next_pos[0] = pos[0] - neighbors_even[direction[pos[0], pos[1]], 0];
-                next_pos[1] = pos[1] - neighbors_even[direction[pos[0], pos[1]], 1];
-            }
-            else
-            {
-                next_pos[0] = pos[0] - neighbors_odd[direction[pos[0], pos[1]], 0];
-                next_pos[1] = pos[1] - neighbors_odd[direction[pos[0], pos[1]], 1];
-            }
+            next_pos[0] = pos[0] - neighbors[direction[pos[0], pos[1]], 0];
+            next_pos[1] = pos[1] - neighbors[direction[pos[0], pos[1]], 1];
             // stop if the next step back brings us to the start
             if (next_pos[0] == start[0] && next_pos[1] == start[1])
                 break;
