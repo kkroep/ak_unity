@@ -17,7 +17,9 @@ public class AreaModule : MonoBehaviour {
     private int[,] current_FoV = new int[9,9];
     private int[,] terrain = new int[20,20];
     private int[] loc = new int[2];
+    public Material team_0_mat;
     public Material team_1_mat;
+    private Material team_mat;
     public Material no_team_mat;
 
     // Global variables
@@ -27,6 +29,10 @@ public class AreaModule : MonoBehaviour {
     void Start() {
         loc = GetComponent<UnitController>().getCurrentPosition();
         gameController = GameObject.FindGameObjectWithTag("GameController");
+        team_mat = team_0_mat;
+        if (GetComponent<UnitController>().getPlayerID() == 1) {
+            team_mat = team_1_mat;
+        }
     }
 	
     // Update is called once per frame
@@ -39,7 +45,7 @@ public class AreaModule : MonoBehaviour {
         if (loc[0] == x && loc[1] == y)
             return;
 
-        Debug.Log("moving from ("  + loc[0] + "," + loc[1] + ") to (" + x + "," + y+")");
+        //Debug.Log("moving from ("  + loc[0] + "," + loc[1] + ") to (" + x + "," + y+")");
 
         
 
@@ -87,17 +93,17 @@ public class AreaModule : MonoBehaviour {
             {
                 //Debug.Log(current_FoV[i,j]);
                 //Debug.Log("moved (" + moved[0]+","+moved[1]+")");
-                if (new_FoV[i, j] > current_FoV[i + moved[0], j + moved[1]] && x + i >= 4 && y + j >= 4)
+                if (new_FoV[i, j] > current_FoV[i + moved[0], j + moved[1]] && x + i >= 4 && x+i-4 < 20 && y + j >= 4 && y+j-4 < 20)
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
-                    Debug.Log("add_FoV (" + (x + i - 4) + "," + (y + j - 4) + ")");
+                    //Debug.Log("add_FoV (" + (x + i - 4) + "," + (y + j - 4) + ")");
                     setTerritorium(x + i - 4, y + j - 4);
                 }
-                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-moved[0] >= 4 && y+j-moved[1] >= 4)
+                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-moved[0] >= 4 && x+i-moved[0] < 20 && y+j-moved[1] >= 4 && y+j-moved[1] < 20)
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
-                    Debug.Log("del_FoV (" + (x+i-4-moved[0]) + "," + (y+j-4-moved[1]) + ")");
-                    setNoTerritorium(x + i - 4-moved[0], y + j - 4- moved[1]);
+                    //Debug.Log("del_FoV (" + (x+i-4-moved[0]) + "," + (y+j-4-moved[1]) + ")");
+                    //setNoTerritorium(x + i - 4-moved[0], y + j - 4- moved[1]);
                 }
             }
         }
@@ -119,7 +125,7 @@ public class AreaModule : MonoBehaviour {
     }
 
     public void setTerritorium(int x, int y) {
-        gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<Renderer>().material = team_1_mat;
+        gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<Renderer>().material = team_mat;
         return;
     }
 }

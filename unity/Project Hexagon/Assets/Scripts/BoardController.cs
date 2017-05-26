@@ -21,6 +21,7 @@ public class BoardController : MonoBehaviour
     // Board, Hexagons
     public GameObject HexagonTile;
     public GameObject mountainPrefab;
+    public GameObject forrestPrefab;
     public GameObject pathingRing;
     private HexMath hexMath;
     private GameObject[,] tileMatrix; //Contains the tiles and their locations
@@ -36,7 +37,7 @@ public class BoardController : MonoBehaviour
 
     //reading map
     public TextAsset mapTextFile;
-    private int[,] tileProperties;
+    public int[,] tileProperties;
 
     void Start ()
     {
@@ -86,13 +87,24 @@ public class BoardController : MonoBehaviour
 
                 if (tileProperties[i,j]==0)
                 {
+                    //empty
                     hexagon.GetComponent<MeshRenderer>().enabled = false;
+                    hexagon.GetComponent<MeshCollider>().enabled = false;
                 }
                 if (tileProperties[i, j] == 2) {
-                    //mountain!
+                    //mountain
                     GameObject mountain = Instantiate(mountainPrefab);
                     mountain.transform.SetParent(transform); // Puts the tile under TileManager and gives the same transform
                     mountain.transform.localPosition = new Vector3(x,0,y);
+                    hexagon.GetComponent<MeshCollider>().enabled = false;
+                    hexagon.GetComponent<MeshRenderer>().enabled = false;
+                }
+
+                if (tileProperties[i, j] == 3) {
+                    //forrest
+                    GameObject forrest = Instantiate(forrestPrefab);
+                    forrest.transform.SetParent(transform); // Puts the tile under TileManager and gives the same transform
+                    forrest.transform.localPosition = new Vector3(x,0,y);
                 }
 
                 // Create pathing ring on it instantly
@@ -108,20 +120,31 @@ public class BoardController : MonoBehaviour
         int[] unitLoc = new int[2] {0,0};
         // Spawn the first units
 
+
+        Debug.Log("Boardcontroller line 124: iets gaat foutr met de spawnlocatie van de units");
         unitLoc = new int[2] { 3, 8 };
         GameObject Hoplite = Instantiate(Unit);
         Hoplite.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Hoplite;
-        Hoplite.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(unitLoc[0]), Hoplite.transform.position.y, GetComponent<HexMath>().matrix2HexY(unitLoc[0],unitLoc[1]));
+        Hoplite.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Hoplite);
         Hoplite.GetComponent<UnitController>().setPlayerID(1);
         Hoplite.GetComponent<UnitController>().setTeamID(1);
 
-        GameObject Hoplite2 = Instantiate(Unit);
-        Hoplite2.GetComponent<UnitController>().set(4, 4);
-        Hoplite2.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(4), Hoplite2.transform.position.y, GetComponent<HexMath>().matrix2HexY(4,4));
-        unitMatrix[4, 4] = Hoplite2;
-        unitList.Add(Hoplite2);
+        unitLoc = new int[2] { 4, 4 };
+        Hoplite = Instantiate(Unit);
+        Hoplite.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        unitMatrix[unitLoc[0], unitLoc[1]] = Hoplite;
+        Hoplite.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
+        unitList.Add(Hoplite);
+        Hoplite.GetComponent<UnitController>().setPlayerID(0);
+        Hoplite.GetComponent<UnitController>().setTeamID(0);
+
+        //GameObject Hoplite2 = Instantiate(Unit);
+        //Hoplite2.GetComponent<UnitController>().set(4, 4);
+        //Hoplite2.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(4), Hoplite2.transform.position.y, GetComponent<HexMath>().matrix2HexY(4,4));
+        //unitMatrix[4, 4] = Hoplite2;
+        //unitList.Add(Hoplite2);
 
         // Start the timer
 

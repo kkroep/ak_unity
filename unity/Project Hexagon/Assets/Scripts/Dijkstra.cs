@@ -7,11 +7,47 @@ public class Dijkstra : MonoBehaviour {
 
     // Global variables
     GameObject gameController;
+    private int[,] penalties;
 
     // Use this for initialization
     void Start ()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
+        int[] boardsize = gameController.GetComponent<BoardController>().boardsize;
+        penalties = gameController.GetComponent<BoardController>().tileProperties;
+
+        /* Table of content tileProperties
+         * 0 = empty
+         * 1 = normal
+         * 2 = mountain
+         * 3 = forrest
+         */
+        for (int i = 0; i < boardsize[0]; i++)
+        {
+            for (int j = 0; j < boardsize[1]; j++)
+            {
+                if (penalties[i, j] == 0)
+                {
+                    penalties[i, j] = 10000;
+                }
+                else if (penalties[i, j] == 1)
+                {
+                    penalties[i, j] = 1;
+                }
+                else if (penalties[i, j] == 2)
+                {
+                    penalties[i, j] = 1000;
+                }
+                else if (penalties[i, j] == 3)
+                {
+                    penalties[i, j] = 2;
+                }
+            }
+
+        }
+        Debug.Log("Penalty (3,4)" + penalties[3, 4]);
+
+
     }
 	
 	// Update is called once per frame
@@ -48,16 +84,15 @@ public class Dijkstra : MonoBehaviour {
             return ans;
         }
 
-
         // main recursive while loop
         int j = 0;
         while (queue.Count > 0 && j < 400)
         {
-            dijkstra_iteration(direction, value, queue, 1, end);
+            //Debug.Log("dijsktra at (" + queue[0][0] + "," + queue[0][1] + ") wpenalty " + penalties[(int)queue[0][0],(int)queue[0][1]]+ ") wValue " + value[(int)queue[0][0],(int)queue[0][1]]);
+            dijkstra_iteration(direction, value, queue, penalties[(int)queue[0][0], (int)queue[0][1]], end);
             queue.RemoveAt(0);
             if (queue[0][0] == end[0] && queue[0][1] == end[1])
             {
-
                 return findRoute(direction, start, end);
             }
             j++;
@@ -75,6 +110,9 @@ public class Dijkstra : MonoBehaviour {
      */
     void dijkstra_iteration(int[,] direction, float[,] value, List<float[]> queue, float penalty, int[] end)
     {
+
+        if (penalty > 100)
+            return;
         int x, y;
         //Way to find the neighbors in a hexagon formation. This is different for odd or even hexagons
         int[,] neighbors = new int[6, 2] {      { 0, 1 },
@@ -89,15 +127,14 @@ public class Dijkstra : MonoBehaviour {
         {
             x = (int)queue[0][0] + neighbors[i, 0];
             y = (int)queue[0][1] + neighbors[i, 1];
-
-            if (x < value.GetLength(0) && 0 <= x && y < value.GetLength(1) && 0 <= y)
+            if (x < value.GetLength(0) && x >= 0 && y < value.GetLength(1) && 0 <= y)
             {
                 // check whether a new best route to the current position is found
-                if (value[x, y] == 0 || value[x, y] > queue[0][2])
+                if (value[x, y] == 0 || value[x, y] > queue[0][2]+penalty)
                 {
-                    value[x, y] = queue[0][2]; // update the duration of the shortest route to this point
+                    value[x, y] = queue[0][2]+penalty; // update the duration of the shortest route to this point
                     direction[x, y] = i; // update the fastest way back to the start
-                    //add a small insentive to go directly towards the end goal
+                                         //add a small insentive to go directly towards the end goal
                     insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + 0.01f*gameController.GetComponent<HexMath>().hexDistance(x, y, end[0], end[1]) }, queue); // add this entry in the queue to expand in a later stage
                 }
             }
