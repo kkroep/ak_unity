@@ -42,10 +42,10 @@ MonoBehaviour:
     y: 30
     width: 1484
     height: 850
-  m_MinSize: {x: 679, y: 342}
-  m_MaxSize: {x: 12004, y: 8042}
+  m_MinSize: {x: 683, y: 342}
+  m_MaxSize: {x: 12008, y: 8042}
   vertical: 0
-  controlID: 44
+  controlID: 104
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -64,8 +64,8 @@ MonoBehaviour:
     y: 0
     width: 295
     height: 850
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -89,8 +89,8 @@ MonoBehaviour:
     y: 0
     width: 202
     height: 579
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -114,8 +114,8 @@ MonoBehaviour:
     y: 579
     width: 1189
     height: 271
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 102, y: 121}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 12}
@@ -206,10 +206,10 @@ MonoBehaviour:
     y: 0
     width: 1189
     height: 850
-  m_MinSize: {x: 404, y: 342}
-  m_MaxSize: {x: 8004, y: 8042}
+  m_MinSize: {x: 406, y: 342}
+  m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
-  controlID: 45
+  controlID: 71
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -230,10 +230,10 @@ MonoBehaviour:
     y: 0
     width: 1189
     height: 579
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 46
+  controlID: 11
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -297,19 +297,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts
+    - Assets/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\kkroe\Documents\git\ak_unity\unity\Project Hexagon
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 43}
-    m_SelectedIDs: ec240000
-    m_LastClickedID: 9452
-    m_ExpandedIDs: 00000000c02400002e250000342500005625000000ca9a3bffffff7f
+    m_SelectedIDs: 0a250000
+    m_LastClickedID: 9482
+    m_ExpandedIDs: 00000000c224000050250000562500007825000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -337,7 +337,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c02400003425000056250000
+    m_ExpandedIDs: 00000000c2240000502500005625000078250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -362,10 +362,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: e6bae3ff
-    m_LastClickedInstanceID: -1852698
+    m_SelectedInstanceIDs: 44250000
+    m_LastClickedInstanceID: 9540
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: f42400000667feff
+    m_ExpandedInstanceIDs: f42400000667feff42250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -453,9 +453,9 @@ MonoBehaviour:
     height: 558
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e6bae3ff
+    m_SelectedIDs: 44250000
     m_LastClickedID: 0
-    m_ExpandedIDs: b2c0e3ffd825e9ffe625e9ffdaf5ffff92f8ffffe4fbffff00000000d2250000
+    m_ExpandedIDs: e4fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -510,9 +510,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 6.4946303, y: 5.3380456, z: 2.2474499}
+    m_Target: {x: 13.907658, y: 9.696718, z: 0.8154996}
     speed: 2
-    m_Value: {x: 6.4946303, y: 5.3380456, z: 2.2474499}
+    m_Value: {x: 13.907658, y: 9.696718, z: 0.8154996}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -535,9 +535,9 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.32639506, y: 0.101813436, z: -0.035388317, w: -0.93906766}
+    m_Target: {x: -0.24208081, y: -0.00436707, z: 0.0010892804, w: -0.97024566}
     speed: 2
-    m_Value: {x: -0.32639506, y: 0.101813436, z: -0.035388317, w: -0.93906766}
+    m_Value: {x: -0.24208081, y: -0.00436707, z: 0.0010892804, w: -0.97024566}
   m_Size:
     m_Target: 4.639622
     speed: 2

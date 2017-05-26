@@ -14,7 +14,8 @@ public class Dijkstra : MonoBehaviour {
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
         int[] boardsize = gameController.GetComponent<BoardController>().boardsize;
-        penalties = gameController.GetComponent<BoardController>().tileProperties;
+        penalties = new int[boardsize[0], boardsize[1]];
+        int[,] tileProperties = gameController.GetComponent<BoardController>().tileProperties;
 
         /* Table of content tileProperties
          * 0 = empty
@@ -26,26 +27,25 @@ public class Dijkstra : MonoBehaviour {
         {
             for (int j = 0; j < boardsize[1]; j++)
             {
-                if (penalties[i, j] == 0)
+                if (tileProperties[i, j] == 0)
                 {
                     penalties[i, j] = 10000;
                 }
-                else if (penalties[i, j] == 1)
+                else if (tileProperties[i, j] == 1)
                 {
                     penalties[i, j] = 1;
                 }
-                else if (penalties[i, j] == 2)
+                else if (tileProperties[i, j] == 2)
                 {
                     penalties[i, j] = 1000;
                 }
-                else if (penalties[i, j] == 3)
+                else if (tileProperties[i, j] == 3)
                 {
                     penalties[i, j] = 2;
                 }
             }
 
         }
-        Debug.Log("Penalty (3,4)" + penalties[3, 4]);
 
 
     }

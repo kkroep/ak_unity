@@ -90,6 +90,7 @@ public class BoardController : MonoBehaviour
                     //empty
                     hexagon.GetComponent<MeshRenderer>().enabled = false;
                     hexagon.GetComponent<MeshCollider>().enabled = false;
+                    hexagon.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 }
                 if (tileProperties[i, j] == 2) {
                     //mountain

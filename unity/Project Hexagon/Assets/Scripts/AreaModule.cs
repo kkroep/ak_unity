@@ -15,7 +15,7 @@ using UnityEngine;
  */
 public class AreaModule : MonoBehaviour {
     private int[,] current_FoV = new int[9,9];
-    private int[,] terrain = new int[20,20];
+    private int[,] tileProperties;
     private int[] loc = new int[2];
     private int team;
     private int turn;
@@ -31,6 +31,9 @@ public class AreaModule : MonoBehaviour {
         team = GetComponent<UnitController>().getPlayerID();
         turn = 0;
         just_created = true;
+
+        tileProperties = gameController.GetComponent<BoardController>().tileProperties;
+
     }
 	
     // Update is called once per frame
@@ -81,7 +84,27 @@ public class AreaModule : MonoBehaviour {
         };
 
         // remove everything that is obstructed by field of view
-        
+
+
+        /* Table of content tileProperties
+         * 0 = empty
+         * 1 = normal
+         * 2 = mountain
+         * 3 = forrest
+         */
+        for (int i = 1; i < 8; i++)
+        {
+            for (int j = 1; j < 8; j++)
+            {
+                if (x + i - 4 >= 0 && x + i - 4 < 20 && y + j - 4 >= 0 && y + j - 4 < 20)
+                {
+                    if (tileProperties[x + i - 4, y + j - 4] == 0)
+                    {
+                        new_FoV[i, j] = 0;
+                    }
+                }
+            }
+        }
 
 
 

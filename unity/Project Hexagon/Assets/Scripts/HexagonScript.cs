@@ -74,7 +74,7 @@ public class HexagonScript : MonoBehaviour
 
     public void setNoFoV(int team) {
         FoVCounter[team]--;
-        if (FoVCounter[0] == 0 && FoVCounter[1] == 0)
+        if (FoVCounter[0] == 0 && FoVCounter[1] == 0 && current_team == -1)
             FoVChild.GetComponent<MeshRenderer>().enabled = true;
     }
 
