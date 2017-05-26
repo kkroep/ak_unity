@@ -121,7 +121,6 @@ public class BoardController : MonoBehaviour
         // Spawn the first units
 
 
-        Debug.Log("Boardcontroller line 124: iets gaat foutr met de spawnlocatie van de units");
         unitLoc = new int[2] { 3, 8 };
         GameObject Hoplite = Instantiate(Unit);
         Hoplite.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);

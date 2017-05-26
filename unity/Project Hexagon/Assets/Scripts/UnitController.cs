@@ -199,7 +199,8 @@ public class UnitController : MonoBehaviour
         if (potentialUnit == null)
         {
             gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
-            GetComponent<AreaModule>().Move_FoV(next_x,next_y);
+            GetComponent<AreaModule>().Update_Territorium(next_x,next_y);
+            GetComponent<AreaModule>().Update_FoV(next_x,next_y);
             if (moveQueue.Count != 0)
             {
                 moveQueue.RemoveAt(0); // Remove executed entry from the queue

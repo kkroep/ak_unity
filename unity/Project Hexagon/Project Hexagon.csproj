@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\HexMath.cs" />
     <Compile Include="Assets\Scripts\HexagonScript.cs" />
+    <Compile Include="Assets\Scripts\TileController.cs" />
     <Compile Include="Assets\Scripts\TileDetector.cs" />
     <Compile Include="Assets\Scripts\UnitController.cs" />
   </ItemGroup>

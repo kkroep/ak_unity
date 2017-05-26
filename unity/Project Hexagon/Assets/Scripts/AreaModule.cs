@@ -17,10 +17,9 @@ public class AreaModule : MonoBehaviour {
     private int[,] current_FoV = new int[9,9];
     private int[,] terrain = new int[20,20];
     private int[] loc = new int[2];
-    public Material team_0_mat;
-    public Material team_1_mat;
-    private Material team_mat;
-    public Material no_team_mat;
+    private int team;
+    private int turn;
+    private bool just_created;
 
     // Global variables
     private GameObject gameController;
@@ -29,10 +28,9 @@ public class AreaModule : MonoBehaviour {
     void Start() {
         loc = GetComponent<UnitController>().getCurrentPosition();
         gameController = GameObject.FindGameObjectWithTag("GameController");
-        team_mat = team_0_mat;
-        if (GetComponent<UnitController>().getPlayerID() == 1) {
-            team_mat = team_1_mat;
-        }
+        team = GetComponent<UnitController>().getPlayerID();
+        turn = 0;
+        just_created = true;
     }
 	
     // Update is called once per frame
@@ -40,10 +38,23 @@ public class AreaModule : MonoBehaviour {
 		
     }
 
+    public void Update_Territorium(int x, int y) {
+        setTerritorium(x, y, 1);
+        setTerritorium(x, y+1, 0);
+        setTerritorium(x+1, y, 0);
+        setTerritorium(x+1, y-1, 0);
+        setTerritorium(x, y-1, 0);
+        setTerritorium(x-1, y, 0);
+        setTerritorium(x-1, y+1, 0);
+        return;
+    }
+
     // Updates field of view caused by this character
-    public void Move_FoV(int x, int y) {
-        if (loc[0] == x && loc[1] == y)
+    public void Update_FoV(int x, int y) {
+        turn++;
+        if (loc[0] == x && loc[1] == y && just_created != true)
             return;
+        just_created = false;
 
         //Debug.Log("moving from ("  + loc[0] + "," + loc[1] + ") to (" + x + "," + y+")");
 
@@ -69,18 +80,6 @@ public class AreaModule : MonoBehaviour {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
 
-        new_FoV = new int[9, 9] {
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 1, 1, 0, 0, 0},
-            { 0, 0, 0, 1, 1, 1, 0, 0, 0},
-            { 0, 0, 0, 1, 1, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0}
-        };
-        
         // remove everything that is obstructed by field of view
         
 
@@ -97,35 +96,39 @@ public class AreaModule : MonoBehaviour {
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
                     //Debug.Log("add_FoV (" + (x + i - 4) + "," + (y + j - 4) + ")");
-                    setTerritorium(x + i - 4, y + j - 4);
+                    gameController.GetComponent<BoardController>().getTile(x + i - 4, y + j - 4).GetComponent<HexagonScript>().setFoV(team);
                 }
-                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-moved[0] >= 4 && x+i-moved[0] < 20 && y+j-moved[1] >= 4 && y+j-moved[1] < 20)
+                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-4-moved[0] >= 0 && x+i-4-moved[0] < 20 && y+j-4-moved[1] >= 0 && y+j-4-moved[1] < 20)
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
                     //Debug.Log("del_FoV (" + (x+i-4-moved[0]) + "," + (y+j-4-moved[1]) + ")");
-                    //setNoTerritorium(x + i - 4-moved[0], y + j - 4- moved[1]);
+                    gameController.GetComponent<BoardController>().getTile(x + i - 4-moved[0], y + j - 4- moved[1]).GetComponent<HexagonScript>().setNoFoV(team);
                 }
             }
         }
 
         current_FoV = new_FoV;
 
-        
-
-
-
         //Update current location
         loc[0] = x;
         loc[1] = y;
     }
     
-    public void setNoTerritorium(int x, int y) {
-        gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<Renderer>().material = no_team_mat;
+    public void setNoFoV(int x, int y) {
+        if(x>=0 && y >=0 && x<20 && y<20)
+            gameController.GetComponent<BoardController>().getTile(x, y).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
         return;
     }
 
-    public void setTerritorium(int x, int y) {
-        gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<Renderer>().material = team_mat;
+    public void setFoV(int x, int y) {
+        if(x>=0 && y >=0 && x<20 && y<20)
+            gameController.GetComponent<BoardController>().getTile(x, y).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+        return;
+    }
+
+    public void setTerritorium(int x, int y, int force) {
+        if(x>=0 && y >=0 && x<20 && y<20)
+            gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<HexagonScript>().claimTerritorium(turn, team, force);
         return;
     }
 }
