@@ -17,23 +17,26 @@ using UnityEngine;
 public class UnitController : MonoBehaviour
 {
     // Unit information
-    private int playerID;
-    private int teamID;
+    protected int playerID;
+    protected int teamID;
 
-    private int x, y; // Current coordinates of a certain unit
-    private int next_x, next_y;
-    private int priority;
-    private int health;
-    private int attack;
+    protected int x, y; // Current coordinates of a certain unit
+    protected int next_x, next_y;
+    protected int priority;
+    protected float health;
+    protected int AP;
+    protected int maxAP;
+    protected int turn;
+    protected int attack;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
 
     // Flags
-    private int turnsDoneNothing;
-    private bool defenseModeEnabled;
+    protected int turnsDoneNothing;
+    protected bool defenseModeEnabled;
 
     // Goals
-    private GameObject attackTarget;
-    private int[] goalCoordinates;
+    protected GameObject attackTarget;
+    protected int[] goalCoordinates;
 
     // External set information
     public Material materialSelected;
@@ -41,10 +44,11 @@ public class UnitController : MonoBehaviour
     public GameObject selectedRing;
 
     // Global variables
-    private GameObject gameController;
-    private GameObject currentTile;
-    private int[,] boardSize;
-    int[,] neighbors;
+    protected GameObject gameController;
+    protected GameObject currentTile;
+    protected int[,] boardSize;
+    protected int[,] neighbors;
+    protected HexMath hexMath;
 
     void Start()
     {
@@ -57,13 +61,21 @@ public class UnitController : MonoBehaviour
 
 
         gameController = GameObject.FindGameObjectWithTag("GameController");
+        hexMath = gameController.GetComponent<HexMath>(); // Takes the HexMath script from the Game Control
         boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]];
 
         //Create the ring that determines the feedback, hide it when not selected
         createSelectionRing();
 
+        turn = 0;
+        setUnitParameters();
+    }
+
+    protected virtual void setUnitParameters() {
         health = 100;
         attack = 25;
+        maxAP = 2;
+        return;
     }
 
     // Calculates the path using the Dijkstra algorithm
@@ -106,8 +118,16 @@ public class UnitController : MonoBehaviour
         CalculatePath(); // calculate path towards attack goal
     }
 
-    public void nextAttack()
+    public void resetAP()
     {
+        AP = maxAP;
+    }
+
+    public void nextAttack(int AP_stage)
+    {
+        if (AP_stage > AP)
+            return;
+
         // if has target
         if (attackTarget == null)
             return;
@@ -137,12 +157,13 @@ public class UnitController : MonoBehaviour
             {
                 CalculatePath();
             }
-
         }
     }
 
-    public void executeNextAttack()
+    public virtual void executeNextAttack(int AP_stage)
     {
+        if (AP_stage > AP)
+            return;
         // if has target
         if (attackTarget == null)
             return;
@@ -158,8 +179,8 @@ public class UnitController : MonoBehaviour
                 if (neighbors[i, 0] == diffx && neighbors[i, 1] == diffy)
                 {
                     // ATTACK
-                    attackTarget.GetComponent<UnitController>().reduceHealth(attack);
-
+                    attackTarget.GetComponent<UnitController>().reduceHealth((float)attack * (1+0.5f*(AP-1)));
+                    AP = 0;
                 }
             }
         }
@@ -175,9 +196,10 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void nextStep()
+    public void nextStep(int AP_stage)
     {
-
+        if (AP_stage > AP)
+            return;
         // If unit does not want to move, execute this shit
         if (moveQueue.Count == 0)
         {
@@ -201,6 +223,7 @@ public class UnitController : MonoBehaviour
             gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
             GetComponent<AreaModule>().Update_Territorium(next_x,next_y);
             GetComponent<AreaModule>().Update_FoV(next_x,next_y);
+            AP--;
             if (moveQueue.Count != 0)
             {
                 moveQueue.RemoveAt(0); // Remove executed entry from the queue
@@ -238,6 +261,7 @@ public class UnitController : MonoBehaviour
         }
         else
         {
+
             // Reset turnsDoneNothing, and disable defense mode. We keep defense mode disabled, also if the unit has to wait one turn to step!
             turnsDoneNothing = 0;
             disableDefenseMode();
@@ -271,7 +295,7 @@ public class UnitController : MonoBehaviour
     public void stepBack()
     {
         moveQueue.Insert(0, new int[] { next_x, next_y });
-        nextStep();
+        nextStep(0);
     }
 
 
@@ -340,6 +364,8 @@ public class UnitController : MonoBehaviour
     {
         x = new_x;
         y = new_y;
+        next_x = x;
+        next_y = y;
     }
 
     public int getPriority()
@@ -363,12 +389,12 @@ public class UnitController : MonoBehaviour
         return y;
     }
 
-    public int getHealth()
+    public float getHealth()
     {
         return health;
     }
 
-    public void reduceHealth(int damageTaken)
+    public void reduceHealth(float damageTaken)
     {
         health = health - damageTaken;
         Debug.Log(health);
@@ -383,6 +409,7 @@ public class UnitController : MonoBehaviour
         gameController.GetComponent<BoardController>().removeFromUnitList(gameObject);
         gameController.GetComponent<BoardController>().setUnit(x, y, null);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        Destroy(transform.GetChild(0).gameObject);
 
         hidePathFeedback();
         moveQueue = null;

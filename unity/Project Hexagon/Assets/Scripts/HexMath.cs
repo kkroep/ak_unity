@@ -16,9 +16,9 @@ public class HexMath : MonoBehaviour
         return (y+0.5f*x) * (float)Math.Sqrt(3);
     }
 
-    public float hexDistance(int x1, int y1, int x2, int y2) {
-        float x_diff = matrix2HexX(x1 - x2);
-        float y_diff = matrix2HexY(x1, y1) - matrix2HexY(x2, y2);
+    public float hexDistance(int x, int y) {
+        float x_diff = matrix2HexX(x);
+        float y_diff = matrix2HexY(x, y);
         return (float)Math.Sqrt(x_diff*x_diff+y_diff*y_diff);
     }
 }

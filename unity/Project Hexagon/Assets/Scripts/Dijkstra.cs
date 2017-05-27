@@ -135,7 +135,7 @@ public class Dijkstra : MonoBehaviour {
                     value[x, y] = queue[0][2]+penalty; // update the duration of the shortest route to this point
                     direction[x, y] = i; // update the fastest way back to the start
                                          //add a small insentive to go directly towards the end goal
-                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + 0.01f*gameController.GetComponent<HexMath>().hexDistance(x, y, end[0], end[1]) }, queue); // add this entry in the queue to expand in a later stage
+                    insertQueue(new float[4] { x, y, queue[0][2] + penalty, queue[0][2] + penalty + 0.01f*gameController.GetComponent<HexMath>().hexDistance(x - end[0], y - end[1]) }, queue); // add this entry in the queue to expand in a later stage
                 }
             }
         }
