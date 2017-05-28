@@ -30,6 +30,7 @@ public class BoardController : MonoBehaviour
     public int[] boardsize = new int[2];
 
     // Unit Matrix
+    private List<GameObject> unitList = new List<GameObject>();
     private List<GameObject> unitList_T1 = new List<GameObject>();
     private List<GameObject> unitList_T2 = new List<GameObject>();
     private List<GameObject> nextUnitList = new List<GameObject>();
@@ -134,6 +135,7 @@ public class BoardController : MonoBehaviour
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList_T1.Add(Unit);
+        unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
 
@@ -143,6 +145,7 @@ public class BoardController : MonoBehaviour
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList_T1.Add(Unit);
+        unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
 
@@ -152,6 +155,7 @@ public class BoardController : MonoBehaviour
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList_T2.Add(Unit);
+        unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
 
@@ -161,6 +165,7 @@ public class BoardController : MonoBehaviour
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList_T2.Add(Unit);
+        unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
 
@@ -186,16 +191,16 @@ public class BoardController : MonoBehaviour
         // each time spacebar is pressed, make units move
         if (Input.GetKeyDown("space"))
         {
-            nextUnitList = unitList_T1;
+            nextUnitList = unitList;
 
-            if (unitList_T1.Count == 0 || unitList_T2.Count == 0)
+            if (unitList.Count == 0 || unitList_T2.Count == 0)
             {
                 Debug.Log("Game Over!");
                 return;
             }
             
 
-            foreach (GameObject selectedUnit in unitList_T1.ToArray())
+            foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().resetAP();
                 }
@@ -208,33 +213,24 @@ public class BoardController : MonoBehaviour
             for (int AP = 5; AP > 0; AP--)
             {
                 // Update the new unit positions if needed
-                foreach (GameObject selectedUnit in unitList_T1.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextAttack(AP);
-                }
-                foreach (GameObject selectedUnit in unitList_T2.ToArray())
+                foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().nextAttack(AP);
                 }
 
-                foreach (GameObject selectedUnit in unitList_T1.ToArray())
+
+                foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().executeNextAttack(AP);
                 }
-                foreach (GameObject selectedUnit in unitList_T2.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().executeNextAttack(AP);
-                }
+
 
                 // Check who dieded
-                foreach (GameObject selectedUnit in unitList_T1.ToArray())
+                foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().nextDieded();
                 }
-                foreach (GameObject selectedUnit in unitList_T2.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextDieded();
-                }
+
 
                 if (unitList_T1.Count == 0 || unitList_T2.Count == 0)
                 {
@@ -245,14 +241,10 @@ public class BoardController : MonoBehaviour
                     return;
                 }
 
-                unitList_T1 = nextUnitList;
+                unitList = nextUnitList;
 
                 // Calculate the next step the unit is going to make, and try to claim a position in the new matrix. Conflicts are all resolved here!
-                foreach (GameObject selectedUnit in unitList_T1.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextStep(AP);
-                }
-                foreach (GameObject selectedUnit in unitList_T2.ToArray())
+                foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().nextStep(AP);
                 }
@@ -261,16 +253,10 @@ public class BoardController : MonoBehaviour
                 nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
 
                 // Call the movement of each object in the list
-                foreach (GameObject selectedUnit in unitList_T1.ToArray())
+                foreach (GameObject selectedUnit in unitList.ToArray())
                 {
                     selectedUnit.GetComponent<UnitController>().executeNextStep();
                 }
-                foreach (GameObject selectedUnit in unitList_T2.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().executeNextStep();
-                }
-
-
             }
             AI.GetComponent<AI>().nextTurn();
         }
@@ -312,7 +298,6 @@ public class BoardController : MonoBehaviour
         return tileMatrix[(int)mouseOver.x, (int)mouseOver.y];
     }
 
-    private List<GameObject> unitList = new List<GameObject>();
     public GameObject getTile(int x, int y)
     {
         return tileMatrix[x, y];

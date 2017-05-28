@@ -30,11 +30,29 @@ public class AI : MonoBehaviour {
 
     public void nextTurn()
     {
-        if (unitList.Count == 0)
+        if (unitList.Count == 0 || enemyUnitList.Count ==0)
         {
-            Debug.Log("I beat you blue!");
+            if (unitList.Count == 0)
+                Debug.Log("I got shredded!");
+            else
+                Debug.Log("Wait... you couldn't even beat my simple strategy? fcking n00b!");
             return;
         }
+        if (enemyUnitList[0].GetComponent<UnitController>().getHealth() == 0)
+            enemyUnitList.RemoveAt(0);
+        foreach (var item in unitList.ToArray())
+        {
+            if (item.GetComponent<UnitController>().getHealth() == 0)
+                unitList.Remove(item);
+        }
+        if (unitList.Count == 0 || enemyUnitList.Count ==0)
+        {
+            if (unitList.Count == 0)
+                Debug.Log("I got shredded!");
+            else
+                Debug.Log("Wait... you couldn't even beat my simple strategy? fcking n00b!");
+            return;
+        } 
         foreach (var item in unitList)
         {
             item.GetComponent<UnitController>().setUnitGoal(enemyUnitList[0]);
