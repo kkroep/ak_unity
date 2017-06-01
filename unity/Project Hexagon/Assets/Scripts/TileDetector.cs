@@ -28,6 +28,7 @@ public class TileDetector : MonoBehaviour
     // For unit selection
     private bool unitHasBeenSelected;
     private GameObject unitSelected;
+    private GameObject prevUnitSelected;
 
     // Use this for initialization
     void Start()
@@ -72,6 +73,7 @@ public class TileDetector : MonoBehaviour
                 myPlayerID = 0;
                 myTeamID = 0;
             }
+            Debug.Log("team = " + myTeamID);
         }
     }
 
@@ -83,6 +85,15 @@ public class TileDetector : MonoBehaviour
         {
             mouseOver.x = hit.transform.GetComponent<HexagonScript>().getX();
             mouseOver.y = hit.transform.GetComponent<HexagonScript>().getY();
+
+
+            // guarantee that the previously 
+            if (prevUnitSelected && prevUnitSelected != unitSelected)
+            {
+                prevUnitSelected.GetComponent<UnitController>().hidePathFeedback();
+                prevUnitSelected = null;
+            }
+
 
             //Debug.Log(mouseOver);
 
@@ -102,17 +113,19 @@ public class TileDetector : MonoBehaviour
                         if (unitHasBeenSelected == true)
                         {
                             unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+                            unitSelected.GetComponent<UnitController>().hidePathFeedback();
                         }
                         unitHasBeenSelected = true;
                         unitSelected = hoverOverUnit; // change the unit selected
                         unitSelected.GetComponent<UnitController>().IsSelected();
-
+                        unitSelected.GetComponent<UnitController>().showPathFeedback();
+                        return;
                     }
 
                     // If your teammates unit
                     if (unitPlayerID != myPlayerID && unitTeamID == myTeamID)
                     {
-                        
+
                     }
 
                     // if enemy's unit
@@ -120,8 +133,10 @@ public class TileDetector : MonoBehaviour
                     {
                         if (unitHasBeenSelected == true)
                         {
-                            unitSelected.GetComponent<UnitController>().setUnitGoal(hoverOverUnit); // send the target to attack!
+                            unitSelected.GetComponent<UnitController>().setUnitGoal(hoverOverUnit, 1); // send the target to attack!
+                            unitSelected.GetComponent<UnitController>().showPathFeedback(); // show the created path
                             unitHasBeenSelected = false;
+                            prevUnitSelected = unitSelected; //set prev object for deselection
                             unitSelected = null; // Empty the current object
                         }
                         else
@@ -132,13 +147,29 @@ public class TileDetector : MonoBehaviour
                 }
 
                 // If empty space is selected
-                else if(unitHasBeenSelected == true) // When moving and deselecting a unit
+                else if (unitHasBeenSelected == true) // When moving and deselecting a unit
                 {
                     // Tell the unit where to go, filter out here already if it is not possible
-                    unitSelected.GetComponent<UnitController>().setTileGoal((int)mouseOver.x, (int)mouseOver.y);
+                    unitSelected.GetComponent<UnitController>().setTileGoal((int)mouseOver.x, (int)mouseOver.y, 0);
+                    unitSelected.GetComponent<UnitController>().showPathFeedback(); // show the created path
                     unitHasBeenSelected = false;
+                    prevUnitSelected = unitSelected; //set prev object for deselection
                     unitSelected = null; // Empty the current object
                 }
+            }
+        }   
+        // If no tile, deselect all units and remove their feedback
+        else
+        {
+            unitHasBeenSelected = false;
+            if (unitSelected) {
+                unitSelected.GetComponent<UnitController>().hidePathFeedback();
+                unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+                unitSelected = null;
+            }if (prevUnitSelected) {
+                prevUnitSelected.GetComponent<UnitController>().hidePathFeedback();
+            prevUnitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+                prevUnitSelected = null;
             }
         }
     }

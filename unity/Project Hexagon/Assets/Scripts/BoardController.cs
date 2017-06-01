@@ -30,8 +30,6 @@ public class BoardController : MonoBehaviour
 
     // Unit Matrix
     private List<GameObject> unitList = new List<GameObject>();
-    private List<GameObject> unitList_T1 = new List<GameObject>();
-    private List<GameObject> unitList_T2 = new List<GameObject>();
     private List<GameObject> nextUnitList = new List<GameObject>();
     private GameObject[,] unitMatrix; //Contains the units
     private GameObject[,] nextStepMatrix; // Contains the position of the units in the next step
@@ -131,7 +129,6 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
-        unitList_T1.Add(Unit);
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
@@ -141,7 +138,6 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
-        unitList_T1.Add(Unit);
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
@@ -151,7 +147,6 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
-        unitList_T2.Add(Unit);
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
@@ -161,24 +156,14 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
-        unitList_T2.Add(Unit);
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
-
-        //GameObject Hoplite2 = Instantiate(Unit);
-        //Hoplite2.GetComponent<UnitController>().set(4, 4);
-        //Hoplite2.transform.position = new Vector3( GetComponent<HexMath>().matrix2HexX(4), Hoplite2.transform.position.y, GetComponent<HexMath>().matrix2HexY(4,4));
-        //unitMatrix[4, 4] = Hoplite2;
-        //unitList.Add(Hoplite2);
-
-
 
         // Start the timer
         StartCoroutine(TurnTimer()); // Start the turntimer!!!
     }
 	
-
 	// Update is called once per frame
 	void Update ()
     {
@@ -187,70 +172,42 @@ public class BoardController : MonoBehaviour
         {
             nextUnitList = unitList;
 
-            if (unitList.Count == 0 || unitList_T2.Count == 0)
-            {
-                Debug.Log("Game Over!");
-                return;
-            }
-            
-
-            foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().resetAP();
-                }
-            foreach (GameObject selectedUnit in unitList_T2.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().resetAP();
-                }
 
             // Call the attack order of each object in the list
-            for (int AP = 5; AP > 0; AP--)
+            // Update the new unit positions if needed
+            foreach (GameObject selectedUnit in unitList.ToArray())
             {
-                // Update the new unit positions if needed
-                foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextAttack(AP);
-                }
+                selectedUnit.GetComponent<UnitController>().nextAttack();
+            }
 
 
-                foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().executeNextAttack(AP);
-                }
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().executeNextAttack();
+            }
 
 
-                // Check who dieded
-                foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextDieded();
-                }
+            // Check who dieded
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().nextDieded();
+            }
 
+            unitList = nextUnitList;
 
-                if (unitList_T1.Count == 0 || unitList_T2.Count == 0)
-                {
-                    if (unitList_T1.Count == 0)
-                        Debug.Log("player 2 won");
-                    else
-                        Debug.Log("player 1 won");
-                    return;
-                }
+            // Calculate the next step the unit is going to make, and try to claim a position in the new matrix. Conflicts are all resolved here!
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().nextStep();
+            }
 
-                unitList = nextUnitList;
+            unitMatrix = nextStepMatrix;
+            nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
 
-                // Calculate the next step the unit is going to make, and try to claim a position in the new matrix. Conflicts are all resolved here!
-                foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().nextStep(AP);
-                }
-
-                unitMatrix = nextStepMatrix;
-                nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
-
-                // Call the movement of each object in the list
-                foreach (GameObject selectedUnit in unitList.ToArray())
-                {
-                    selectedUnit.GetComponent<UnitController>().executeNextStep();
-                }
+            // Call the movement of each object in the list
+            foreach (GameObject selectedUnit in unitList.ToArray())
+            {
+                selectedUnit.GetComponent<UnitController>().executeNextStep();
             }
         }
     }

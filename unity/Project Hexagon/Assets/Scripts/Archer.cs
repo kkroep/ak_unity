@@ -9,15 +9,12 @@ public class Archer : UnitController {
     protected override void setUnitParameters() {
         health = 60;
         attack = 10;
-        maxAP = 2;
         attackRange = 6;
         return;
     }
 
-    public override void executeNextAttack(int AP_stage)
+    public override void executeNextAttack()
     {
-        if (AP_stage > AP)
-            return;
         // if has target
         if (attackTarget == null)
             return;
@@ -31,8 +28,7 @@ public class Archer : UnitController {
             if (hexMath.hexDistance(diffx, diffy) < attackRange)
             {
                 // ATTACK
-                attackTarget.GetComponent<UnitController>().reduceHealth((float)attack * (1+0.5f*(AP-1)));
-                AP = 0;
+                attackTarget.GetComponent<UnitController>().reduceHealth((float)attack);
             }
                 
 

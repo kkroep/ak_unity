@@ -24,8 +24,6 @@ public class UnitController : MonoBehaviour
     protected int next_x, next_y;
     protected int priority;
     protected float health;
-    protected int AP;
-    protected int maxAP;
     protected int turn;
     protected int attack;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
@@ -37,6 +35,7 @@ public class UnitController : MonoBehaviour
     // Goals
     protected GameObject attackTarget;
     protected int[] goalCoordinates;
+    protected int goalType;
 
     // External set information
     public Material materialSelected;
@@ -74,7 +73,6 @@ public class UnitController : MonoBehaviour
     protected virtual void setUnitParameters() {
         health = 100;
         attack = 25;
-        maxAP = 2;
         return;
     }
 
@@ -99,38 +97,35 @@ public class UnitController : MonoBehaviour
 
         // Calculating the new movement path
         moveQueue = gameController.GetComponent<Dijkstra>().route(boardSize, oldCoordinates, newCoordinates);
-
-        // Visual feedback for selected path
-        showPathFeedback();
     }
 
-    public void setTileGoal(int x_new, int y_new)
+    // Type indicates what type of skill is used
+    public void setTileGoal(int x_new, int y_new, int newGoalType)
     {
+        goalType = newGoalType;
         goalCoordinates = new int[] { x_new, y_new };
         attackTarget = null;
         CalculatePath();
     }
 
-    public void setUnitGoal(GameObject new_Target)
+    public void setUnitGoal(GameObject new_Target, int newGoalType)
     {
+        goalType = newGoalType;
         attackTarget = new_Target;
         goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition(); // set new goal
         CalculatePath(); // calculate path towards attack goal
     }
 
-    public void resetAP()
-    {
-        AP = maxAP;
-    }
 
-    public void nextAttack(int AP_stage)
-    {
-        if (AP_stage > AP)
-            return;
 
-        // if has target
+    public void nextAttack()
+    {
+        // normal attack is with target and and goalType 1. If any attack has no target. remove the target.
         if (attackTarget == null)
+        {
+            setTileGoal(x, y, 0); // if auto attacking, but has no target proceed to stop moving entirely
             return;
+        }
         else
         {
             // If target is dead -> cancel current moveorder, and clear the target and return
@@ -149,7 +144,7 @@ public class UnitController : MonoBehaviour
             {
                 // reason for the else is that if movequeue is empty, it will give an exception error in the statement under
                 if (moveQueue[moveQueue.Count - 1] != goalCoordinates)
-                {
+            {
                     CalculatePath();
                 }
             }
@@ -158,12 +153,10 @@ public class UnitController : MonoBehaviour
                 CalculatePath();
             }
         }
-    }
+}
 
-    public virtual void executeNextAttack(int AP_stage)
+    public virtual void executeNextAttack()
     {
-        if (AP_stage > AP)
-            return;
         // if has target
         if (attackTarget == null)
             return;
@@ -179,8 +172,7 @@ public class UnitController : MonoBehaviour
                 if (neighbors[i, 0] == diffx && neighbors[i, 1] == diffy)
                 {
                     // ATTACK
-                    attackTarget.GetComponent<UnitController>().reduceHealth((float)attack * (1+0.5f*(AP-1)));
-                    AP = 0;
+                    attackTarget.GetComponent<UnitController>().reduceHealth((float)attack);
                 }
             }
         }
@@ -196,10 +188,8 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void nextStep(int AP_stage)
+    public void nextStep()
     {
-        if (AP_stage > AP)
-            return;
         // If unit does not want to move, execute this shit
         if (moveQueue.Count == 0)
         {
@@ -221,9 +211,7 @@ public class UnitController : MonoBehaviour
         if (potentialUnit == null)
         {
             gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
-            GetComponent<AreaModule>().Update_Territorium(next_x,next_y);
             GetComponent<AreaModule>().Update_FoV(next_x,next_y);
-            AP--;
             if (moveQueue.Count != 0)
             {
                 moveQueue.RemoveAt(0); // Remove executed entry from the queue
@@ -255,6 +243,7 @@ public class UnitController : MonoBehaviour
         // If unit does not want to move, execute this shit
         if (next_x == x && next_y == y)
         {
+            return;
             turnsDoneNothing++;
             // Defense mode here
             enableDefenseMode();
@@ -295,7 +284,7 @@ public class UnitController : MonoBehaviour
     public void stepBack()
     {
         moveQueue.Insert(0, new int[] { next_x, next_y });
-        nextStep(0);
+        nextStep();
     }
 
 

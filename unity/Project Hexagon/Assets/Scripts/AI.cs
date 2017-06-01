@@ -55,7 +55,7 @@ public class AI : MonoBehaviour {
         } 
         foreach (var item in unitList)
         {
-            item.GetComponent<UnitController>().setUnitGoal(enemyUnitList[0]);
+            item.GetComponent<UnitController>().setUnitGoal(enemyUnitList[0], 1);
         }
         return;
     }
