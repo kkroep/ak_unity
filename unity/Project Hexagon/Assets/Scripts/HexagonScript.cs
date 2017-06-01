@@ -80,7 +80,7 @@ public class HexagonScript : MonoBehaviour
 
     public void setFoV(int team) {
         FoVCounter[team]++;
-        if (FoVCounter[0] == 1)
+        if (FoVCounter[team] == 1)
             FoVChild.GetComponent<MeshRenderer>().enabled = false;
     }
 

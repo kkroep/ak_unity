@@ -81,7 +81,6 @@
     <Compile Include="Assets\Scripts\AI.cs" />
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\AreaModule.cs" />
-    <Compile Include="Assets\Scripts\BoardContent.cs" />
     <Compile Include="Assets\Scripts\BoardController.cs" />
     <Compile Include="Assets\Scripts\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\HexMath.cs" />

@@ -22,7 +22,6 @@ public class BoardController : MonoBehaviour
     public GameObject HexagonTile;
     public GameObject mountainPrefab;
     public GameObject forrestPrefab;
-    public GameObject AIPrefab;
     public GameObject pathingRing;
     private HexMath hexMath;
     private GameObject[,] tileMatrix; //Contains the tiles and their locations
@@ -43,8 +42,6 @@ public class BoardController : MonoBehaviour
     public TextAsset mapTextFile;
     public int[,] tileProperties;
 
-    // Artificial Intelligence
-    private GameObject AI;
 
     void Start ()
     {
@@ -175,9 +172,6 @@ public class BoardController : MonoBehaviour
         //unitMatrix[4, 4] = Hoplite2;
         //unitList.Add(Hoplite2);
 
-        // Initialize Artidicial Intelligence to be player 2
-        AI = Instantiate(AIPrefab);
-        AI.GetComponent<AI>().initPlayer(1, unitList_T2, unitList_T1);
 
 
         // Start the timer
@@ -258,7 +252,6 @@ public class BoardController : MonoBehaviour
                     selectedUnit.GetComponent<UnitController>().executeNextStep();
                 }
             }
-            AI.GetComponent<AI>().nextTurn();
         }
     }
 
