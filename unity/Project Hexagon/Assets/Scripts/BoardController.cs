@@ -279,4 +279,9 @@ public class BoardController : MonoBehaviour
     {
         nextUnitList.Remove(deadUnit);
     }
+
+    public List<GameObject> getUnitList()
+    {
+        return unitList;
+    }
 }

@@ -7,14 +7,14 @@ public class IngameUIController : MonoBehaviour
 
     // Global variables
     protected GameObject gameController;
-    protected Component boardController;
+    protected List<GameObject> unitList;
 
     // Use this for initialization
     void Start()
     {
         // Get the gameController
         gameController = GameObject.FindGameObjectWithTag("GameController");
-        boardController = gameController.GetComponent<BoardController>();
+        unitList = gameController.GetComponent<BoardController>().getUnitList(); // For now get the unit list that is in the BoardController
 
         // Initiate the champions for the player on the positions that are wished
 
@@ -30,17 +30,17 @@ public class IngameUIController : MonoBehaviour
     {
         if (championNumber == 1)
         {
-
+            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[0]);
         }
 
         if (championNumber == 2)
         {
-
+            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[1]);
         }
 
         if (championNumber == 3)
         {
-
+            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[2]);
         }
     }
 }

@@ -110,15 +110,7 @@ public class TileDetector : MonoBehaviour
                     // If your unit
                     if (unitPlayerID == myPlayerID)
                     {
-                        if (unitHasBeenSelected == true)
-                        {
-                            unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
-                            unitSelected.GetComponent<UnitController>().hidePathFeedback();
-                        }
-                        unitHasBeenSelected = true;
-                        unitSelected = hoverOverUnit; // change the unit selected
-                        unitSelected.GetComponent<UnitController>().IsSelected();
-                        unitSelected.GetComponent<UnitController>().showPathFeedback();
+                        selectPlayerUnit(hoverOverUnit);
                         return;
                     }
 
@@ -172,5 +164,18 @@ public class TileDetector : MonoBehaviour
                 prevUnitSelected = null;
             }
         }
+    }
+
+    public void selectPlayerUnit(GameObject unitToSelect)
+    {
+        if (unitHasBeenSelected == true)
+        {
+            unitSelected.GetComponent<UnitController>().removeSelectionFeedback();
+            unitSelected.GetComponent<UnitController>().hidePathFeedback();
+        }
+        unitHasBeenSelected = true;
+        unitSelected = unitToSelect; // change the unit selected
+        unitSelected.GetComponent<UnitController>().IsSelected();
+        unitSelected.GetComponent<UnitController>().showPathFeedback();
     }
 }
