@@ -60,6 +60,26 @@ public class TileDetector : MonoBehaviour
             unitSelected = new GameObject();
         }
 
+        //select unit shortcut
+        if (Input.GetKeyDown("1"))
+        {
+            int unitsInTeam = 3;
+            int teamOffset = myTeamID * unitsInTeam;
+            GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[teamOffset]);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            int unitsInTeam = 3;
+            int teamOffset = myTeamID * unitsInTeam;
+            GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[1+teamOffset]);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            int unitsInTeam = 3;
+            int teamOffset = myTeamID * unitsInTeam;
+            GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[2+teamOffset]);
+        }
+
         if (Input.GetKeyDown("s"))
         {
             // Switch player ID
