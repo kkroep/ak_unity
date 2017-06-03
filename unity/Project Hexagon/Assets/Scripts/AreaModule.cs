@@ -34,6 +34,8 @@ public class AreaModule : MonoBehaviour {
 
         tileProperties = gameController.GetComponent<BoardController>().tileProperties;
 
+        // initialize FoV corretly
+        Update_FoV(GetComponent<UnitController>().getCurrentPosition()[0], GetComponent<UnitController>().getCurrentPosition()[1]);
     }
 	
     // Update is called once per frame
