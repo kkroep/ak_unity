@@ -82,9 +82,12 @@
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\AreaModule.cs" />
     <Compile Include="Assets\Scripts\BoardController.cs" />
+    <Compile Include="Assets\Scripts\ChampionButton.cs" />
     <Compile Include="Assets\Scripts\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\HexMath.cs" />
     <Compile Include="Assets\Scripts\HexagonScript.cs" />
+    <Compile Include="Assets\Scripts\IngameUIController.cs" />
+    <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\TileController.cs" />
     <Compile Include="Assets\Scripts\TileDetector.cs" />
     <Compile Include="Assets\Scripts\UnitController.cs" />

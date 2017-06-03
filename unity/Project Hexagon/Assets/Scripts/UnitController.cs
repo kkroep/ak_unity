@@ -120,6 +120,8 @@ public class UnitController : MonoBehaviour
 
     public void nextAttack()
     {
+        if (goalType == 0)
+            return;
         // normal attack is with target and and goalType 1. If any attack has no target. remove the target.
         if (attackTarget == null)
         {
