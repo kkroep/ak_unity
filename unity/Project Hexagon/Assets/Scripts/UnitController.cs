@@ -49,6 +49,14 @@ public class UnitController : MonoBehaviour
     protected int[,] neighbors;
     protected HexMath hexMath;
 
+    // flags for end turn mechanics
+    bool attackOnGround;
+    bool hasMoved;
+    bool scheduledSkillMovement;
+    bool scheduledAttack;
+    bool scheduledHit;
+    bool scheduledNormalMovement;
+
     void Start()
     {
         neighbors = new int[6, 2] {                 { 0, 1 },
@@ -115,6 +123,116 @@ public class UnitController : MonoBehaviour
         goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition(); // set new goal
         CalculatePath(); // calculate path towards attack goal
     }
+
+    /* handle everything that should happen before the beginning of the next attack sequence
+     */
+    public void beginTurn()
+    {
+        // reset logic scheduling flags
+        hasMoved = false;
+        attackOnGround = false;
+
+        // reset animation scheduling flags
+        scheduledSkillMovement = false;
+        scheduledAttack = false;
+        scheduledHit = false;
+        scheduledNormalMovement = false;
+    }
+    
+    /* Check whether the unit wanhts to perform a missile attack and if the target is in range
+     * If the target is in range, schedule an attack on ground
+     * Finally set the goal to staying in the place it currently is in
+     */
+    public void scheduleMissileAttack()
+    {
+        //if it already did something this turn
+        if (hasMoved)
+            return;
+    }
+
+    /* If a skill involving movement is executed, 
+     * move the character logically, 
+     * and schedule an execute skill movement with a type
+            return;
+     * The character model doesn't move in this function
+     */
+    public void skillMovement()
+    {
+        if (hasMoved)
+            return;
+    }
+
+    /* If an attack on ground is scheduled, 
+     * perform the attack, and calculate what units are hit with what damage
+     * then schedule an animation for the attack ground
+     */
+    public void attackGround()
+    {
+        if (hasMoved)
+            return;
+    }
+
+    /* Figure out whether the target is in range 
+     * and if so immediately attack the target
+     */
+    public void attackMelee()
+    {
+        if (hasMoved)
+            return;
+    }
+
+    /* calculate all the effects of being hit and schedule the appropriate animations for it
+     * also check if the unit died this turn, together with scheduling the death animation
+     */
+    public void calculateHit()
+    {
+        if (hasMoved)
+            return;
+    }
+
+    /* If the unit has done nothing at this point and still wants to move normally it can do so here
+     * The unit is logically moved, but the animation is scheduled
+     */
+    public void normalMovement()
+    {
+        if (hasMoved)
+            return;
+    }
+
+    /* execute the animation for skill movement if scheduled
+     */
+    public void animateSkillMovement()
+    {
+        if (scheduledSkillMovement)
+            return;
+    }
+
+    /* execute the animation for attack if scheduled
+     */
+    public void animateAttack()
+    {
+        if (scheduledAttack)
+            return;
+    }
+
+    /* execute the animation for being hit (and maybe died) if scheduled
+     */
+    public void animateHit()
+    {
+        if (scheduledHit)
+            return;
+    }
+
+    /* execute the animation for normal movement if scheduled
+     */
+    public void animateNormalMovement()
+    {
+        if (scheduledNormalMovement)
+            return;
+    }
+
+
+
 
 
 
