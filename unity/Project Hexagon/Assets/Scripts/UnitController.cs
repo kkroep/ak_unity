@@ -52,6 +52,7 @@ public class UnitController : MonoBehaviour
     // flags for end turn mechanics
     bool attackOnGround;
     bool hasMoved;
+    bool hasDied;
     bool scheduledSkillMovement;
     bool scheduledAttack;
     bool scheduledHit;
@@ -76,6 +77,7 @@ public class UnitController : MonoBehaviour
 
         turn = 0;
         setUnitParameters();
+        hasDied = false;
     }
 
     protected virtual void setUnitParameters() {
@@ -146,19 +148,19 @@ public class UnitController : MonoBehaviour
     public void scheduleMissileAttack()
     {
         //if it already did something this turn
-        if (hasMoved)
+        if (hasMoved || hasDied)
             return;
     }
 
     /* If a skill involving movement is executed, 
      * move the character logically, 
      * and schedule an execute skill movement with a type
-            return;
      * The character model doesn't move in this function
+     * One more important thing: even if no skill is executed, units standing still will still have to claim positions
      */
     public void skillMovement()
     {
-        if (hasMoved)
+        if (hasMoved || hasDied)
             return;
     }
 
@@ -168,7 +170,7 @@ public class UnitController : MonoBehaviour
      */
     public void attackGround()
     {
-        if (hasMoved)
+        if (hasMoved || hasDied)
             return;
     }
 
@@ -177,17 +179,32 @@ public class UnitController : MonoBehaviour
      */
     public void attackMelee()
     {
-        if (hasMoved)
+        if (hasMoved || hasDied)
             return;
-    }
 
-    /* calculate all the effects of being hit and schedule the appropriate animations for it
-     * also check if the unit died this turn, together with scheduling the death animation
-     */
-    public void calculateHit()
-    {
-        if (hasMoved)
+        // TODO: check if attack type is a melee attack. If not , stop the function immediately
+        if (goalType != 1)
             return;
+
+        UnitController target = attackTarget.GetComponent<UnitController>();
+        if (target.getHealth() <= 0)
+            {
+                moveQueue.Clear();
+                // If the target is already dead, proceed to standing there and idle around
+                setTileGoal(x, y, 0);
+                return;
+            }
+
+        // update goal
+        goalCoordinates = target.getCurrentPosition();
+
+        // If in range of target, proceed to melee attack, and scheduling animation
+        //Debug.Log(hexMath.hexDistance(x - goalCoordinates[0], y - goalCoordinates[1]));
+        if (hexMath.hexDistance(x - goalCoordinates[0], y - goalCoordinates[1]) <= 2) {
+            target.reduceHealth((float)attack);
+            scheduledAttack = true; // schedule animation
+            hasMoved = true;
+        }
     }
 
     /* If the unit has done nothing at this point and still wants to move normally it can do so here
@@ -195,15 +212,74 @@ public class UnitController : MonoBehaviour
      */
     public void normalMovement()
     {
-        if (hasMoved)
+        if (hasDied)
             return;
+        // if the unit has already done something, or no desire to change positions, quit out after setting a firm priority
+        if (x == goalCoordinates[0] && y == goalCoordinates[1] || hasMoved)
+        {
+            priority = 100;
+            next_x = x;
+            next_y = y;
+        }else if (moveQueue.Count == 0 || moveQueue[moveQueue.Count-1]!=goalCoordinates)
+        {
+            // if the path does not need to the desired destination, recalculate the path
+            CalculatePath();
+            priority = 0;
+            next_x = moveQueue[0][0]; // Try to claim this position
+            next_y = moveQueue[0][1];
+        }else
+        {
+            priority = 0;
+            next_x = moveQueue[0][0]; // Try to claim this position
+            next_y = moveQueue[0][1];
+        }
+
+        // Get the potential unit from the unitMatrix
+        GameObject potentialUnit = gameController.GetComponent<BoardController>().getNextStepLocation(next_x, next_y);
+
+        // If spot is empty, claim it, and write it to the nextStepMatrix! Then write in it's memory it's potential next step
+        if (potentialUnit == null)
+        {
+            gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
+            //GetComponent<AreaModule>().Update_FoV(next_x,next_y);
+            scheduledNormalMovement = true; // schedule the animation for a normal movement
+            if (moveQueue.Count != 0)
+            {
+                moveQueue.RemoveAt(0); // Remove executed entry from the queue
+            }
+        }
+
+        // Resolve conflict
+        else
+        {
+            if (potentialUnit.GetComponent<UnitController>().getPriority() >= priority)
+            {
+                // If other unit it's priority is higher or was earlier than you, wait!
+                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, x, y);
+                next_x = x;
+                next_y = y;
+                priority = 100;
+            }
+
+            // If other unit's priority is lower, tell him to step back and claim the position
+            else
+            {
+                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
+                potentialUnit.GetComponent<UnitController>().stepBack();
+                scheduledNormalMovement = true; 
+            }
+        }
+
+        // if the unit ended up not mioving, make sure there is no animation
+        if (next_x == x && next_y == y)
+            scheduledNormalMovement = false;
     }
 
     /* execute the animation for skill movement if scheduled
      */
     public void animateSkillMovement()
     {
-        if (scheduledSkillMovement)
+        if (scheduledSkillMovement==false)
             return;
     }
 
@@ -211,7 +287,7 @@ public class UnitController : MonoBehaviour
      */
     public void animateAttack()
     {
-        if (scheduledAttack)
+        if (scheduledAttack==false)
             return;
     }
 
@@ -219,16 +295,35 @@ public class UnitController : MonoBehaviour
      */
     public void animateHit()
     {
-        if (scheduledHit)
+        if (scheduledHit==false)
             return;
+
+        // First check if unit DIEDED
+        if (health == 0)
+        {
+            killYourself(); // it dieded
+        }
     }
 
     /* execute the animation for normal movement if scheduled
      */
     public void animateNormalMovement()
     {
-        if (scheduledNormalMovement)
+        if (scheduledNormalMovement==false)
             return;
+
+        //Debug.Log("mopving from (" + x + "," + y + ") to (" + next_x + "," + next_y + ")");
+
+        // Get the new tile remove feedback (thus position)
+        GameObject newTile = gameController.GetComponent<BoardController>().getTile(next_x, next_y); // Get the new tile
+        newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
+
+        // Move the unit to the new tile
+        gameController.GetComponent<BoardController>().setUnit(next_x, next_y, gameObject); // Sets THIS unit to new position in the matrix
+        x = next_x; // Set new unit coordinates
+        y = next_y;
+        transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position            
+        GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
     }
 
 
@@ -404,7 +499,7 @@ public class UnitController : MonoBehaviour
     public void stepBack()
     {
         moveQueue.Insert(0, new int[] { next_x, next_y });
-        nextStep();
+        scheduledNormalMovement = false; // remove attempted move
     }
 
 
@@ -449,25 +544,17 @@ public class UnitController : MonoBehaviour
         //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
     }
 
-    public int getPlayerID()
-    {
-        return playerID;
-    }
+    public int getPlayerID(){
+        return playerID;}
 
-    public void setPlayerID(int newID)
-    {
-        playerID = newID;
-    }
+    public void setPlayerID(int newID){
+        playerID = newID;}
 
-    public int getTeamID()
-    {
-        return teamID;
-    }
+    public int getTeamID(){
+        return teamID;}
 
-    public void setTeamID(int newID)
-    {
-        teamID = newID;
-    }
+    public void setTeamID(int newID){
+        teamID = newID;}
 
     public void set(int new_x, int new_y)
     {
@@ -477,10 +564,8 @@ public class UnitController : MonoBehaviour
         next_y = y;
     }
 
-    public int getPriority()
-    {
-        return priority;
-    }
+    public int getPriority(){
+        return priority;}
 
     public int[] getCurrentPosition()
     {
@@ -511,20 +596,22 @@ public class UnitController : MonoBehaviour
         {
             health = 0;
         }
+        // schedule a "took damage" animation
+        scheduledHit = true;
     }
 
     public void killYourself()
     {
-        gameController.GetComponent<BoardController>().removeFromUnitList(gameObject);
+        //gameController.GetComponent<BoardController>().removeFromUnitList(gameObject);
         gameController.GetComponent<BoardController>().setUnit(x, y, null);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         Destroy(transform.GetChild(0).gameObject);
 
         hidePathFeedback();
         moveQueue = null;
-
         goalCoordinates = null;
         attackTarget = null;
+        hasDied = true;
 
     }
 }

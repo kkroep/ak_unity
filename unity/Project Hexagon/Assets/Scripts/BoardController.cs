@@ -49,11 +49,9 @@ public class BoardController : MonoBehaviour
         List<string> txtFileAsLines = new List<string>();
         txtFileAsLines.AddRange(txtFileAsOneLine.Split("\n"[0]));
         oneLine = txtFileAsLines[0].Split(" "[0]);
-        Debug.Log(oneLine[0]);
 
         boardsize[0] = int.Parse(oneLine[0]);
         boardsize[1] = int.Parse(oneLine[1]);
-        Debug.Log(boardsize[0]+","+boardsize[1]);
 
         tileProperties = new int[boardsize[0], boardsize[1]];
         for (int j = 0; j < boardsize[1]; j++)
@@ -127,6 +125,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 6, 18 };
         GameObject Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -136,6 +135,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 2, 14 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -145,6 +145,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 6, 6 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -155,6 +156,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 14, 14 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -164,6 +166,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 18, 6 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -173,6 +176,7 @@ public class BoardController : MonoBehaviour
         unitLoc = new int[2] { 14, 2 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
         Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
         unitList.Add(Unit);
@@ -189,45 +193,52 @@ public class BoardController : MonoBehaviour
         // each time spacebar is pressed, make units move
         if (Input.GetKeyDown("space"))
         {
-            nextUnitList = unitList;
-
-
-            // Call the attack order of each object in the list
-            // Update the new unit positions if needed
+            /************ LOGIC PART ***********/
+            // 0: begin Turn
             foreach (GameObject selectedUnit in unitList.ToArray())
-            {
-                selectedUnit.GetComponent<UnitController>().nextAttack();
-            }
+                selectedUnit.GetComponent<UnitController>().beginTurn();
 
-
+            // 1: schedule missile attacks (normal and special)
             foreach (GameObject selectedUnit in unitList.ToArray())
-            {
-                selectedUnit.GetComponent<UnitController>().executeNextAttack();
-            }
+                selectedUnit.GetComponent<UnitController>().scheduleMissileAttack();
 
-
-            // Check who dieded
+            // 2: perform skill based movements
             foreach (GameObject selectedUnit in unitList.ToArray())
-            {
-                selectedUnit.GetComponent<UnitController>().nextDieded();
-            }
+                selectedUnit.GetComponent<UnitController>().skillMovement();
 
-            unitList = nextUnitList;
-
-            // Calculate the next step the unit is going to make, and try to claim a position in the new matrix. Conflicts are all resolved here!
+            // 3: execute attack on ground attacks
             foreach (GameObject selectedUnit in unitList.ToArray())
-            {
-                selectedUnit.GetComponent<UnitController>().nextStep();
-            }
+                selectedUnit.GetComponent<UnitController>().attackGround();
+
+            // 4: execute melee attacks (normal and special)
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().attackMelee();
+
+            // 5: perform normal movements
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().normalMovement();
+
+            /************ ANIMATION PART ***********/
+            // 1: animate all skill based movements
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().animateSkillMovement();
+
+            // 2: animate all attacks
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().animateAttack();
+
+            // 3: animate all hits
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().animateHit();
+                    
+            // 4: animate all normal movements
+            foreach (GameObject selectedUnit in unitList.ToArray())
+                selectedUnit.GetComponent<UnitController>().animateNormalMovement();
+
+
 
             unitMatrix = nextStepMatrix;
             nextStepMatrix = new GameObject[boardsize[0], boardsize[1]]; // clear the nextStepMatrix
-
-            // Call the movement of each object in the list
-            foreach (GameObject selectedUnit in unitList.ToArray())
-            {
-                selectedUnit.GetComponent<UnitController>().executeNextStep();
-            }
         }
     }
 
