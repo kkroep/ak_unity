@@ -123,8 +123,8 @@ public class BoardController : MonoBehaviour
         int[] unitLoc = new int[2] {0,0};
         // Spawn the first units
 
-
-        unitLoc = new int[2] { 3, 8 };
+        //player 1's units
+        unitLoc = new int[2] { 6, 18 };
         GameObject Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -133,7 +133,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
 
-        unitLoc = new int[2] { 4, 4 };
+        unitLoc = new int[2] { 2, 14 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -142,7 +142,17 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
 
-        unitLoc = new int[2] { 12, 12 };
+        unitLoc = new int[2] { 6, 6 };
+        Unit = Instantiate(Archer);
+        Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
+        Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
+        unitList.Add(Unit);
+        Unit.GetComponent<UnitController>().setPlayerID(0);
+        Unit.GetComponent<UnitController>().setTeamID(0);
+
+        //player 2's units
+        unitLoc = new int[2] { 14, 14 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -151,7 +161,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
 
-        unitLoc = new int[2] { 13, 4 };
+        unitLoc = new int[2] { 18, 6 };
         Unit = Instantiate(Archer);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -160,6 +170,15 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
 
+        unitLoc = new int[2] { 14, 2 };
+        Unit = Instantiate(Archer);
+        Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
+        unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
+        Unit.transform.position = tileMatrix[unitLoc[0],unitLoc[1]].transform.position;
+        unitList.Add(Unit);
+        Unit.GetComponent<UnitController>().setPlayerID(1);
+        Unit.GetComponent<UnitController>().setTeamID(1);
+        
         // Start the timer
         StartCoroutine(TurnTimer()); // Start the turntimer!!!
     }

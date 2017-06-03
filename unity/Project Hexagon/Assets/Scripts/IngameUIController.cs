@@ -28,19 +28,10 @@ public class IngameUIController : MonoBehaviour
 
     public void selectChampion(int championNumber)
     {
-        if (championNumber == 1)
-        {
-            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[0]);
-        }
+        int teamOffset = -1;
+        if (gameController.GetComponent<TileDetector>().getTeamID() == 1)
+            teamOffset = 2;
 
-        if (championNumber == 2)
-        {
-            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[1]);
-        }
-
-        if (championNumber == 3)
-        {
-            gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[2]);
-        }
+        gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[championNumber+teamOffset]);
     }
 }

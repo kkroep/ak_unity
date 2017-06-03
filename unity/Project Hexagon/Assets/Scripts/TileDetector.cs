@@ -178,4 +178,9 @@ public class TileDetector : MonoBehaviour
         unitSelected.GetComponent<UnitController>().IsSelected();
         unitSelected.GetComponent<UnitController>().showPathFeedback();
     }
+
+    public int getTeamID()
+    {
+        return myTeamID;
+    }
 }

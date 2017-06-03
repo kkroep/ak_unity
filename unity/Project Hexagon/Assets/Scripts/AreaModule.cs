@@ -98,7 +98,7 @@ public class AreaModule : MonoBehaviour {
         {
             for (int j = 1; j < 8; j++)
             {
-                if (x + i - 4 >= 0 && x + i - 4 < 20 && y + j - 4 >= 0 && y + j - 4 < 20)
+                if (x + i - 4 >= 0 && x + i - 4 < 21 && y + j - 4 >= 0 && y + j - 4 < 21)
                 {
                     if (tileProperties[x + i - 4, y + j - 4] == 0)
                     {
@@ -117,13 +117,13 @@ public class AreaModule : MonoBehaviour {
             {
                 //Debug.Log(current_FoV[i,j]);
                 //Debug.Log("moved (" + moved[0]+","+moved[1]+")");
-                if (new_FoV[i, j] > current_FoV[i + moved[0], j + moved[1]] && x + i >= 4 && x+i-4 < 20 && y + j >= 4 && y+j-4 < 20)
+                if (new_FoV[i, j] > current_FoV[i + moved[0], j + moved[1]] && x + i >= 4 && x+i-4 < 21 && y + j >= 4 && y+j-4 < 21)
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
                     //Debug.Log("add_FoV (" + (x + i - 4) + "," + (y + j - 4) + ")");
                     gameController.GetComponent<BoardController>().getTile(x + i - 4, y + j - 4).GetComponent<HexagonScript>().setFoV(team);
                 }
-                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-4-moved[0] >= 0 && x+i-4-moved[0] < 20 && y+j-4-moved[1] >= 0 && y+j-4-moved[1] < 20)
+                if (current_FoV[i,j]>new_FoV[i-moved[0],j-moved[1]] && x+i-4-moved[0] >= 0 && x+i-4-moved[0] < 21 && y+j-4-moved[1] >= 0 && y+j-4-moved[1] < 21)
                 //if (new_FoV[i,j]>0 && x+i >= 4 && y+j >= 4)
                 {
                     //Debug.Log("del_FoV (" + (x+i-4-moved[0]) + "," + (y+j-4-moved[1]) + ")");
@@ -140,19 +140,19 @@ public class AreaModule : MonoBehaviour {
     }
     
     public void setNoFoV(int x, int y) {
-        if(x>=0 && y >=0 && x<20 && y<20)
+        if(x>=0 && y >=0 && x<21 && y<21)
             gameController.GetComponent<BoardController>().getTile(x, y).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
         return;
     }
 
     public void setFoV(int x, int y) {
-        if(x>=0 && y >=0 && x<20 && y<20)
+        if(x>=0 && y >=0 && x<21 && y<21)
             gameController.GetComponent<BoardController>().getTile(x, y).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
         return;
     }
 
     public void setTerritorium(int x, int y, int force) {
-        if(x>=0 && y >=0 && x<20 && y<20)
+        if(x>=0 && y >=0 && x<21 && y<21)
             gameController.GetComponent<BoardController>().getTile(x, y).GetComponent<HexagonScript>().claimTerritorium(turn, team, force);
         return;
     }
