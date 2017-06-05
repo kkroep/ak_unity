@@ -20,6 +20,10 @@ public class HexagonScript : MonoBehaviour
     {
         FoVChild = gameObject.transform.GetChild(0).gameObject;
         FoVCounter = new int[2] { 0, 0 };
+
+        // set the offset of the textures to create global alignment
+        GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(transform.position.x, transform.position.z));
+
         return;
     }
 

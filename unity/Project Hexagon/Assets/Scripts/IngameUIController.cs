@@ -32,5 +32,6 @@ public class IngameUIController : MonoBehaviour
         int teamOffset = gameController.GetComponent<TileDetector>().getTeamID() * unitsInTeam;
 
         gameController.GetComponent<TileDetector>().selectPlayerUnit(unitList[championNumber-1+teamOffset]);
+        gameController.GetComponent<BoardController>().setCameraTarget(unitList[championNumber - 1 + teamOffset].transform.position);
     }
 }

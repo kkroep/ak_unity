@@ -38,8 +38,12 @@ public class BoardController : MonoBehaviour
 
     //reading map
     public TextAsset mapTextFile;
+    public TextAsset heightTextFile;
     public int[,] tileProperties;
+    public  float[,] heightProperties;
 
+    // Camera related
+    private CameraController Camera;
 
     void Start ()
     {
@@ -63,12 +67,28 @@ public class BoardController : MonoBehaviour
             }
         }
 
+        // sequence to parse textfile. This time for heights
+        txtFileAsOneLine = heightTextFile.text;
+        txtFileAsLines = new List<string>();
+        txtFileAsLines.AddRange(txtFileAsOneLine.Split("\n"[0]));
+
+        heightProperties = new float[boardsize[0], boardsize[1]];
+        for (int j = 0; j < boardsize[1]; j++)
+        {
+            oneLine = txtFileAsLines[j].Split(" "[0]);
+            for (int i = 0; i < boardsize[0]; i++)
+            {
+                heightProperties[i, j] = float.Parse(oneLine[i])*0.1f;
+            }
+        }
 
         tileMatrix = new GameObject[boardsize[0], boardsize[1]];
         unitMatrix = new GameObject[boardsize[0], boardsize[1]];
         nextStepMatrix = new GameObject[boardsize[0], boardsize[1]];
         hexMath = gameObject.GetComponent<HexMath>(); // Takes the HexMath script from the Game Control
     
+        // find the camera for the move to camera function
+        Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
 
 
         for (int i = 0; i < boardsize[0]; i++) // Generate the X hexagons
@@ -81,7 +101,8 @@ public class BoardController : MonoBehaviour
                 
                 GameObject hexagon = Instantiate(HexagonTile);
                 hexagon.transform.SetParent(transform); // Puts the tile under TileManager and gives the same transform
-                hexagon.transform.localPosition = new Vector3(x,0,y);
+                hexagon.transform.localPosition = new Vector3(x,heightProperties[i,j],y);
+                hexagon.transform.GetChild(0).transform.position += new Vector3(0,0.5f-heightProperties[i,j],0); // first child is undiscovered
                 hexagon.GetComponent<HexagonScript>().set(i, j);
 
                 if (tileProperties[i,j]==0)
@@ -91,6 +112,7 @@ public class BoardController : MonoBehaviour
                     hexagon.GetComponent<MeshRenderer>().enabled = false;
                     hexagon.GetComponent<MeshCollider>().enabled = false;
                     hexagon.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+                    hexagon.transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
                 }
                 if (tileProperties[i, j] == 2) {
                     //mountain
@@ -133,7 +155,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setTeamID(0);
 
         unitLoc = new int[2] { 2, 14 };
-        Unit = Instantiate(Archer);
+        Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -143,7 +165,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setTeamID(0);
 
         unitLoc = new int[2] { 6, 6 };
-        Unit = Instantiate(Archer);
+        Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -154,7 +176,7 @@ public class BoardController : MonoBehaviour
 
         //player 2's units
         unitLoc = new int[2] { 14, 14 };
-        Unit = Instantiate(Archer);
+        Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -164,7 +186,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setTeamID(1);
 
         unitLoc = new int[2] { 18, 6 };
-        Unit = Instantiate(Archer);
+        Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -174,7 +196,7 @@ public class BoardController : MonoBehaviour
         Unit.GetComponent<UnitController>().setTeamID(1);
 
         unitLoc = new int[2] { 14, 2 };
-        Unit = Instantiate(Archer);
+        Unit = Instantiate(Hoplite);
         Unit.GetComponent<UnitController>().set(unitLoc[0],unitLoc[1]);
         Unit.GetComponent<UnitController>().setTileGoal(unitLoc[0],unitLoc[1],0);
         unitMatrix[unitLoc[0], unitLoc[1]] = Unit;
@@ -313,5 +335,11 @@ public class BoardController : MonoBehaviour
     public List<GameObject> getUnitList()
     {
         return unitList;
+    }
+
+    // function to change the camera to center around a selected unit
+    public void setCameraTarget(Vector3 target)
+    {
+        Camera.setTarget(target);
     }
 }

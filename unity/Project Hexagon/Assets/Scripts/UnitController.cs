@@ -508,7 +508,7 @@ public class UnitController : MonoBehaviour
         foreach (int[] location in moveQueue)
         {
             currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = true; // Enable the ring
+            currentTile.gameObject.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = true; // Enable the ring
         }
     }
 
@@ -517,31 +517,37 @@ public class UnitController : MonoBehaviour
         foreach (int[] location in moveQueue)
         {
             currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(location[0], location[1])); // Get the tile
-            currentTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false; // Disable the ring
+            currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false; // Disable the ring
         }
     }
 
     private void createSelectionRing()
     {
-        selectedRing = Instantiate(selectedRing);
+
+        /*selectedRing = Instantiate(selectedRing);
         selectedRing.transform.SetParent(gameObject.transform);
-        selectedRing.transform.localPosition = new Vector3(0, selectedRing.transform.localPosition.y, 0);
-        selectedRing.GetComponent<MeshRenderer>().enabled = false;
+        selectedRing.transform.localPosition = new Vector3(0, selectedRing.transform.localPosition.y, 0);*/
     }
 
     public void IsSelected()
     {
         // Feedback to user that he selected this unit
-        selectedRing.GetComponent<MeshRenderer>().enabled = true;
+        //selectedRing.GetComponent<MeshRenderer>().enabled = true;
+        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile
+        //currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = true; // Disable the ring 
+        transform.GetChild(1).GetComponent<Renderer>().enabled = true;
+    
     }
 
     public void removeSelectionFeedback()
     {
-        selectedRing.GetComponent<MeshRenderer>().enabled = false;
-
+        //selectedRing.GetComponent<MeshRenderer>().enabled = false;
+        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x,y)); // Get the tile
+        //currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false; // Disable the ring  
         // Changes Tile color
         //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile using it's current x and y positions
         //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
+        transform.GetChild(1).GetComponent<Renderer>().enabled = false;
     }
 
     public int getPlayerID(){

@@ -66,18 +66,21 @@ public class TileDetector : MonoBehaviour
             int unitsInTeam = 3;
             int teamOffset = myTeamID * unitsInTeam;
             GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[teamOffset]);
+            GetComponent<BoardController>().setCameraTarget(GetComponent<BoardController>().getUnitList()[teamOffset].transform.position);
         }
         if (Input.GetKeyDown("2"))
         {
             int unitsInTeam = 3;
             int teamOffset = myTeamID * unitsInTeam;
             GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[1+teamOffset]);
+            GetComponent<BoardController>().setCameraTarget(GetComponent<BoardController>().getUnitList()[1+teamOffset].transform.position);
         }
         if (Input.GetKeyDown("3"))
         {
             int unitsInTeam = 3;
             int teamOffset = myTeamID * unitsInTeam;
             GetComponent<TileDetector>().selectPlayerUnit(GetComponent<BoardController>().getUnitList()[2+teamOffset]);
+            GetComponent<BoardController>().setCameraTarget(GetComponent<BoardController>().getUnitList()[2+teamOffset].transform.position);
         }
 
         if (Input.GetKeyDown("s"))
