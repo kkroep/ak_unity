@@ -12,13 +12,13 @@ public class HexagonScript : MonoBehaviour
     public Material team_0_mat;
     public Material team_1_mat;
     public Material no_team_mat;
-    private GameObject FoVChild;
+    private GameObject undetected;
 
     int[] FoVCounter;
 
     public void Start()
     {
-        FoVChild = gameObject.transform.GetChild(0).gameObject;
+        undetected = gameObject.transform.GetChild(0).gameObject;
         FoVCounter = new int[2] { 0, 0 };
 
         // set the offset of the textures to create global alignment
@@ -79,13 +79,18 @@ public class HexagonScript : MonoBehaviour
     public void setNoFoV(int team) {
         FoVCounter[team]--;
         if (FoVCounter[0] == 0 && FoVCounter[1] == 0 && current_team == -1)
-            FoVChild.GetComponent<MeshRenderer>().enabled = true;
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     public void setFoV(int team) {
         FoVCounter[team]++;
         if (FoVCounter[team] == 1)
-            FoVChild.GetComponent<MeshRenderer>().enabled = false;
+        {
+            GetComponent<MeshRenderer>().enabled = true;
+            undetected.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
 

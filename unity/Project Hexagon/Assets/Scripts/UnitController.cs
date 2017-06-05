@@ -322,7 +322,7 @@ public class UnitController : MonoBehaviour
         gameController.GetComponent<BoardController>().setUnit(next_x, next_y, gameObject); // Sets THIS unit to new position in the matrix
         x = next_x; // Set new unit coordinates
         y = next_y;
-        transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position            
+        transform.position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
         GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
     }
 
