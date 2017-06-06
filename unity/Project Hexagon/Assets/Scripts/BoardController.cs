@@ -153,6 +153,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
+        Unit.transform.Rotate(new Vector3(0, -20, 0));
 
         unitLoc = new int[2] { 2, 14 };
         Unit = Instantiate(Hoplite);
@@ -163,6 +164,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
+        Unit.transform.Rotate(new Vector3(0, -70, 0));
 
         unitLoc = new int[2] { 6, 6 };
         Unit = Instantiate(Hoplite);
@@ -173,6 +175,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
+        Unit.transform.Rotate(new Vector3(0, -130, 0));
 
         //player 2's units
         unitLoc = new int[2] { 14, 14 };
@@ -184,6 +187,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
+        Unit.transform.Rotate(new Vector3(0, -310, 0));
 
         unitLoc = new int[2] { 18, 6 };
         Unit = Instantiate(Hoplite);
@@ -194,6 +198,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
+        Unit.transform.Rotate(new Vector3(0, -250, 0));
 
         unitLoc = new int[2] { 14, 2 };
         Unit = Instantiate(Hoplite);
@@ -204,6 +209,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
+        Unit.transform.Rotate(new Vector3(0, -190, 0));
         
         // Start the timer
         StartCoroutine(TurnTimer()); // Start the turntimer!!!
