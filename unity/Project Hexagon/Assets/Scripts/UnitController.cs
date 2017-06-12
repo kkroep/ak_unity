@@ -83,7 +83,7 @@ public class UnitController : MonoBehaviour
         turn = 0;
         setUnitParameters();
         hasDied = false;
-        speed = 0.05f;
+        speed = 0.03f;
         world_position = transform.position;
         actionController = GetComponent<ActionController>();
     }
