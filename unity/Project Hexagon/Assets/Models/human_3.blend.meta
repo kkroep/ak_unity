@@ -109,7 +109,1387 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Charge-Punch-F
+      takeName: Charge-Punch-F
+      firstFrame: -1
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Charge-Punch-M
+      takeName: Charge-Punch-M
+      firstFrame: -1
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle-F
+      takeName: Idle-F
+      firstFrame: -1
+      lastFrame: 139
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle-M
+      takeName: Idle-M
+      firstFrame: -1
+      lastFrame: 139
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left-Punch-F
+      takeName: Left-Punch-F
+      firstFrame: -1
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Left-Punch-M
+      takeName: Left-Punch-M
+      firstFrame: -1
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Rest
+      takeName: Rest
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Rest_001
+      takeName: Rest_001
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Run-F
+      takeName: Run-F
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Run-M
+      takeName: Run-M
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: T-pose
+      takeName: T-pose
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: T-Pose
+      takeName: T-Pose
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walk
+      takeName: Walk
+      firstFrame: -1
+      lastFrame: 15
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walk-F
+      takeName: Walk-F
+      firstFrame: -1
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HumanMale
+        weight: 1
+      - path: MaleArm
+        weight: 1
+      - path: MaleArm/COG
+        weight: 1
+      - path: MaleArm/COG/Back
+        weight: 1
+      - path: MaleArm/COG/Back/Neck
+        weight: 1
+      - path: MaleArm/COG/Back/Neck/Head
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Fingers1_Left/Fingers2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Left/Upperarm_Left/Forearm_Left/Hand_Left/Thumb1_Left/Thumb2_Left
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Fingers1_Right/Fingers2_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right
+        weight: 1
+      - path: MaleArm/COG/Back/Shoulder_Right/Upperarm_Right/Forearm_Right/Hand_Right/Thumb1_Right/Thumb2_Right
+        weight: 1
+      - path: MaleArm/COG/Hip
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Left/Shin_Left/Foot_Left/Toes_Left
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right
+        weight: 1
+      - path: MaleArm/COG/Hip/Thigh_Right/Shin_Right/Foot_Right/Toes_Right
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

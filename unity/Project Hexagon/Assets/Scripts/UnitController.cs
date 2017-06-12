@@ -52,13 +52,16 @@ public class UnitController : MonoBehaviour
     protected HexMath hexMath;
 
     // flags for end turn mechanics
-    bool attackOnGround;
-    bool hasMoved;
-    bool hasDied;
-    bool scheduledSkillMovement;
-    bool scheduledAttack;
-    bool scheduledHit;
-    bool scheduledNormalMovement;
+    protected bool attackOnGround;
+    protected bool hasMoved;
+    protected bool hasDied;
+    protected bool scheduledSkillMovement;
+    protected bool scheduledAttack;
+    protected bool scheduledHit;
+    protected bool scheduledNormalMovement;
+
+    // aniamtion and skill stuff
+    protected ActionController actionController;
 
     void Start()
     {
@@ -80,8 +83,9 @@ public class UnitController : MonoBehaviour
         turn = 0;
         setUnitParameters();
         hasDied = false;
-        speed = 0.1f;
+        speed = 0.05f;
         world_position = transform.position;
+        actionController = GetComponent<ActionController>();
     }
 
     private void Update()
@@ -298,6 +302,9 @@ public class UnitController : MonoBehaviour
     {
         if (scheduledAttack==false)
             return;
+
+        rotate2Neighbor(goalCoordinates[0] - x, goalCoordinates[1] - y);
+        actionController.punch();
     }
 
     /* execute the animation for being hit (and maybe died) if scheduled
@@ -332,7 +339,21 @@ public class UnitController : MonoBehaviour
 
 
         // get the correct angle
-        int neighbor_helper = next_x - x + (next_y - y) * 10; // to ensure a simple statement can be used for all angles
+        rotate2Neighbor(next_x - x, next_y - y);
+
+        x = next_x; // Set new unit coordinates
+        y = next_y;
+
+        actionController.walk();
+        world_position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
+        GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
+    }
+
+
+
+    public void rotate2Neighbor(int x, int y)
+    {
+        int neighbor_helper = x + y*10; // to ensure a simple statement can be used for all angles
         switch (neighbor_helper)
         {
             case 0:
@@ -358,15 +379,7 @@ public class UnitController : MonoBehaviour
             default:
                 break;
         }
-
-
-        x = next_x; // Set new unit coordinates
-        y = next_y;
-
-        world_position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
-        GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
     }
-
 
 
 
