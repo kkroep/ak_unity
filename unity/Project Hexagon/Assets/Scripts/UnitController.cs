@@ -21,9 +21,11 @@ public class UnitController : MonoBehaviour
     protected int teamID;
 
     protected int x, y; // Current coordinates of a certain unit
+    protected Vector3 world_position; // Current coordinates of a certain unit for animations
     protected int next_x, next_y;
     protected int priority;
     protected float health;
+    protected float speed;
     protected int turn;
     protected int attack;
     List<int[]> moveQueue = new List<int[]>(); // The list of places if it needs to move, else it's empty
@@ -78,6 +80,13 @@ public class UnitController : MonoBehaviour
         turn = 0;
         setUnitParameters();
         hasDied = false;
+        speed = 0.1f;
+        world_position = transform.position;
+    }
+
+    private void Update()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, world_position, speed);
     }
 
     protected virtual void setUnitParameters() {
@@ -320,9 +329,41 @@ public class UnitController : MonoBehaviour
 
         // Move the unit to the new tile
         gameController.GetComponent<BoardController>().setUnit(next_x, next_y, gameObject); // Sets THIS unit to new position in the matrix
+
+
+        // get the correct angle
+        int neighbor_helper = next_x - x + (next_y - y) * 10; // to ensure a simple statement can be used for all angles
+        switch (neighbor_helper)
+        {
+            case 0:
+                break;
+            case -10:
+                transform.eulerAngles = new Vector3 { x = 0, y = 0, z = 0 };
+                break;
+            case -1:
+                transform.eulerAngles = new Vector3 { x = 0, y = 60, z = 0 };
+                break;
+            case 9:
+                transform.eulerAngles = new Vector3 { x = 0, y = 120, z = 0 };
+                break;
+            case 10:
+                transform.eulerAngles = new Vector3 { x = 0, y = 180, z = 0 };
+                break;
+            case 1:
+                transform.eulerAngles = new Vector3 { x = 0, y = 240, z = 0 };
+                break;
+            case -9:
+                transform.eulerAngles = new Vector3 { x = 0, y = 300, z = 0 };
+                break;
+            default:
+                break;
+        }
+
+
         x = next_x; // Set new unit coordinates
         y = next_y;
-        transform.position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
+
+        world_position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
         GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
     }
 

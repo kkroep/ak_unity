@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AI.cs" />
+    <Compile Include="Assets\Scripts\ActionController.cs" />
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\AreaModule.cs" />
     <Compile Include="Assets\Scripts\BoardController.cs" />

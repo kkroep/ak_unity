@@ -143,6 +143,15 @@ public class BoardController : MonoBehaviour
         int[] unitLoc = new int[2] {0,0};
         // Spawn the first units
 
+        Vector3[] angles = {
+                         new Vector3 { x = 0, y = 0, z = 0 }, 
+                         new Vector3 { x = 0, y = 60, z = 0 }, 
+                         new Vector3 { x = 0, y = 120, z = 0 }, 
+                         new Vector3 { x = 0, y = 180, z = 0 }, 
+                         new Vector3 { x = 0, y = 240, z = 0 }, 
+                         new Vector3 { x = 0, y = 300, z = 0 } };
+
+
         //player 1's units
         unitLoc = new int[2] { 6, 18 };
         GameObject Unit = Instantiate(Hoplite);
@@ -153,7 +162,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
-        Unit.transform.Rotate(new Vector3(0, -20, 0));
+        Unit.transform.eulerAngles = angles[0];
 
         unitLoc = new int[2] { 2, 14 };
         Unit = Instantiate(Hoplite);
@@ -164,7 +173,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
-        Unit.transform.Rotate(new Vector3(0, -70, 0));
+        Unit.transform.eulerAngles = angles[5];
 
         unitLoc = new int[2] { 6, 6 };
         Unit = Instantiate(Hoplite);
@@ -175,7 +184,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(0);
         Unit.GetComponent<UnitController>().setTeamID(0);
-        Unit.transform.Rotate(new Vector3(0, -130, 0));
+        Unit.transform.eulerAngles = angles[4];
 
         //player 2's units
         unitLoc = new int[2] { 14, 14 };
@@ -187,7 +196,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
-        Unit.transform.Rotate(new Vector3(0, -310, 0));
+        Unit.transform.eulerAngles = angles[1];
 
         unitLoc = new int[2] { 18, 6 };
         Unit = Instantiate(Hoplite);
@@ -198,7 +207,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
-        Unit.transform.Rotate(new Vector3(0, -250, 0));
+        Unit.transform.eulerAngles = angles[2];
 
         unitLoc = new int[2] { 14, 2 };
         Unit = Instantiate(Hoplite);
@@ -209,7 +218,7 @@ public class BoardController : MonoBehaviour
         unitList.Add(Unit);
         Unit.GetComponent<UnitController>().setPlayerID(1);
         Unit.GetComponent<UnitController>().setTeamID(1);
-        Unit.transform.Rotate(new Vector3(0, -190, 0));
+        Unit.transform.eulerAngles = angles[3];
         
         // Start the timer
         StartCoroutine(TurnTimer()); // Start the turntimer!!!
