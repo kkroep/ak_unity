@@ -77,13 +77,10 @@ public class UnitController : MonoBehaviour
         hexMath = gameController.GetComponent<HexMath>(); // Takes the HexMath script from the Game Control
         boardSize = new int[gameController.GetComponent<BoardController>().boardsize[0], gameController.GetComponent<BoardController>().boardsize[1]];
 
-        //Create the ring that determines the feedback, hide it when not selected
-        createSelectionRing();
-
         turn = 0;
         setUnitParameters();
         hasDied = false;
-        speed = 0.03f;
+        speed = 0.12f;
         world_position = transform.position;
         actionController = GetComponent<ActionController>();
     }
@@ -153,7 +150,7 @@ public class UnitController : MonoBehaviour
         scheduledHit = false;
         scheduledNormalMovement = false;
     }
-    
+
     /* Check whether the unit wanhts to perform a missile attack and if the target is in range
      * If the target is in range, schedule an attack on ground
      * Finally set the goal to staying in the place it currently is in
@@ -201,12 +198,12 @@ public class UnitController : MonoBehaviour
 
         UnitController target = attackTarget.GetComponent<UnitController>();
         if (target.getHealth() <= 0)
-            {
-                moveQueue.Clear();
-                // If the target is already dead, proceed to standing there and idle around
-                setTileGoal(x, y, 0);
-                return;
-            }
+        {
+            moveQueue.Clear();
+            // If the target is already dead, proceed to standing there and idle around
+            setTileGoal(x, y, 0);
+            return;
+        }
 
         // update goal
         goalCoordinates = target.getCurrentPosition();
@@ -215,6 +212,7 @@ public class UnitController : MonoBehaviour
         //Debug.Log(hexMath.hexDistance(x - goalCoordinates[0], y - goalCoordinates[1]));
         if (hexMath.hexDistance(x - goalCoordinates[0], y - goalCoordinates[1]) <= 2) {
             target.reduceHealth((float)attack);
+            //target.get
             scheduledAttack = true; // schedule animation
             hasMoved = true;
         }
@@ -233,14 +231,14 @@ public class UnitController : MonoBehaviour
             priority = 100;
             next_x = x;
             next_y = y;
-        }else if (moveQueue.Count == 0 || moveQueue[moveQueue.Count-1]!=goalCoordinates)
+        } else if (moveQueue.Count == 0 || moveQueue[moveQueue.Count - 1] != goalCoordinates)
         {
             // if the path does not need to the desired destination, recalculate the path
             CalculatePath();
             priority = 0;
             next_x = moveQueue[0][0]; // Try to claim this position
             next_y = moveQueue[0][1];
-        }else
+        } else
         {
             priority = 0;
             next_x = moveQueue[0][0]; // Try to claim this position
@@ -279,7 +277,7 @@ public class UnitController : MonoBehaviour
             {
                 gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
                 potentialUnit.GetComponent<UnitController>().stepBack();
-                scheduledNormalMovement = true; 
+                scheduledNormalMovement = true;
             }
         }
 
@@ -289,10 +287,11 @@ public class UnitController : MonoBehaviour
     }
 
     /* execute the animation for skill movement if scheduled
+        //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
      */
     public void animateSkillMovement()
     {
-        if (scheduledSkillMovement==false)
+        if (scheduledSkillMovement == false)
             return;
     }
 
@@ -300,7 +299,7 @@ public class UnitController : MonoBehaviour
      */
     public void animateAttack()
     {
-        if (scheduledAttack==false)
+        if (scheduledAttack == false)
             return;
 
         rotate2Neighbor(goalCoordinates[0] - x, goalCoordinates[1] - y);
@@ -311,7 +310,7 @@ public class UnitController : MonoBehaviour
      */
     public void animateHit()
     {
-        if (scheduledHit==false)
+        if (scheduledHit == false)
             return;
 
         // First check if unit DIEDED
@@ -325,7 +324,7 @@ public class UnitController : MonoBehaviour
      */
     public void animateNormalMovement()
     {
-        if (scheduledNormalMovement==false)
+        if (scheduledNormalMovement == false)
             return;
 
         //Debug.Log("mopving from (" + x + "," + y + ") to (" + next_x + "," + next_y + ")");
@@ -346,14 +345,14 @@ public class UnitController : MonoBehaviour
 
         actionController.walk();
         world_position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
-        GetComponent<AreaModule>().Update_FoV(next_x,next_y); // Update Field of View
+        GetComponent<AreaModule>().Update_FoV(next_x, next_y); // Update Field of View
     }
 
 
 
     public void rotate2Neighbor(int x, int y)
     {
-        int neighbor_helper = x + y*10; // to ensure a simple statement can be used for all angles
+        int neighbor_helper = x + y * 10; // to ensure a simple statement can be used for all angles
         switch (neighbor_helper)
         {
             case 0:
@@ -381,175 +380,6 @@ public class UnitController : MonoBehaviour
         }
     }
 
-
-
-
-
-    public void nextAttack()
-    {
-        if (goalType == 0)
-            return;
-        // normal attack is with target and and goalType 1. If any attack has no target. remove the target.
-        if (attackTarget == null)
-        {
-            setTileGoal(x, y, 0); // if auto attacking, but has no target proceed to stop moving entirely
-            return;
-        }
-        else
-        {
-            // If target is dead -> cancel current moveorder, and clear the target and return
-            if (attackTarget.GetComponent<UnitController>().getHealth() <= 0)
-            {
-                moveQueue.Clear();
-                goalCoordinates = new int[] { x, y };
-                attackTarget = null;
-                return;
-            }
-            // update goal
-            goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition();
-
-            // if path endpoint != goal, recalculate path to the enemy target
-            if (moveQueue.Count != 0)
-            {
-                // reason for the else is that if movequeue is empty, it will give an exception error in the statement under
-                if (moveQueue[moveQueue.Count - 1] != goalCoordinates)
-            {
-                    CalculatePath();
-                }
-            }
-            else
-            {
-                CalculatePath();
-            }
-        }
-}
-
-    public virtual void executeNextAttack()
-    {
-        // if has target
-        if (attackTarget == null)
-            return;
-        else
-        {
-            // Check if can het target, if yes, attack
-
-            int diffx = goalCoordinates[0] - x;
-            int diffy = goalCoordinates[1] - y;
-
-            for (int i = 0; i < 6; i++)
-            {
-                if (neighbors[i, 0] == diffx && neighbors[i, 1] == diffy)
-                {
-                    // ATTACK
-                    attackTarget.GetComponent<UnitController>().reduceHealth((float)attack);
-                }
-            }
-        }
-    }
-
-
-    public void nextDieded()
-    {
-        // First check if unit DIEDED
-        if (health == 0)
-        {
-            killYourself(); // it dieded
-        }
-    }
-
-    public void nextStep()
-    {
-        // If unit does not want to move, execute this shit
-        if (moveQueue.Count == 0)
-        {
-            priority = 100;
-            next_x = x;
-            next_y = y;
-        }
-        else
-        {
-            priority = 0;
-            next_x = moveQueue[0][0]; // Try to claim this position
-            next_y = moveQueue[0][1];
-        }
-
-        // Get the potential unit from the unitMatrix
-        GameObject potentialUnit = gameController.GetComponent<BoardController>().getNextStepLocation(next_x, next_y);
-
-        // If spot is empty, claim it, and write it to the nextStepMatrix! Then write in it's memory it's potential next step
-        if (potentialUnit == null)
-        {
-            gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
-            GetComponent<AreaModule>().Update_FoV(next_x,next_y);
-            if (moveQueue.Count != 0)
-            {
-                moveQueue.RemoveAt(0); // Remove executed entry from the queue
-            }
-        }
-
-        // Resolve conflict
-        else
-        {
-            if (potentialUnit.GetComponent<UnitController>().getPriority() >= priority)
-            {
-                // If other unit it's priority is higher or was earlier than you, wait!
-                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, x, y);
-                next_x = x;
-                next_y = y;
-            }
-
-            // If other unit's priority is lower, tell him to step back and claim the position
-            else
-            {
-                gameController.GetComponent<BoardController>().setNextStepLocation(gameObject, next_x, next_y);
-                potentialUnit.GetComponent<UnitController>().stepBack();
-            }
-        }
-    }
-
-    public void executeNextStep()
-    {
-        // If unit does not want to move, execute this shit
-        if (next_x == x && next_y == y)
-        {
-            return;
-            turnsDoneNothing++;
-            // Defense mode here
-            enableDefenseMode();
-        }
-        else
-        {
-
-            // Reset turnsDoneNothing, and disable defense mode. We keep defense mode disabled, also if the unit has to wait one turn to step!
-            turnsDoneNothing = 0;
-            disableDefenseMode();
-
-            // Get the new tile remove feedback (thus position)
-            GameObject newTile = gameController.GetComponent<BoardController>().getTile(next_x, next_y); // Get the new tile
-            newTile.gameObject.transform.Find("PathingRing(Clone)").gameObject.GetComponent<MeshRenderer>().enabled = false;
-
-            // Move the unit to the new tile
-            gameController.GetComponent<BoardController>().setUnit(next_x, next_y, gameObject); // Sets THIS unit to new position in the matrix
-            x = next_x; // Set new unit coordinates
-            y = next_y;
-            transform.position = newTile.transform.position + new Vector3(0, transform.position.y, 0); // Place the unit to the new tile position
-        }
-    }
-
-    private void enableDefenseMode()
-    {
-        if (turnsDoneNothing == 2)
-        {
-
-        }
-    }
-
-
-    private void disableDefenseMode()
-    {
-
-    }
-
     public void stepBack()
     {
         moveQueue.Insert(0, new int[] { next_x, next_y });
@@ -575,46 +405,24 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    private void createSelectionRing()
-    {
 
-        /*selectedRing = Instantiate(selectedRing);
-        selectedRing.transform.SetParent(gameObject.transform);
-        selectedRing.transform.localPosition = new Vector3(0, selectedRing.transform.localPosition.y, 0);*/
-    }
+    public void IsSelected() {
+        transform.GetChild(1).GetComponent<Renderer>().enabled = true;}
 
-    public void IsSelected()
-    {
-        // Feedback to user that he selected this unit
-        //selectedRing.GetComponent<MeshRenderer>().enabled = true;
-        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile
-        //currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = true; // Disable the ring 
-        transform.GetChild(1).GetComponent<Renderer>().enabled = true;
-    
-    }
+    public void removeSelectionFeedback() {
+        transform.GetChild(1).GetComponent<Renderer>().enabled = false;}
 
-    public void removeSelectionFeedback()
-    {
-        //selectedRing.GetComponent<MeshRenderer>().enabled = false;
-        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x,y)); // Get the tile
-        //currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false; // Disable the ring  
-        // Changes Tile color
-        //currentTile = gameController.GetComponent<BoardController>().getTile(new Vector2(x, y)); // Get the tile using it's current x and y positions
-        //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
-        transform.GetChild(1).GetComponent<Renderer>().enabled = false;
-    }
+    public int getPlayerID() {
+        return playerID; }
 
-    public int getPlayerID(){
-        return playerID;}
+    public void setPlayerID(int newID) {
+        playerID = newID; }
 
-    public void setPlayerID(int newID){
-        playerID = newID;}
+    public int getTeamID() {
+        return teamID; }
 
-    public int getTeamID(){
-        return teamID;}
-
-    public void setTeamID(int newID){
-        teamID = newID;}
+    public void setTeamID(int newID) {
+        teamID = newID; }
 
     public void set(int new_x, int new_y)
     {
@@ -624,8 +432,8 @@ public class UnitController : MonoBehaviour
         next_y = y;
     }
 
-    public int getPriority(){
-        return priority;}
+    public int getPriority() {
+        return priority; }
 
     public int[] getCurrentPosition()
     {
@@ -633,20 +441,14 @@ public class UnitController : MonoBehaviour
         return ans;
     }
 
-    public int getX()
-    {
-        return x;
-    }
+    public int getX() {
+        return x;}
 
-    public int getY()
-    {
-        return y;
-    }
+    public int getY() {
+        return y;}
 
-    public float getHealth()
-    {
-        return health;
-    }
+    public float getHealth() { 
+        return health;}
 
     public void reduceHealth(float damageTaken)
     {
@@ -670,6 +472,7 @@ public class UnitController : MonoBehaviour
         hidePathFeedback();
         moveQueue = null;
         goalCoordinates = null;
+        //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
         attackTarget = null;
         hasDied = true;
 

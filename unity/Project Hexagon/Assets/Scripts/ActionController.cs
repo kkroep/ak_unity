@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class ActionController : MonoBehaviour {
     Animator anim;
+    public GameObject blood_particle;
 
 	// Use this for initialization
 	void Start () {
         anim = transform.GetChild(0).GetComponent<Animator>();
         anim.SetInteger("anim_type", 0);
+        
 	}
 	
 	// Update is called once per frame
@@ -30,5 +32,10 @@ public class ActionController : MonoBehaviour {
         anim.SetInteger("anim_type", anim_type);
         yield return new WaitForSeconds(timer); // Calls for the function WaitForSeconds. Yeild break breaks this.
         anim.SetInteger("anim_type", 0);
+    }
+
+    public void bleed() {
+        GameObject blood = Instantiate(blood_particle);
+        blood.transform.position = transform.position+new Vector3(0, 1.5f, 0);
     }
 }

@@ -13,7 +13,7 @@ public class Archer : UnitController {
         return;
     }
 
-    public override void executeNextAttack()
+    /*public override void executeNextAttack()
     {
         // if has target
         if (attackTarget == null)
@@ -33,6 +33,6 @@ public class Archer : UnitController {
                 
 
         }
-    }
+    }*/
 
 }

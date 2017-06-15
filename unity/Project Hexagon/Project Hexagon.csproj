@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\HexMath.cs" />
     <Compile Include="Assets\Scripts\HexagonScript.cs" />
     <Compile Include="Assets\Scripts\IngameUIController.cs" />
+    <Compile Include="Assets\Scripts\ParticleController.cs" />
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\TileController.cs" />
     <Compile Include="Assets\Scripts\TileDetector.cs" />
