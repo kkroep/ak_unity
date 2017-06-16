@@ -10,7 +10,7 @@ public class ParticleController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ps = GetComponent<ParticleSystem>();
-        target_pos = transform.position;
+        //target_pos = transform.position;
 	}
 	
 	// Update is called once per frame

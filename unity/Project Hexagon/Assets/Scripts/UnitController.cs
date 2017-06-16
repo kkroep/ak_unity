@@ -86,6 +86,7 @@ public class UnitController : MonoBehaviour
     }
 
     private void Update()
+
     {
         transform.position = Vector3.MoveTowards(transform.position, world_position, speed);
     }
@@ -120,29 +121,29 @@ public class UnitController : MonoBehaviour
     }
 
     // Type indicates what type of skill is used
-    public void setTileGoal(int x_new, int y_new, int newGoalType)
+    public void setTileGoal(int x_new, int y_new, int newSkillType)
     {
-        goalType = newGoalType;
+        //actionController.setSkillType(newSkillType);
         goalCoordinates = new int[] { x_new, y_new };
         attackTarget = null;
         CalculatePath();
     }
 
-    public void setUnitGoal(GameObject new_Target, int newGoalType)
+    public void setUnitGoal(GameObject new_Target, int newSkillType)
     {
-        goalType = newGoalType;
+        actionController.setSkillType(newSkillType);
         attackTarget = new_Target;
         goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition(); // set new goal
         CalculatePath(); // calculate path towards attack goal
     }
 
-    /* handle everything that should happen before the beginning of the next attack sequence
-     */
+    // handle everything that should happen before the beginning of the next attack sequence
     public void beginTurn()
     {
         // reset logic scheduling flags
         hasMoved = false;
         attackOnGround = false;
+
 
         // reset animation scheduling flags
         scheduledSkillMovement = false;
@@ -151,42 +152,51 @@ public class UnitController : MonoBehaviour
         scheduledNormalMovement = false;
     }
 
-    /* Check whether the unit wanhts to perform a missile attack and if the target is in range
-     * If the target is in range, schedule an attack on ground
-     * Finally set the goal to staying in the place it currently is in
-     */
+    // Check whether the unit wanhts to perform a missile attack and if the target is in range
+    // If the target is in range, schedule an attack on ground
+    // Finally set the goal to staying in the place it currently is in
     public void scheduleMissileAttack()
     {
         //if it already did something this turn
         if (hasMoved || hasDied)
             return;
+        if (actionController.checkIfMissileAttack())
+        {
+            Debug.Log("going for missile");
+            goalCoordinates = attackTarget.GetComponent<UnitController>().getCurrentPosition();
+            if (hexMath.hexDistance(x - goalCoordinates[0], y - goalCoordinates[1]) < actionController.getAttackRange(1)) {
+                attackOnGround = true;
+                Debug.Log("kill him!");
+            }
+        }
     }
 
-    /* If a skill involving movement is executed, 
-     * move the character logically, 
-     * and schedule an execute skill movement with a type
-     * The character model doesn't move in this function
-     * One more important thing: even if no skill is executed, units standing still will still have to claim positions
-     */
+    // If a skill involving movement is executed, 
+    // move the character logically, 
+    // and schedule an execute skill movement with a type
+    // The character model doesn't move in this function
+    // One more important thing: even if no skill is executed, units standing still will still have to claim positions
     public void skillMovement()
     {
         if (hasMoved || hasDied)
             return;
     }
 
-    /* If an attack on ground is scheduled, 
-     * perform the attack, and calculate what units are hit with what damage
-     * then schedule an animation for the attack ground
-     */
+    // If an attack on ground is scheduled, 
+    // perform the attack, and calculate what units are hit with what damage
+    // then schedule an animation for the attack ground
     public void attackGround()
     {
-        if (hasMoved || hasDied)
+        if (!attackOnGround || hasMoved || hasDied)
             return;
+
+        scheduledAttack = true;
+        hasMoved = true;
     }
 
-    /* Figure out whether the target is in range 
-     * and if so immediately attack the target
-     */
+
+    // Figure out whether the target is in range 
+    // and if so immediately attack the target
     public void attackMelee()
     {
         if (hasMoved || hasDied)
@@ -202,6 +212,7 @@ public class UnitController : MonoBehaviour
             moveQueue.Clear();
             // If the target is already dead, proceed to standing there and idle around
             setTileGoal(x, y, 0);
+
             return;
         }
 
@@ -218,9 +229,8 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    /* If the unit has done nothing at this point and still wants to move normally it can do so here
-     * The unit is logically moved, but the animation is scheduled
-     */
+    // If the unit has done nothing at this point and still wants to move normally it can do so here
+    // The unit is logically moved, but the animation is scheduled
     public void normalMovement()
     {
         if (hasDied)
@@ -286,28 +296,23 @@ public class UnitController : MonoBehaviour
             scheduledNormalMovement = false;
     }
 
-    /* execute the animation for skill movement if scheduled
-        //currentTile.GetComponent<MeshRenderer>().material = materialNotSelected; // Change the material of the tile
-     */
+    // execute the animation for skill movement if scheduled
     public void animateSkillMovement()
     {
         if (scheduledSkillMovement == false)
             return;
     }
 
-    /* execute the animation for attack if scheduled
-     */
+    // execute the animation for attack if scheduled
     public void animateAttack()
     {
         if (scheduledAttack == false)
             return;
 
-        rotate2Neighbor(goalCoordinates[0] - x, goalCoordinates[1] - y);
-        actionController.punch();
+        actionController.animateAttack(attackTarget.GetComponent<UnitController>().getX(), attackTarget.GetComponent<UnitController>().getY());
     }
 
-    /* execute the animation for being hit (and maybe died) if scheduled
-     */
+    // execute the animation for being hit (and maybe died) if scheduled
     public void animateHit()
     {
         if (scheduledHit == false)
@@ -323,8 +328,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    /* execute the animation for normal movement if scheduled
-     */
+    // execute the animation for normal movement if scheduled
     public void animateNormalMovement()
     {
         if (scheduledNormalMovement == false)
@@ -350,8 +354,6 @@ public class UnitController : MonoBehaviour
         world_position = newTile.transform.position + new Vector3(0, 0, 0); // Place the unit to the new tile position            
         GetComponent<AreaModule>().Update_FoV(next_x, next_y); // Update Field of View
     }
-
-
 
     public void rotate2Neighbor(int x, int y)
     {
@@ -389,7 +391,6 @@ public class UnitController : MonoBehaviour
         scheduledNormalMovement = false; // remove attempted move
     }
 
-
     public void showPathFeedback()
     {
         foreach (int[] location in moveQueue)
@@ -407,7 +408,6 @@ public class UnitController : MonoBehaviour
             currentTile.gameObject.transform.transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false; // Disable the ring
         }
     }
-
 
     public void IsSelected() {
         transform.GetChild(1).GetComponent<Renderer>().enabled = true;}
