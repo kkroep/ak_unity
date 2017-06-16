@@ -23,6 +23,10 @@ public class ActionController : MonoBehaviour {
         StartCoroutine(timedAnimation(0.1f, 2));
     }
 
+    public float attackRange() {
+        return 2f;
+    }
+
     public void walk() {
         StartCoroutine(timedAnimation(0.1f, 1));
     }

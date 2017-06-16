@@ -318,6 +318,9 @@ public class UnitController : MonoBehaviour
         {
             killYourself(); // it dieded
         }
+        else {
+            actionController.bleed();
+        }
     }
 
     /* execute the animation for normal movement if scheduled
@@ -426,6 +429,7 @@ public class UnitController : MonoBehaviour
 
     public void set(int new_x, int new_y)
     {
+
         x = new_x;
         y = new_y;
         next_x = x;
