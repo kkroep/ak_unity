@@ -89,5 +89,5 @@ legend(legendString, 'Location', 'northeast');
 title(sprintf('deadtime = %d us', 1e6*stepSize*deadTimeSteps));
 %
 %print('-dpdf', '-color', fullfile(pwd, 'sneep.pdf'));
-%print('-deps', '-color', fullfile(pwd, 'lineplot.eps'));
+print('-deps', '-color', fullfile(pwd, 'barryPoter.eps'));
 
