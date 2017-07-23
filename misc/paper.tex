@@ -20,7 +20,7 @@
 \usepackage{cleveref}
 \usepackage{ragged2e} % For text alignment
 %\usepackage[oudir=./]{epstopdf} 
-\usepgflibrary{groupplots}
+\pgfplotsset{compat=1.13}
 
 \newenvironment{custom_itemize}{
 \begin{itemize}
@@ -42,6 +42,12 @@
 
 \begin{document}
 
-\include{../tjak}
+\begin{tikzpicture}
+    \begin{axis}[width=0.4\textwidth]
+        \addplot [mark options={scale=2}] table [x=time, y=values] {../test.csv};
+            %\addplot[red,  ultra thick] (x*x,x);
+    \end{axis}
+\end{tikzpicture}
+
 
 \end{document}
