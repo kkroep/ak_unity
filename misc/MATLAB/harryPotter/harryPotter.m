@@ -25,8 +25,8 @@ deadTimeSteps = [400]; % multiple of stepSize
 PPS = [5e4 5e5 5e6]; % [Hz]
 deadTimeSteps = [500]; % multiple of stepSize
 
-endTime = 2e-5; % [s]
-stepSize = 2e-9; % [s]
+endTime = 2e-6; % [s]
+stepSize = 2e-10; % [s]
 
 %endTime = 2e-3; % [s]
 %stepSize = 1e-6; % [s]
@@ -35,7 +35,6 @@ waitingTime = 0:stepSize:endTime;
 iterations = 25e3; % [-]
 values = zeros(1,length(waitingTime));
 legendString = {};
-hold on;
 
 for pps = PPS
     P_hit = 1-poisspdf(0, pps*stepSize) % chance that one or more photons arrive during t_stepT
@@ -44,7 +43,7 @@ for pps = PPS
             fprintf('%d0\n', j);
             for i=1:iterations/10
                 new_value = zeros(1,length(waitingTime));
-                current = 0 ;
+                current = 0;
                 dead = 0;
                 for t=1:length(waitingTime)
                     if dead>0
@@ -61,7 +60,7 @@ for pps = PPS
         end
     values = values./iterations;
     %plot(waitingTime.*1e6, values);
-    csvwrite(sprintf('pps-%d_dead-%dus', pps, 1e6*stepSize*deadTimeSteps), [waitingTime; values]);
+    csvwrite(sprintf('pps-%d_dead-%dns.csv', pps, 1e9*stepSize*deadTimeSteps), [waitingTime' values']);
     %legendString{end+1} = sprintf('PPS = %d', pps);
     end
 end
