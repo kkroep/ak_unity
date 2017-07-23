@@ -19,31 +19,22 @@ colorspec = {...
 %graphics_toolkit gnuplot;
 %figure ("visible", "off");
 
-
 PPS = [1e4 2e4 4e4]; % [Hz]
 deadTimeSteps = [400]; % multiple of stepSize
 
 PPS = [5e4 5e5 5e6]; % [Hz]
 deadTimeSteps = [500]; % multiple of stepSize
 
-
 endTime = 2e-5; % [s]
 stepSize = 2e-9; % [s]
-
 
 %endTime = 2e-3; % [s]
 %stepSize = 1e-6; % [s]
 
 waitingTime = 0:stepSize:endTime;
- 
 iterations = 25e3; % [-]
-
-
 values = zeros(1,length(waitingTime));
-
 legendString = {};
-
-hold on;
 
 for pps = PPS
     P_hit = 1-poisspdf(0, pps*stepSize) % chance that one or more photons arrive during t_stepT
@@ -52,7 +43,7 @@ for pps = PPS
             fprintf('%d0\n', j);
             for i=1:iterations/10
                 new_value = zeros(1,length(waitingTime));
-                current = 0 ;
+                current = 0;
                 dead = 0;
                 for t=1:length(waitingTime)
                     if dead>0
@@ -68,25 +59,26 @@ for pps = PPS
             end
         end
     values = values./iterations;
-    plot(waitingTime.*1e6, values);
-    legendString{end+1} = sprintf('PPS = %d', pps);
+    %plot(waitingTime.*1e6, values);
+    csvwrite(sprintf('pps-%d_dead-%dus.csv', pps, 1e6*stepSize*deadTimeSteps), [waitingTime; values]);
+    %legendString{end+1} = sprintf('PPS = %d', pps);
     end
 end
 
-plot(waitingTime*1e6, 0.5*ones(1,length(values)), 'k');
-hold off;
+%plot(waitingTime*1e6, 0.5*ones(1,length(values)), 'k');
+%hold off;
 
 %plot(C1(:,1),C1(:,4), 'Color', colorspec{mod(i,12)+1});
 %axis([C1(1,1) C1(end,1) min(min(C1))*1.1 max(max(C1))*1.1]);
-xlim([waitingTime(1)*1e6, waitingTime(end)*1e6]);
+%xlim([waitingTime(1)*1e6, waitingTime(end)*1e6]);
 %ylim([1e-1, 1e2]);
-xlabel('time [us]', 'fontsize', 14);
-ylabel('probability of measuring ''1''', 'fontsize', 14);
-set(gca, 'FontSize', 12)
+%xlabel('time [us]', 'fontsize', 14);
+%ylabel('probability of measuring ''1''', 'fontsize', 14);
+%set(gca, 'FontSize', 12)
 
 
-legend(legendString, 'Location', 'northeast');
-title(sprintf('deadtime = %d us', 1e6*stepSize*deadTimeSteps));
+%legend(legendString, 'Location', 'northeast');
+%title(sprintf('deadtime = %d us', 1e6*stepSize*deadTimeSteps));
 %
 %print('-dpdf', '-color', fullfile(pwd, 'sneep.pdf'));
 print('-deps', '-color', fullfile(pwd, 'barryPoter.eps'));
