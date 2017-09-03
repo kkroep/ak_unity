@@ -24,11 +24,11 @@ PPS = [1e4 2e4 4e4]; % [Hz]
 deadTimeSteps = [400]; % multiple of stepSize
 
 PPS = [5e4 5e5 5e6]; % [Hz]
-deadTimeSteps = [500]; % multiple of stepSize
+deadTimeSteps = [50]; % multiple of stepSize
 
 
-endTime = 2e-5; % [s]
-stepSize = 2e-9; % [s]
+endTime = 1e-5; % [s]
+stepSize = 2e-8; % [s]
 
 
 %endTime = 2e-3; % [s]
@@ -88,6 +88,6 @@ set(gca, 'FontSize', 12)
 legend(legendString, 'Location', 'northeast');
 title(sprintf('deadtime = %d us', 1e6*stepSize*deadTimeSteps));
 %
-%print('-dpdf', '-color', fullfile(pwd, 'sneep.pdf'));
-%print('-deps', '-color', fullfile(pwd, 'lineplot.eps'));
+print('-dpdf', '-color', fullfile(pwd, 'sneep.pdf'));
+print('-deps', '-color', fullfile(pwd, 'octave_plot.eps'));
 
