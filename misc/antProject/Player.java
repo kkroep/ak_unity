@@ -10,14 +10,20 @@ class Player{
 	private int[] color;
 	private int playerNumber;
 	private ArrayList<Ant> ants;
+	private ProtectedPlayer protectedPlayer = new ProtectedPlayer(this);
+	private QueenBrain queenBrain = new QueenBrain();
+	private Referee referee;
 
-	public Player(int[] color, int playerNumber, int x, int y, int food) {
+
+	public Player(int[] color, int playerNumber, int x, int y, int food, Referee referee, QueenBrain queenBrain) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
 		this.food = food;
+		this.referee = referee;
 		this.playerNumber = playerNumber;
 		this.ants = new ArrayList<Ant>();
+		this.queenBrain = queenBrain;
 	}
 
 	// set functions
@@ -28,6 +34,8 @@ class Player{
 	// get functions
 	public int getX(){return x;}
 	public int getY(){return y;}
+	public int[] getColor(){return color;}
+	public int getFood(){return food;}
 	public int getPlayerNumber(){return playerNumber;}
 
 	// draw everything of this playuer on the board
@@ -49,14 +57,29 @@ class Player{
 		return ants.size();
 	}
 
-	// execute a turn
-	public void turn(Referee referee){
-		//Referee referee2 = new Referee(10);
-		//referee2.checkFood(0,0);
+	public void reportingAnt(AntProperties antProperties){
+		queenBrain.reportingAnt(antProperties);
+	}
+
+	public boolean createAnt(){
 		if(food>=5){
-			ants.add(new Ant(x,y, 100, referee));
-			food -= 5;
+			if(getPlayerNumber()==0)
+				ants.add(new Ant(x,y, referee, new KeKroepes(), playerNumber, 3, 1, 1, 100)); 
+			else
+				ants.add(new Ant(x,y, referee, new KeKroepes(), playerNumber, 3, 1, 1, 100));
+			food -=5;
+			return true;
 		}
+		else
+			return false;
+	}
+
+	// execute a turn
+	public final void turn(){
+		queenBrain.turn(protectedPlayer);
+
+
+		// turn for the ants
 		Iterator<Ant> iterator = ants.iterator();
 		while (iterator.hasNext()){
 			Ant ant = iterator.next();
@@ -78,436 +101,41 @@ class Player{
 	}
 }
 
-class Move{
-	// stand = 0
-	// up = 1
-	// right = 2
-	// down = 3
-	// left = 4
-	static public int xy2dir(int x, int y){
-		if(x==-1)
-			return 1;
-		else if(x==1)
-			return 3;
-		else if(y==1)
-			return 2;
-		else if(y==-1)
-			return 4;
-		else if(x!=0 || y!=0)
-			System.out.printf("direction error");
-		return 0;
+
+class ProtectedPlayer{
+	private Player player;
+
+	public ProtectedPlayer(Player player){
+		this.player = player;
 	}
 
-	static public int dir2x(int dir){
-		if(dir==2)
-			return 1;
-		else if(dir==4)
-			return -1;
-		else
-			return 0;	
-	}
+	public int colonySize(){return player.colonySize();}
+	
+	// returns true if it is succesfull and false if not
+	public boolean createAnt(){return player.createAnt();}
 
-	static public int dir2y(int dir){
-		if(dir==1)
-			return -1;
-		else if(dir==3)
-			return 1;
-		else
-			return 0;	
-	}
+	public int getFood(){return player.getFood();}
 
-	static public int swapDir(int dir){
-		if(dir == 1)
-			return 3;
-		else if(dir == 2)
-			return 4;
-		else if(dir == 3)
-			return 1;
-		else if(dir == 4)
-			return 2;
-		else
-			return 0;
-	}
 }
 
-class Ant{
-	private int x;
-	private int y;
-	private boolean dead = false;
-	private ArrayList<Integer> path = new ArrayList<Integer>();
-	private Random rng = new Random();
-	private boolean returning = false;
-	private int food = 0;
-	private int maxFood = 1;
-	private int stamina, maxStamina;
-	private double fermoneDosis = 0;
-	private Referee referee;
-	private int previousDir = 0;
-	private AntProperties antProperties = new AntProperties();
+// class that can be extended to form the queen brain
+class QueenBrain{
+	public QueenBrain(){}
 
-	// this is teh memory of the ants. One can be set only by the queen, but read by both, 
-	// the second one can be altered by both queen and ant
-	private int[] staticMemory = new int[]{0,0,0,0};
-	private int dynamicMemory = 0;
-
-
-	public Ant(int x, int y, int maxStamina, Referee referee){
-		this.x = x;
-		this.y = y;
-		this.stamina = maxStamina;
-		this.maxStamina = maxStamina;
-		this.referee = referee;
+	// called every an ant returns to the queen location
+	public void reportingAnt(AntProperties antProperties){
+		//System.out.printf("%d", antProperties.ge)
 	}
 
-	public int getDynamicMemory(){return antProperties.getDynamicMemory();}
-	public int getStaticMemory(int index){return antProperties.getStaticMemory(index);}
-	public void setDynamicMemory(int value){antProperties.setDynamicMemory(value);}
-	public void clearMemory(){antProperties.clearMemory();}
+	// called at the start of every turn
+	public void turn(ProtectedPlayer player){
+		/*if(player.getFood()>=5){
+			player.createAnt();
+		}*/
 
-	public int getPreviousDir(){return previousDir;}
-	public int getStamina(){return stamina;}
-	public int getMaxStamina(){return maxStamina;}
-	public double getFeromones(int dir){return referee.getFeromones(x+Move.dir2x(dir), y+Move.dir2y(dir));}
-	public void setFeromoneDosis(double feromoneDosis){
-		this.fermoneDosis = feromoneDosis;
-	}
-
-	public void applyFeromone(Referee referee)
-	{
-		referee.addFeromones(x,y,fermoneDosis);
-	}
-
-
-	public boolean hasFood(){return food>0;}
-	public int getFood(){return food;}
-	public void gatherFood(){addFood(referee.gatherFood(x, y));}
-
-	public void addFood(int amount){
-		food += amount;
-
-		// can only carry so much
-		if(food>maxFood)
-			food=maxFood;
-	}
-
-	public boolean checkFood(int dir){
-		if(dir<0 || dir>4)
-			dir=0;
-		return referee.checkFood(x+Move.dir2x(dir), y+Move.dir2y(dir));
-	}
-
-	//public void setX(int x){this.x = x;}
-	//public void setY(int y){this.y = y;}
-	public int getX(){return x;}
-	public int getY(){return y;}
-
-	public int endTurn(int x, int y){
-		stamina--;
-
-
-		//check if returned to home base
-		if(this.x == x && this.y == y)
-		{
-			returning = false;
-			stamina = maxStamina;
-			path.removeAll(path);
-			setFeromoneDosis(0);
-			antProperties.clearMemory();
-			if(hasFood())
-			{
-				int droppedFood = food;
-				food = 0;
-				return droppedFood;
-			}
-			return 0;
-		}
-		else
-		{
-			return 0;
-		}
-
-	}
-
-	public boolean isDead(){
-		//return false;
-		/*if(stamina<1){
-			return true;
-		}
-		else
-			return false;*/
-
-		if(stamina<1)
-			System.out.printf("D");
-
-		return (stamina<1);
-	}
-
-	public void draw(int[][][] picture, int[] color){
-	    picture[x][y][0]+=color[0]/8;
-	    picture[x][y][1]+=color[1]/8;
-	    picture[x][y][2]+=color[2]/8;
-
-	    if(picture[x][y][0]<color[0]/8+color[0]/4){
-			picture[x][y][0]+=color[0]/8+color[0]/4;
-		    picture[x][y][1]+=color[1]/8+color[1]/4;
-		    picture[x][y][2]+=color[2]/8+color[2]/4;
-	    }
-
-	    if(!hasFood())
-	    	return;
-		picture[x][y][0]+=35;
-		picture[x][y][1]+=35;
-		picture[x][y][2]+=35;
-	}
-
-	// 0 = stay put
-	// 1 = up
-	// 2 = right
-	// 3 = down
-	// 4 = left
-	// 5 = reverse
-	public void move(int dir){
-		// if standing still or invalid instruction, stand still
-		if(dir == 0)
-			return;
-
-		// if 5, walk back
-		if(dir == 5){
-			if(path.size()<1)
-				return;
-			dir = Move.swapDir(path.get(path.size()-1));
-			x += Move.dir2x(dir);
-			y += Move.dir2y(dir);
-			path.remove(path.size()-1);
-			previousDir = dir;
-			return;
-		}
-
-		// border protection. dont move if going out of bounds
-		if(x==1 && dir==4)
-			return;
-		if(x==62 && dir==2)
-			return;
-		if(y==1 && dir==1)
-			return;
-		if(y==62 && dir==3)
-			return;
-
-		// if 1,2,3,4 move in specified direction
-		path.add(dir);
-		previousDir = dir;
-		x += Move.dir2x(dir);
-		y += Move.dir2y(dir);
-		return;
-	}
-
-
-	public int turn(){return antBrain.think(new protectedAnt(this), rng);}
-}
-
-class ProtectedAnt{
-	private Ant ant;
-
-	public ProtectedAnt(Ant ant){
-		this.ant = ant;
-	}
-
-	public void setAnt(Ant ant){this.ant = ant;}
-	public int getStamina(){return ant.getStamina();}
-	public int getMaxStamina(){return ant.getMaxStamina();}
-	public boolean hasFood(){return ant.hasFood();}
-	public boolean checkFood(int dir){return ant.checkFood(dir);}
-	public void gatherFood(){ant.gatherFood();}
-	public double getFeromones(int dir){return ant.getFeromones(dir);}
-	public void setFeromoneDosis(double feromoneDosis){ant.setFeromoneDosis(feromoneDosis);}
-	public int getPreviousDir(){return ant.getPreviousDir();}
-	public int getDynamicMemory(){return ant.getDynamicMemory();}
-	public int getStaticMemory(int index){return ant.getStaticMemory(index);}
-	public void setDynamicMemory(int value){ant.setDynamicMemory(value);}
-	public void clearMemory(){ant.clearMemory();}
-}
-
-class AntProperties{
-	private int[] staticMemory = new int[]{0,0,0,0};
-	private int dynamicMemory = 0; 
-
-	public AntProperties(){}
-
-
-	public void clearMemory(){
-		staticMemory = new int[]{0,0,0,0};
-		dynamicMemory = 0; 
-	}
-
-	public int getDynamicMemory(){return dynamicMemory;}
-	public void setDynamicMemory(int value){dynamicMemory = value;}
-	public int getStaticMemory(int index)
-	{	
-		if(index>=0 && index < 4)
-			return staticMemory[index];
-		return 0;
-	}
-	public void setiStaticMemory(int index, int value)
-	{	
-		if(index>=0 && index < 4)
-			 staticMemory[index] = value;
-	}
+	} 
 }
 
 
-class antBrain{
-
-	static public int think(protectedAnt ant, Random rng){
-		/////////// PLAYER ADDED FUNCTIONAILTY
-
-		// calculate incentives
-		double inc[] = {1,1,1,1,1};
-		int dir = 0;	
-
-		
-		if(!ant.hasFood()){
-			if(ant.checkFood(0)){
-				ant.gatherFood();
-				ant.setDynamicMemory(1);
-				ant.setFeromoneDosis(256/(ant.getMaxStamina()-ant.getStamina()+1));
-			}
-		}
-		
-
-		// return if almost out of juice
-		if(ant.getStamina()<(ant.getMaxStamina()/2+1)){
-			ant.setDynamicMemory(1);
-		}
 
 
-		if(ant.getDynamicMemory() == 1){
-			return 5;
-		}
-
-		// border protection
-		/*if(x==0)
-			inc[4]=0;
-		if(x==63)
-			inc[2]=0;
-		if(y==0)
-			inc[1]=0;
-		if(y==63)
-			inc[3]=0;
-		*/	
-		// penalty for staying stationary
-		inc[0] *= 0.02;
-
-		
-		// add value of feromones
-		for(int i=1; i<5; i++){
-			if(inc[i]!=0)
-				inc[i] += ant.getFeromones(i);
-		}
-
-		
-		if(ant.getStamina()<ant.getMaxStamina()){
-			// incentive for moving forward
-			inc[ant.getPreviousDir()] *= 4;
-
-			// penalty for going back
-			inc[Move.swapDir(ant.getPreviousDir())] *= 0.02;
-		}
-
-		
-		// when incentives are generated pick a probabilistic random one
-		double tmp = (inc[0]+inc[1]+inc[2]+inc[3]+inc[4])*rng.nextDouble();
-		for(int i=0; i<5; i++){
-			tmp -=inc[i];
-			if(tmp<=0){
-				dir = i;
-				break;
-			}
-		}
-		
-
-		// dir now stores the new direction. Update everything
-		return dir;
-		}
-}
-
-
-class Referee{
-	private int w,h;
-	private ArrayList<int[]> food;
-	private Random rng = new Random();
-	private double[][] feromones;
-
-
-	public Referee(int foodAmount, int w, int h){
-		this.w = w;
-		this.h = h;
-		food = new ArrayList<int[]>();
-		rng.setSeed(0);
-		feromones = new double[w][h];
-		for(int i=0; i<w; i++){
-			for(int j=0; j<h; j++){
-				feromones[i][j] = 0;
-			}
-		}
-
-		for(int i=0; i<foodAmount; i++){
-			addFood(rng.nextInt(w), rng.nextInt(h), 30);
-		}
-	}
-
-	public void addFood(int x, int y, int amount){
-		food.add(new int[]{x, y, amount});
-	}
-
-	public void addFeromones(int x, int y, double dosis){
-		feromones[x][y] += dosis;
-	}
-
-	public double getFeromones(int x, int y){
-		return feromones[x][y];
-	}
-
-	public int gatherFood(int x, int y){
-		for(int i=0; i<food.size(); i++){
-			if(food.get(i)[0]==x && food.get(i)[1]==y){
-				
-				food.get(i)[2]--;
-				// gradually remove food
-				if(food.get(i)[2]<1){
-					food.remove(i);
-				}
-				return 1;
-			}
-		}
-		return 0;
-	}
-
-	public boolean checkFood(int x, int y){
-		for(int i=0; i<food.size(); i++){
-			if(food.get(i)[0]==x && food.get(i)[1]==y){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void draw(int[][][] picture){
-		int[] coor;
-		//ig2.setPaint(Color.green);
-	    Iterator<int[]> iterator = food.iterator();
-		while (iterator.hasNext()){
-			coor = iterator.next();
-
-			picture[coor[0]][coor[1]][0]+=70;
-		    picture[coor[0]][coor[1]][1]+=70;
-		    picture[coor[0]][coor[1]][2]+=70;
-		}
-	}
-
-	public void turn(){
-		for(int i=0; i<w; i++)
-			for(int j=0; j<h; j++){
-				feromones[i][j] *= 0.9;
-			}
-	}
-}

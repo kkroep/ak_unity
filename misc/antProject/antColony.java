@@ -27,27 +27,31 @@ public class antColony {
       //writer.writeToSequence(bi);
 
       // initializing main Loop
-      Referee referee = new Referee(60, width, height);
+      Referee referee = new Referee(100, width, height);
 
 
-      Player player1 = new Player(new int[]{0,255,0}, 0, 20, 20, 50);
-      Player player2 = new Player(new int[]{255,0,0}, 0, 50, 42, 50);
+      Player player1 = new Player(new int[]{0,255,0}, 0, 24, 32, 50, referee, new KeKroepes_Q());
+      Player player2 = new Player(new int[]{70,0,255}, 1, 40, 32, 50, referee, new KeKroepes_Q());
       //player1.draw(picture);
 
       // main loop
-      for(int frame = 0; frame<500; frame++){
+      for(int frame = 0; frame<2500; frame++){
         // clear image
         ig2.setPaint(new Color(15,15,15));
         ig2.fill(new Rectangle2D.Double(0, 0, width*multiplier, height*multiplier));
         
         // execute player turns
 
-        player1.turn(referee);
-        player2.turn(referee);
+        player1.turn();
+        player2.turn();
         referee.turn();
 
+        if(frame%100==0){
+          System.out.printf("frame:%d\n", frame);
+        }
+
         // only draw a few frames
-        if(frame%5==0){
+        if(frame%10==0){
         //draw everything
         for(int i=0; i<width; i++)
           for(int j=0; j<height; j++)
@@ -72,6 +76,14 @@ public class antColony {
                 ig2.fill(new Rectangle2D.Double(i*multiplier, j*multiplier, multiplier, multiplier));
               }
             }
+        ig2.setPaint(Color.white);
+        ig2.drawString(String.format("Fr: %d", frame),10,10);
+
+        ig2.setPaint(new Color(player1.getColor()[0],player1.getColor()[1],player1.getColor()[2]));
+        ig2.drawString(String.format("P1: %d", player1.colonySize()),10,25);
+
+        ig2.setPaint(new Color(player2.getColor()[0],player2.getColor()[1],player2.getColor()[2]));
+        ig2.drawString(String.format("P2: %d", player2.colonySize()),10,40);
         
 
         //store the image into the gif
