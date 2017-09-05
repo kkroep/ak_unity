@@ -142,6 +142,14 @@ class Ant{
 	private int stamina, maxStamina;
 	private double fermoneDosis = 0;
 	private Referee referee;
+	private int previousDir = 0;
+	private AntProperties antProperties = new AntProperties();
+
+	// this is teh memory of the ants. One can be set only by the queen, but read by both, 
+	// the second one can be altered by both queen and ant
+	private int[] staticMemory = new int[]{0,0,0,0};
+	private int dynamicMemory = 0;
+
 
 	public Ant(int x, int y, int maxStamina, Referee referee){
 		this.x = x;
@@ -151,9 +159,15 @@ class Ant{
 		this.referee = referee;
 	}
 
+	public int getDynamicMemory(){return antProperties.getDynamicMemory();}
+	public int getStaticMemory(int index){return antProperties.getStaticMemory(index);}
+	public void setDynamicMemory(int value){antProperties.setDynamicMemory(value);}
+	public void clearMemory(){antProperties.clearMemory();}
+
+	public int getPreviousDir(){return previousDir;}
 	public int getStamina(){return stamina;}
 	public int getMaxStamina(){return maxStamina;}
-
+	public double getFeromones(int dir){return referee.getFeromones(x+Move.dir2x(dir), y+Move.dir2y(dir));}
 	public void setFeromoneDosis(double feromoneDosis){
 		this.fermoneDosis = feromoneDosis;
 	}
@@ -161,6 +175,25 @@ class Ant{
 	public void applyFeromone(Referee referee)
 	{
 		referee.addFeromones(x,y,fermoneDosis);
+	}
+
+
+	public boolean hasFood(){return food>0;}
+	public int getFood(){return food;}
+	public void gatherFood(){addFood(referee.gatherFood(x, y));}
+
+	public void addFood(int amount){
+		food += amount;
+
+		// can only carry so much
+		if(food>maxFood)
+			food=maxFood;
+	}
+
+	public boolean checkFood(int dir){
+		if(dir<0 || dir>4)
+			dir=0;
+		return referee.checkFood(x+Move.dir2x(dir), y+Move.dir2y(dir));
 	}
 
 	//public void setX(int x){this.x = x;}
@@ -179,6 +212,7 @@ class Ant{
 			stamina = maxStamina;
 			path.removeAll(path);
 			setFeromoneDosis(0);
+			antProperties.clearMemory();
 			if(hasFood())
 			{
 				int droppedFood = food;
@@ -245,45 +279,85 @@ class Ant{
 			x += Move.dir2x(dir);
 			y += Move.dir2y(dir);
 			path.remove(path.size()-1);
+			previousDir = dir;
 			return;
 		}
 
 		// border protection. dont move if going out of bounds
-		if(x==0 && dir==4)
+		if(x==1 && dir==4)
 			return;
-		if(x==63 && dir==2)
+		if(x==62 && dir==2)
 			return;
-		if(y==0 && dir==1)
+		if(y==1 && dir==1)
 			return;
-		if(y==63 && dir==3)
+		if(y==62 && dir==3)
 			return;
 
 		// if 1,2,3,4 move in specified direction
 		path.add(dir);
+		previousDir = dir;
 		x += Move.dir2x(dir);
 		y += Move.dir2y(dir);
 		return;
 	}
 
-	public boolean hasFood(){return food>0;}
-	public int getFood(){return food;}
-	public void gatherFood(){addFood(referee.gatherFood(x, y));}
 
-	public void addFood(int amount){
-		food += amount;
+	public int turn(){return antBrain.think(new protectedAnt(this), rng);}
+}
 
-		// can only carry so much
-		if(food>maxFood)
-			food=maxFood;
+class ProtectedAnt{
+	private Ant ant;
+
+	public ProtectedAnt(Ant ant){
+		this.ant = ant;
 	}
 
-	public boolean checkFood(int dir){
-		if(dir<0 || dir>4)
-			dir=0;
-		return referee.checkFood(x+Move.dir2x(dir), y+Move.dir2y(dir));
+	public void setAnt(Ant ant){this.ant = ant;}
+	public int getStamina(){return ant.getStamina();}
+	public int getMaxStamina(){return ant.getMaxStamina();}
+	public boolean hasFood(){return ant.hasFood();}
+	public boolean checkFood(int dir){return ant.checkFood(dir);}
+	public void gatherFood(){ant.gatherFood();}
+	public double getFeromones(int dir){return ant.getFeromones(dir);}
+	public void setFeromoneDosis(double feromoneDosis){ant.setFeromoneDosis(feromoneDosis);}
+	public int getPreviousDir(){return ant.getPreviousDir();}
+	public int getDynamicMemory(){return ant.getDynamicMemory();}
+	public int getStaticMemory(int index){return ant.getStaticMemory(index);}
+	public void setDynamicMemory(int value){ant.setDynamicMemory(value);}
+	public void clearMemory(){ant.clearMemory();}
+}
+
+class AntProperties{
+	private int[] staticMemory = new int[]{0,0,0,0};
+	private int dynamicMemory = 0; 
+
+	public AntProperties(){}
+
+
+	public void clearMemory(){
+		staticMemory = new int[]{0,0,0,0};
+		dynamicMemory = 0; 
 	}
 
-	public int turn(){
+	public int getDynamicMemory(){return dynamicMemory;}
+	public void setDynamicMemory(int value){dynamicMemory = value;}
+	public int getStaticMemory(int index)
+	{	
+		if(index>=0 && index < 4)
+			return staticMemory[index];
+		return 0;
+	}
+	public void setiStaticMemory(int index, int value)
+	{	
+		if(index>=0 && index < 4)
+			 staticMemory[index] = value;
+	}
+}
+
+
+class antBrain{
+
+	static public int think(protectedAnt ant, Random rng){
 		/////////// PLAYER ADDED FUNCTIONAILTY
 
 		// calculate incentives
@@ -291,27 +365,27 @@ class Ant{
 		int dir = 0;	
 
 		
-		if(!hasFood()){
-			if(referee.checkFood(x,y)){
-				gatherFood();
-				returning = true;
-				setFeromoneDosis(256/(getMaxStamina()-getStamina()+1));
+		if(!ant.hasFood()){
+			if(ant.checkFood(0)){
+				ant.gatherFood();
+				ant.setDynamicMemory(1);
+				ant.setFeromoneDosis(256/(ant.getMaxStamina()-ant.getStamina()+1));
 			}
 		}
 		
 
 		// return if almost out of juice
-		if(path.size()>48){
-			returning = true;
+		if(ant.getStamina()<(ant.getMaxStamina()/2+1)){
+			ant.setDynamicMemory(1);
 		}
 
 
-		if(returning){
+		if(ant.getDynamicMemory() == 1){
 			return 5;
 		}
 
 		// border protection
-		if(x==0)
+		/*if(x==0)
 			inc[4]=0;
 		if(x==63)
 			inc[2]=0;
@@ -319,7 +393,7 @@ class Ant{
 			inc[1]=0;
 		if(y==63)
 			inc[3]=0;
-		
+		*/	
 		// penalty for staying stationary
 		inc[0] *= 0.02;
 
@@ -327,15 +401,16 @@ class Ant{
 		// add value of feromones
 		for(int i=1; i<5; i++){
 			if(inc[i]!=0)
-				inc[i] += referee.getFeromones(x+Move.dir2x(i), y+Move.dir2y(i));
+				inc[i] += ant.getFeromones(i);
 		}
 
-		if(path.size()>0){
+		
+		if(ant.getStamina()<ant.getMaxStamina()){
 			// incentive for moving forward
-			inc[path.get(path.size()-1)] *= 4;
+			inc[ant.getPreviousDir()] *= 4;
 
 			// penalty for going back
-			inc[Move.swapDir(path.get(path.size()-1))] *= 0.02;
+			inc[Move.swapDir(ant.getPreviousDir())] *= 0.02;
 		}
 
 		
@@ -353,28 +428,6 @@ class Ant{
 		// dir now stores the new direction. Update everything
 		return dir;
 		}
-}
-
-class protectedAnt{
-	private Ant ant;
-
-	public protectedAnt(Ant ant){
-		this.ant = ant;
-	}
-
-	public void setAnt(Ant ant){this.ant = ant;}
-	public int getStamina(){return ant.getStamina();}
-	public int getMaxStamina(){return ant.getMaxStamina();}
-	public boolean hasFood(){return ant.hasFood();}
-	public boolean checkFood(int dir){return ant.checkFood(dir);}
-	public void gatherFood(int dir){ant.gatherFood();}
-}
-
-
-class antBrain{
-	static public int think(protectedAnt ant){
-		return 0;
-	}
 }
 
 
