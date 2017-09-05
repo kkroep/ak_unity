@@ -35,7 +35,7 @@ public class antColony {
       //player1.draw(picture);
 
       // main loop
-      for(int frame = 0; frame<500; frame++){
+      for(int frame = 0; frame<400; frame++){
         // clear image
         ig2.setPaint(new Color(15,15,15));
         ig2.fill(new Rectangle2D.Double(0, 0, width*multiplier, height*multiplier));

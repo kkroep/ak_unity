@@ -54,7 +54,7 @@ class Player{
 		//Referee referee2 = new Referee(10);
 		//referee2.checkFood(0,0);
 		if(food>=5){
-			ants.add(new Ant(x,y));
+			ants.add(new Ant(x,y, 100, referee));
 			food -= 5;
 		}
 		Iterator<Ant> iterator = ants.iterator();
@@ -62,7 +62,7 @@ class Player{
 			Ant ant = iterator.next();
 
 			// do asnt loop
-			ant.move(ant.turn(referee));
+			ant.move(ant.turn());
 
 			// check of ant has returned and if so how much food
 			if(ant.isDead())
@@ -70,6 +70,7 @@ class Player{
 				referee.addFood(ant.getX(), ant.getY(), 5);
 				iterator.remove();
 			}
+			ant.applyFeromone(referee);
 			food += ant.endTurn(x, y);
 		}
 
@@ -132,22 +133,34 @@ class Move{
 class Ant{
 	private int x;
 	private int y;
-	private int qX; // queen x
-	private int qY; // queen y
 	private boolean dead = false;
-	private ArrayList<Integer> path;
+	private ArrayList<Integer> path = new ArrayList<Integer>();
 	private Random rng = new Random();
 	private boolean returning = false;
-	private boolean hasFood = false;
-	private int pathLength;
+	private int food = 0;
+	private int maxFood = 1;
+	private int stamina, maxStamina;
+	private double fermoneDosis = 0;
+	private Referee referee;
 
-	public Ant(int x, int y){
+	public Ant(int x, int y, int maxStamina, Referee referee){
 		this.x = x;
 		this.y = y;
-		this.qX = x;
-		this.qY = y;
-		this.pathLength = Integer.MAX_VALUE;
-		path = new ArrayList<Integer>();
+		this.stamina = maxStamina;
+		this.maxStamina = maxStamina;
+		this.referee = referee;
+	}
+
+	public int getStamina(){return stamina;}
+	public int getMaxStamina(){return maxStamina;}
+
+	public void setFeromoneDosis(double feromoneDosis){
+		this.fermoneDosis = feromoneDosis;
+	}
+
+	public void applyFeromone(Referee referee)
+	{
+		referee.addFeromones(x,y,fermoneDosis);
 	}
 
 	//public void setX(int x){this.x = x;}
@@ -156,21 +169,21 @@ class Ant{
 	public int getY(){return y;}
 
 	public int endTurn(int x, int y){
-		//check if dead
-		if(path.size()>100 && !hasFood){
-			dead = true;
-		}
+		stamina--;
+
 
 		//check if returned to home base
 		if(this.x == x && this.y == y)
 		{
-			dead = false;
 			returning = false;
+			stamina = maxStamina;
 			path.removeAll(path);
-			if(hasFood)
+			setFeromoneDosis(0);
+			if(hasFood())
 			{
-				hasFood = false;
-				return 1;
+				int droppedFood = food;
+				food = 0;
+				return droppedFood;
 			}
 			return 0;
 		}
@@ -182,7 +195,17 @@ class Ant{
 	}
 
 	public boolean isDead(){
-		return dead;
+		//return false;
+		/*if(stamina<1){
+			return true;
+		}
+		else
+			return false;*/
+
+		if(stamina<1)
+			System.out.printf("D");
+
+		return (stamina<1);
 	}
 
 	public void draw(int[][][] picture, int[] color){
@@ -196,7 +219,7 @@ class Ant{
 		    picture[x][y][2]+=color[2]/8+color[2]/4;
 	    }
 
-	    if(!hasFood)
+	    if(!hasFood())
 	    	return;
 		picture[x][y][0]+=35;
 		picture[x][y][1]+=35;
@@ -216,14 +239,14 @@ class Ant{
 
 		// if 5, walk back
 		if(dir == 5){
+			if(path.size()<1)
+				return;
 			dir = Move.swapDir(path.get(path.size()-1));
 			x += Move.dir2x(dir);
 			y += Move.dir2y(dir);
 			path.remove(path.size()-1);
 			return;
 		}
-
-		// if 1,2,3,4 move in specified direction
 
 		// border protection. dont move if going out of bounds
 		if(x==0 && dir==4)
@@ -235,37 +258,55 @@ class Ant{
 		if(y==63 && dir==3)
 			return;
 
+		// if 1,2,3,4 move in specified direction
 		path.add(dir);
 		x += Move.dir2x(dir);
 		y += Move.dir2y(dir);
 		return;
 	}
 
-	public int turn(Referee referee){
+	public boolean hasFood(){return food>0;}
+	public int getFood(){return food;}
+	public void gatherFood(){addFood(referee.gatherFood(x, y));}
+
+	public void addFood(int amount){
+		food += amount;
+
+		// can only carry so much
+		if(food>maxFood)
+			food=maxFood;
+	}
+
+	public boolean checkFood(int dir){
+		if(dir<0 || dir>4)
+			dir=0;
+		return referee.checkFood(x+Move.dir2x(dir), y+Move.dir2y(dir));
+	}
+
+	public int turn(){
+		/////////// PLAYER ADDED FUNCTIONAILTY
+
 		// calculate incentives
 		double inc[] = {1,1,1,1,1};
 		int dir = 0;	
 
-		if(!hasFood){
+		
+		if(!hasFood()){
 			if(referee.checkFood(x,y)){
-				hasFood = true;
+				gatherFood();
 				returning = true;
-				pathLength = path.size();
+				setFeromoneDosis(256/(getMaxStamina()-getStamina()+1));
 			}
 		}
-
-
-
-		// PLAYER ADDED FUNCTIONAILTY
+		
 
 		// return if almost out of juice
-		if(path.size()>80){
+		if(path.size()>48){
 			returning = true;
 		}
 
 
-		if(returning && path.size()>0){
-			referee.addFeromones(x,y,256/pathLength);
+		if(returning){
 			return 5;
 		}
 
@@ -278,10 +319,11 @@ class Ant{
 			inc[1]=0;
 		if(y==63)
 			inc[3]=0;
-
+		
 		// penalty for staying stationary
 		inc[0] *= 0.02;
 
+		
 		// add value of feromones
 		for(int i=1; i<5; i++){
 			if(inc[i]!=0)
@@ -290,7 +332,7 @@ class Ant{
 
 		if(path.size()>0){
 			// incentive for moving forward
-			inc[path.get(path.size()-1)] *= 2;
+			inc[path.get(path.size()-1)] *= 4;
 
 			// penalty for going back
 			inc[Move.swapDir(path.get(path.size()-1))] *= 0.02;
@@ -306,11 +348,35 @@ class Ant{
 				break;
 			}
 		}
+		
 
 		// dir now stores the new direction. Update everything
 		return dir;
+		}
+}
+
+class protectedAnt{
+	private Ant ant;
+
+	public protectedAnt(Ant ant){
+		this.ant = ant;
+	}
+
+	public void setAnt(Ant ant){this.ant = ant;}
+	public int getStamina(){return ant.getStamina();}
+	public int getMaxStamina(){return ant.getMaxStamina();}
+	public boolean hasFood(){return ant.hasFood();}
+	public boolean checkFood(int dir){return ant.checkFood(dir);}
+	public void gatherFood(int dir){ant.gatherFood();}
+}
+
+
+class antBrain{
+	static public int think(protectedAnt ant){
+		return 0;
 	}
 }
+
 
 class Referee{
 	private int w,h;
@@ -348,14 +414,24 @@ class Referee{
 		return feromones[x][y];
 	}
 
-	public boolean checkFood(int x, int y){
+	public int gatherFood(int x, int y){
 		for(int i=0; i<food.size(); i++){
 			if(food.get(i)[0]==x && food.get(i)[1]==y){
 				
+				food.get(i)[2]--;
 				// gradually remove food
-				food.get(i)[2]-=1;
-				if(food.get(i)[2]<=0)
+				if(food.get(i)[2]<1){
 					food.remove(i);
+				}
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+	public boolean checkFood(int x, int y){
+		for(int i=0; i<food.size(); i++){
+			if(food.get(i)[0]==x && food.get(i)[1]==y){
 				return true;
 			}
 		}
