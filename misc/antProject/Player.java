@@ -6,29 +6,29 @@ import java.util.*;
 class Player{
 	private int x;
 	private int y;
-	private String name;
+	private int food;
+	private int[] color;
 	private int playerNumber;
 	private ArrayList<Ant> ants;
 
-	public Player(String name, int playerNumber, int x, int y) {
+	public Player(int[] color, int playerNumber, int x, int y, int food) {
 		this.x = x;
 		this.y = y;
-		this.name = name;
+		this.color = color;
+		this.food = food;
 		this.playerNumber = playerNumber;
 		this.ants = new ArrayList<Ant>();
 	}
 
 	// set functions
-	public void setX(int x){this.x = x;}
-	public void setY(int y){this.y = y;}
-	public void setPlayerNumber(int playerNumber){this.playerNumber = playerNumber;}
-	public void setName(String name){this.name = name;}
+	//public void setX(int x){this.x = x;}
+	//public void setY(int y){this.y = y;}
+	//public void setPlayerNumber(int playerNumber){this.playerNumber = playerNumber;}
 
 	// get functions
 	public int getX(){return x;}
 	public int getY(){return y;}
 	public int getPlayerNumber(){return playerNumber;}
-	public String getName(){return name;}
 
 	// draw everything of this playuer on the board
 	public void draw(int[][][] picture){
@@ -36,27 +36,45 @@ class Player{
 
 	    Iterator<Ant> iterator = ants.iterator();
 		while (iterator.hasNext()){
-			iterator.next().draw(picture);
+			iterator.next().draw(picture, color);
 		}
 		//ig2.setPaint(Color.red);
 	    //ig2.fill(new Rectangle2D.Double(x*8, y*8, 8, 8));
-	    picture[x][y][0]=255;
+	    picture[x][y][0]+=color[0];
+	    picture[x][y][1]+=color[1];
+	    picture[x][y][2]+=color[2];
+	}
+
+	public int colonySize(){
+		return ants.size();
 	}
 
 	// execute a turn
 	public void turn(Referee referee){
 		//Referee referee2 = new Referee(10);
 		//referee2.checkFood(0,0);
-		ants.add(new Ant(x,y));
-
+		if(food>=5){
+			ants.add(new Ant(x,y));
+			food -= 5;
+		}
 		Iterator<Ant> iterator = ants.iterator();
 		while (iterator.hasNext()){
-			if(iterator.next().turn(referee)==1)
+			Ant ant = iterator.next();
+
+			// do asnt loop
+			ant.move(ant.turn(referee));
+
+			// check of ant has returned and if so how much food
+			if(ant.isDead())
+			{
+				referee.addFood(ant.getX(), ant.getY(), 5);
 				iterator.remove();
+			}
+			food += ant.endTurn(x, y);
 		}
 
+		//System.out.printf("a= %d\n", ants.size());
 	}
-
 }
 
 class Move{
@@ -109,7 +127,6 @@ class Move{
 		else
 			return 0;
 	}
-
 }
 
 class Ant{
@@ -117,9 +134,11 @@ class Ant{
 	private int y;
 	private int qX; // queen x
 	private int qY; // queen y
+	private boolean dead = false;
 	private ArrayList<Integer> path;
-	private Random rng;
-	private boolean hasFood;
+	private Random rng = new Random();
+	private boolean returning = false;
+	private boolean hasFood = false;
 	private int pathLength;
 
 	public Ant(int x, int y){
@@ -128,62 +147,126 @@ class Ant{
 		this.qX = x;
 		this.qY = y;
 		this.pathLength = Integer.MAX_VALUE;
-		hasFood = false;
-		rng = new Random();
 		path = new ArrayList<Integer>();
 	}
 
-	public void setX(int x){this.x = x;}
-	public void setY(int y){this.y = y;}
+	//public void setX(int x){this.x = x;}
+	//public void setY(int y){this.y = y;}
 	public int getX(){return x;}
 	public int getY(){return y;}
 
-	public void draw(int[][][] picture){
-	    picture[x][y][2]+=50;
-	    if(picture[x][y][2]<100)
-	    	picture[x][y][2]=100;
-	    else if(picture[x][y][2]>255)
-	    	picture[x][y][2]=255;
+	public int endTurn(int x, int y){
+		//check if dead
+		if(path.size()>100 && !hasFood){
+			dead = true;
+		}
+
+		//check if returned to home base
+		if(this.x == x && this.y == y)
+		{
+			dead = false;
+			returning = false;
+			path.removeAll(path);
+			if(hasFood)
+			{
+				hasFood = false;
+				return 1;
+			}
+			return 0;
+		}
+		else
+		{
+			return 0;
+		}
+
+	}
+
+	public boolean isDead(){
+		return dead;
+	}
+
+	public void draw(int[][][] picture, int[] color){
+	    picture[x][y][0]+=color[0]/8;
+	    picture[x][y][1]+=color[1]/8;
+	    picture[x][y][2]+=color[2]/8;
+
+	    if(picture[x][y][0]<color[0]/8+color[0]/4){
+			picture[x][y][0]+=color[0]/8+color[0]/4;
+		    picture[x][y][1]+=color[1]/8+color[1]/4;
+		    picture[x][y][2]+=color[2]/8+color[2]/4;
+	    }
 
 	    if(!hasFood)
 	    	return;
-		picture[x][y][0]+=50;
-	    if(picture[x][y][0]>255)
-	    	picture[x][y][0]=255;
+		picture[x][y][0]+=35;
+		picture[x][y][1]+=35;
+		picture[x][y][2]+=35;
+	}
 
+	// 0 = stay put
+	// 1 = up
+	// 2 = right
+	// 3 = down
+	// 4 = left
+	// 5 = reverse
+	public void move(int dir){
+		// if standing still or invalid instruction, stand still
+		if(dir == 0)
+			return;
+
+		// if 5, walk back
+		if(dir == 5){
+			dir = Move.swapDir(path.get(path.size()-1));
+			x += Move.dir2x(dir);
+			y += Move.dir2y(dir);
+			path.remove(path.size()-1);
+			return;
+		}
+
+		// if 1,2,3,4 move in specified direction
+
+		// border protection. dont move if going out of bounds
+		if(x==0 && dir==4)
+			return;
+		if(x==63 && dir==2)
+			return;
+		if(y==0 && dir==1)
+			return;
+		if(y==63 && dir==3)
+			return;
+
+		path.add(dir);
+		x += Move.dir2x(dir);
+		y += Move.dir2y(dir);
+		return;
 	}
 
 	public int turn(Referee referee){
 		// calculate incentives
 		double inc[] = {1,1,1,1,1};
-		int oX = x; // old x
-		int oY = y; // old y
 		int dir = 0;	
 
-
-		if(path.size()>150){
-			return 1;
-		}
-
-		// if at homebase, clean path and start over
-		if(x == qX && y == qY){
-			path.removeAll(path);
-			if(hasFood){
-				//System.out.printf("1");
-				hasFood = false;
+		if(!hasFood){
+			if(referee.checkFood(x,y)){
+				hasFood = true;
+				returning = true;
+				pathLength = path.size();
 			}
-		}else if(referee.checkFood(x,y)){
-			hasFood = true;
-			pathLength = path.size();
 		}
 
-		if(hasFood && path.size()>0){
+
+
+		// PLAYER ADDED FUNCTIONAILTY
+
+		// return if almost out of juice
+		if(path.size()>80){
+			returning = true;
+		}
+
+
+		if(returning && path.size()>0){
 			referee.addFeromones(x,y,256/pathLength);
-			dir = Move.swapDir(path.get(path.size()-1));
-			x += Move.dir2x(dir);
-			y += Move.dir2y(dir);
-			path.remove(path.size()-1);
-			return 0;
+			return 5;
 		}
 
 		// border protection
@@ -225,20 +308,14 @@ class Ant{
 		}
 
 		// dir now stores the new direction. Update everything
-		if(dir!=0)
-			path.add(dir);
-		x += Move.dir2x(dir);
-		y += Move.dir2y(dir);
-		//System.out.printf("(%d,%d)",x,y);
-
-		return 0;
+		return dir;
 	}
 }
 
 class Referee{
 	private int w,h;
 	private ArrayList<int[]> food;
-	private Random rng;
+	private Random rng = new Random();
 	private double[][] feromones;
 
 
@@ -246,7 +323,7 @@ class Referee{
 		this.w = w;
 		this.h = h;
 		food = new ArrayList<int[]>();
-		rng = new Random();
+		rng.setSeed(0);
 		feromones = new double[w][h];
 		for(int i=0; i<w; i++){
 			for(int j=0; j<h; j++){
@@ -255,8 +332,12 @@ class Referee{
 		}
 
 		for(int i=0; i<foodAmount; i++){
-			food.add(new int[]{rng.nextInt(w), rng.nextInt(h), 30});
+			addFood(rng.nextInt(w), rng.nextInt(h), 30);
 		}
+	}
+
+	public void addFood(int x, int y, int amount){
+		food.add(new int[]{x, y, amount});
 	}
 
 	public void addFeromones(int x, int y, double dosis){
@@ -287,16 +368,17 @@ class Referee{
 	    Iterator<int[]> iterator = food.iterator();
 		while (iterator.hasNext()){
 			coor = iterator.next();
-			picture[coor[0]][coor[1]][1]+=120;
-		    if(picture[coor[0]][coor[1]][1]>255)
-		    	picture[coor[0]][coor[1]][1]=255;
+
+			picture[coor[0]][coor[1]][0]+=70;
+		    picture[coor[0]][coor[1]][1]+=70;
+		    picture[coor[0]][coor[1]][2]+=70;
 		}
 	}
 
 	public void turn(){
 		for(int i=0; i<w; i++)
 			for(int j=0; j<h; j++){
-				feromones[i][j] *= 0.85;
+				feromones[i][j] *= 0.9;
 			}
 	}
 }
