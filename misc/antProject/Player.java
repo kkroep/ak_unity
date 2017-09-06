@@ -2,6 +2,8 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.lang.reflect.Constructor;
+
 
 class Player{
 	private int x;
@@ -13,9 +15,9 @@ class Player{
 	private ProtectedPlayer protectedPlayer = new ProtectedPlayer(this);
 	private QueenBrain queenBrain = new QueenBrain();
 	private Referee referee;
+	private Constructor antBrainCtor;
 
-
-	public Player(int[] color, int playerNumber, int x, int y, int food, Referee referee, QueenBrain queenBrain) {
+	public Player(int[] color, int playerNumber, int x, int y, int food, Referee referee, QueenBrain queenBrain, Constructor antBrainCtor) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -24,6 +26,7 @@ class Player{
 		this.playerNumber = playerNumber;
 		this.ants = new ArrayList<Ant>();
 		this.queenBrain = queenBrain;
+		this.antBrainCtor = antBrainCtor;
 	}
 
 	// set functions
@@ -63,12 +66,16 @@ class Player{
 
 	public boolean createAnt(){
 		if(food>=5){
-			if(getPlayerNumber()==0)
-				ants.add(new Ant(x,y, referee, new KeKroepes(), playerNumber, 3, 1, 1, 100)); 
-			else
-				ants.add(new Ant(x,y, referee, new KeKroepes(), playerNumber, 3, 1, 1, 100));
-			food -=5;
-			return true;
+			try
+			{
+				ants.add(new Ant(x,y, referee, (AntBrain)antBrainCtor.newInstance(), playerNumber, 3, 1, 1, 100)); 
+				food -=5;
+				return true;
+			}
+			catch(Exception e){
+				System.out.printf("EXCEPTION: failed to make ant\n");
+				return false;
+			}	
 		}
 		else
 			return false;
@@ -100,42 +107,5 @@ class Player{
 		//System.out.printf("a= %d\n", ants.size());
 	}
 }
-
-
-class ProtectedPlayer{
-	private Player player;
-
-	public ProtectedPlayer(Player player){
-		this.player = player;
-	}
-
-	public int colonySize(){return player.colonySize();}
-	
-	// returns true if it is succesfull and false if not
-	public boolean createAnt(){return player.createAnt();}
-
-	public int getFood(){return player.getFood();}
-
-}
-
-// class that can be extended to form the queen brain
-class QueenBrain{
-	public QueenBrain(){}
-
-	// called every an ant returns to the queen location
-	public void reportingAnt(AntProperties antProperties){
-		//System.out.printf("%d", antProperties.ge)
-	}
-
-	// called at the start of every turn
-	public void turn(ProtectedPlayer player){
-		/*if(player.getFood()>=5){
-			player.createAnt();
-		}*/
-
-	} 
-}
-
-
 
 

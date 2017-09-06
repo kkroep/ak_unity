@@ -10,6 +10,8 @@ import java.awt.geom.Rectangle2D;
 import javax.imageio.stream.*;
 import java.io.File;
 import java.io.IOException;
+
+import java.lang.reflect.Constructor;
 //import javax.imageio.ImageIO;
 
 public class antColony {
@@ -27,11 +29,29 @@ public class antColony {
       //writer.writeToSequence(bi);
 
       // initializing main Loop
-      Referee referee = new Referee(100, width, height);
+      Referee referee = new Referee(50, width, height);
 
 
-      Player player1 = new Player(new int[]{0,255,0}, 0, 24, 32, 50, referee, new KeKroepes_Q());
-      Player player2 = new Player(new int[]{70,0,255}, 1, 40, 32, 50, referee, new KeKroepes_Q());
+      //Class clazz = Class.forName("KeKroepes");
+      AntBrain test; 
+      try
+      {
+        //test = (AntBrain)clazz.newInstance();
+        test = (AntBrain)Class.forName("KeKroepes_A").newInstance();
+      }
+      catch(Exception e)
+      {
+        System.out.printf("Invalid antbrain\n");
+        test = new AntBrain();
+      }
+      //AntBrain test = new Class.forName("KeKroepes").newInstance();
+      //AntBrain test = new KeKroepes();
+      Class<? extends AntBrain> c = test.getClass();
+      Constructor antBrainCtor = c.getConstructor();
+
+
+      Player player1 = new Player(new int[]{0,255,0}, 0, 24, 32, 50, referee, new KeKroepes_Q(), antBrainCtor);
+      Player player2 = new Player(new int[]{70,0,255}, 1, 40, 32, 50, referee, new KeKroepes_Q(), antBrainCtor);
       //player1.draw(picture);
 
       // main loop

@@ -17,7 +17,6 @@ class AntProperties{
 		this.maxFood = maxFood;
 		this.stamina = maxStamina;
 		this.maxStamina = maxStamina;
-
 	}
 
 
@@ -30,6 +29,28 @@ class AntProperties{
 	public int getMaxStamina(){return maxStamina;}
 	public void staminaRefill(){stamina = maxStamina;}
 
+	public int calculateCost(){
+		int cost = 10;
+
+
+
+		// health cost. starts at 4, one food for one extra
+		cost += (maxHealth-4);
+
+		// damage cost
+		cost += (damage-1)*4; 
+		
+		// food cost
+		cost += maxFood*4;
+
+		
+
+		// make sure the ant is a valid one
+		if(maxHealth<4 || damage<1 || maxFood<0 || maxStamina<50)
+			cost = Integer.MAX_VALUE;
+
+		return cost;
+	}
 
 	public int getDynamicMemory(){return dynamicMemory;}
 	public void setDynamicMemory(int value){dynamicMemory = value;}

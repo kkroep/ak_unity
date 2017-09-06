@@ -18,9 +18,13 @@ class Referee{
 		grid.add(new PlayerGrid());
 		grid.add(new PlayerGrid());
 
+		int x,y;
 
 		for(int i=0; i<foodAmount; i++){
-			addFood(rng.nextInt(w), rng.nextInt(h), 30);
+			x = rng.nextInt(w);
+			y = rng.nextInt(h);
+			addFood(x, y, 30);
+			addFood(63-x, 63-y, 30);
 		}
 	}
 
